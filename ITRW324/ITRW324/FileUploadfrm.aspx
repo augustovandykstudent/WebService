@@ -18,6 +18,20 @@
         <br />
         <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
     
+        <br />
+        <asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>
+        <br />
+        <asp:GridView ID="grid" runat="server">           
+             <Columns>
+        <asp:BoundField DataField="Name" HeaderText="File Name" />
+        <asp:TemplateField ItemStyle-HorizontalAlign="Center">
+            <ItemTemplate>
+                <asp:LinkButton ID="lnkView" runat="server" Text="View" OnClick="View" CommandArgument='<%# Eval("Id") %>'></asp:LinkButton>
+            </ItemTemplate>
+        </asp:TemplateField>
+    </Columns>
+        </asp:GridView>
+    
     </div>
     </form>
 </body>
