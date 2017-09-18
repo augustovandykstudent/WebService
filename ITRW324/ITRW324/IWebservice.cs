@@ -7,15 +7,14 @@ using System.Text;
 
 namespace ITRW324
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IWebservice" in both code and config file together.
+    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IWebService" in both code and config file together.
     [ServiceContract]
-    public interface IWebservice
+    public interface IWebService
     {
         [OperationContract]
         void DoWork();
-        
+
+        [OperationContract]
+        void upload(string name);
     }
-
-    
-
 }

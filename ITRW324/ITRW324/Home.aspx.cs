@@ -13,10 +13,23 @@ namespace ITRW324
         {
 
         }
-
-        protected void Button1_Click(object sender, EventArgs e)
+        protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
         {
-
+            if (SiteMap.CurrentNode != null)
+            {
+                if (e.Item.Text == SiteMap.CurrentNode.Title)
+                {
+                    if (e.Item.Parent != null)
+                    {
+                        e.Item.Parent.Selected = true;
+                    }
+                    else
+                    {
+                        e.Item.Selected = true;
+                    }
+                }
+            }
         }
     }
+
 }

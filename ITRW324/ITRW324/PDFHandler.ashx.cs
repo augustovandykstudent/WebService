@@ -1,30 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
+using MySql.Data.MySqlClient;
+using System.IO;
 using System.Data;
 using System.Configuration;
-using MySql.Data.MySqlClient;
 
 namespace ITRW324
 {
-    public class FileHandler : IHttpHandler
+    /// <summary>
+    /// Summary description for PDFHandler
+    /// </summary>
+    public class PDFHandler : IHttpHandler
     {
-        /// <summary>
-        /// You will need to configure this handler in the Web.config file of your 
-        /// web and register it with IIS before being able to use it. For more information
-        /// see the following link: http://go.microsoft.com/?linkid=8101007
-        /// </summary>
-        #region IHttpHandler Members
-
-        public bool IsReusable
-        {
-            // Return false in case your Managed Handler cannot be reused for another request.
-            // Usually this would be false in case you have some state information preserved per request.
-            get { return true; }
-        }
 
         public void ProcessRequest(HttpContext context)
         {
-            //write your handler implementation here.
             int id = int.Parse(context.Request.QueryString["Id"]);
             byte[] bytes;
             string fileName, contentType;
@@ -33,7 +25,7 @@ namespace ITRW324
             {
                 using (MySqlCommand cmd = new MySqlCommand())
                 {
-                    cmd.CommandText = "SELECT Name, Type, Data FROM Documents WHERE Id=@Id";
+                    cmd.CommandText = "SELECT Name, Type,Data FROM Documents WHERE Id=@Id";
                     cmd.Parameters.AddWithValue("@Id", id);
                     cmd.Connection = con;
                     con.Open();
@@ -60,7 +52,12 @@ namespace ITRW324
             context.Response.Flush();
             context.Response.End();
         }
-
-        #endregion
+        public bool IsReusable
+        {
+            get
+            {
+                return false;
+            }
+        }
     }
 }

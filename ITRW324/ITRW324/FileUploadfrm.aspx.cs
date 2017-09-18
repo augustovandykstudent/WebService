@@ -10,6 +10,7 @@ using System.Text;
 using System.Data;
 using System.Configuration;
 using MySql.Data.MySqlClient;
+using System.Net;
 
 namespace ITRW324
 {
@@ -18,17 +19,42 @@ namespace ITRW324
         public string hash;
         public string file, type;
         public int length;
-        byte[] myData,bytes;
+        byte[] myData;
 
 
-
+        protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
+        {
+            if (SiteMap.CurrentNode != null)
+            {
+                if (e.Item.Text == SiteMap.CurrentNode.Title)
+                {
+                    if (e.Item.Parent != null)
+                    {
+                        e.Item.Parent.Selected = true;
+                    }
+                    else
+                    {
+                        e.Item.Selected = true;
+                    }
+                }
+            }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            if (Session["user"] == null)
+                Response.Redirect("Login.aspx");
+            else
             {
-                display();
+                String userid = Convert.ToString((int)Session["ID"]);
+                String username = Session["User"].ToString();
+                Label1.Text = "ID: " + userid + " Name: " + username;
+                     if (!IsPostBack)
+                {
+                    display();
+                }
             }
+           
 
         }
 
@@ -53,33 +79,38 @@ namespace ITRW324
                     sb.AppendFormat("<br/> File name: {0}", file);
 
                     HttpPostedFile myFile = FileUploadVerify.PostedFile;
-                   
-                   
-                  
+
+
+
                     Stream fs = FileUploadVerify.PostedFile.InputStream;
                     BinaryReader br = new BinaryReader(fs);
                     myData = br.ReadBytes((Int32)fs.Length);
                     hash = BitConverter.ToString(Sha.ComputeHash(myData));
                     sb.AppendFormat("<br/> File hashcode: {0}", hash);
-                  //  sb.AppendFormat("<br/> File data: {0}", data);
+                    //  sb.AppendFormat("<br/> File data: {0}", data);
                     Label1.Text = sb.ToString();
-
-                    if (type == "application/pdf")
+                    if (checkifexist()==false)
                     {
-                        upload();
+                        if (type == "application/pdf")
+                        {
+                            upload();
+                        }
+                        else
+                        {
+                            Label1.Text = "Only PDF allowed";
+                        }
+
                     }
                     else
                     {
-                        Label1.Text = "Only PDF allowed";
+                        Label1.Text = "Exists";
+
                     }
 
-            
-                   
 
-                   
 
                     display();
-                    Response.Redirect(Request.Url.AbsoluteUri);
+                    //    Response.Redirect(Request.Url.AbsoluteUri);
 
 
 
@@ -96,15 +127,37 @@ namespace ITRW324
             }
 
 
-       
 
-        
+
+
         }
 
+        //Check if pdf hash exists in database
+        public bool checkifexist()
+        {
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
 
+            MySqlConnection conn = new MySqlConnection(constr);
+            MySqlCommand cmd = new MySqlCommand("Select * from Documents where Hash = @Hash", conn);
+            cmd.Parameters.AddWithValue("@Hash", hash);
+            conn.Open();
+            MySqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                if (dr.HasRows == true)
+                {
+                   
+                    return true;
+                }
+                
+            }
+            return false;
 
+           
+        }
 
-    public void upload()
+        //Upload pdf to database
+        public void upload()
         {
             string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
             try
@@ -112,75 +165,87 @@ namespace ITRW324
                 MySqlConnection conn = new MySqlConnection(constr);
 
                 string time = DateTime.Now.ToString("yyyy-MM-dd"); ;
-              
-            
-              
+
+                
+
                 string insert = "Insert into Documents (Name,Type,Creation_date,Hash, Data) values (@Name,@Type,@Creationdate,@Hash,@Data)";
-                using (MySqlCommand cmd = new MySqlCommand(insert,conn))
+                using (MySqlCommand cmd = new MySqlCommand(insert, conn))
                 {
                     cmd.Connection = conn;
+
+                    
                     using (MySqlDataAdapter adpt = new MySqlDataAdapter())
                     {
                         adpt.SelectCommand = cmd;
-                     //   cmd.Parameters.AddWithValue("@ID", test);
+                        //   cmd.Parameters.AddWithValue("@ID", test);
                         cmd.Parameters.AddWithValue("@Name", file);
                         cmd.Parameters.AddWithValue("@Type", type);
                         cmd.Parameters.AddWithValue("@Creationdate", time);
-                      
+
                         cmd.Parameters.AddWithValue("@Hash", hash);
                         // cmd.Parameters.AddWithValue("@Previoushash", test2);
                         cmd.Parameters.AddWithValue("@Data", myData);
-                       
+
 
                         conn.Open();
-                      int result =  cmd.ExecuteNonQuery();
+                        int result = cmd.ExecuteNonQuery();
                         conn.Close();
-                        
+
                     }
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Label1.Text = "not entered "+ex;
+                Label1.Text = "not entered " + ex;
             }
-}
+        }
 
 
-
+        //Display database content in grid
         public void display()
         {
 
-                string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-                using (MySqlConnection con = new MySqlConnection(constr))
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
                 {
-                    using (MySqlCommand cmd = new MySqlCommand())
-                    {
-                        cmd.CommandText = "select Id,Name From Documents";
-                        cmd.Connection = con;
-                        con.Open();
-                        grid.DataSource = cmd.ExecuteReader();
-                        grid.DataBind();
-                        con.Close();
-                    }
-                }
-                
-           
+                    cmd.CommandText = "select Id, Name From Documents";
+                    cmd.Connection = con;
+                    con.Open();
+                    grid.DataSource = cmd.ExecuteReader();
+                    grid.DataBind();
+                    con.Close();
 
+                }
+
+
+            }
 
         }
+
+        protected void grid_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        //Gridview linkbutton execute
         protected void View(object sender, EventArgs e)
         {
+            
             int id = int.Parse((sender as LinkButton).CommandArgument);
             string embed = "<object data=\"{0}{1}\" type=\"application/pdf\" width=\"500px\" height=\"600px\">";
             embed += "If you are unable to view file, you can download from <a href = \"{0}{1}&download=1\">here</a>";
             embed += " or download <a target = \"_blank\" href = \"http://get.adobe.com/reader/\">Adobe PDF Reader</a> to view the file.";
             embed += "</object>";
-            Label2.Text = string.Format(embed, ResolveUrl("~/FileCS.ashx?Id="), id);
+            Label1.Text = string.Format(embed, ResolveUrl("~/PDFHandler.ashx?Id="), id);  //Call Generic Handler
         }
 
     }
 }
+
+
 
 
 
