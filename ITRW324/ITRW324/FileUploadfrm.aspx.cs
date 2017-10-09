@@ -98,7 +98,7 @@ namespace ITRW324
                             data.Name = file;
                             data.Type = type;
                             data.Hash = hash;
-                           data.f
+                            data.Data = myData;
                             data.Userid = userid;
 
 

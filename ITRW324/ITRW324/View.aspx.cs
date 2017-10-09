@@ -8,14 +8,14 @@ using System.Configuration;
 using MySql.Data.MySqlClient;
 using System.Data;
 
-using ITRW324.Webservice;
+using ITRW324.ServiceReference1;
 
 namespace ITRW324
 {
     public partial class View : System.Web.UI.Page
     {
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        Webservice.WebServiceClient webservice = new Webservice.WebServiceClient();
+        ServiceReference1.WebServiceClient webservice = new ServiceReference1.WebServiceClient();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,14 +26,14 @@ namespace ITRW324
                 int userid = Convert.ToInt32(Session["ID"]);
                 string username = Session["User"].ToString();
                 //   Label1.Text = "ID: " + userid + " Name: " + username;
-                fileData Udata = new fileData();
+                ServiceReference1.fileData Udata = new ServiceReference1.fileData();
                 Udata.Userid = userid;
                 if (!IsPostBack)
                 {
-
+                    
                     ViewState["Userid"] = Udata.Userid;
                     DataSet ds = new DataSet();
-            //    ds= webservice.Display(Udata);
+                        ds= webservice.Display(Udata);
                     grid.DataBind();
 
                 }

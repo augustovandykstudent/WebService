@@ -32,7 +32,7 @@ namespace ITRW324
         string hash = string.Empty;
        
         int userid;
-        byte fdata;
+        byte[] fdata;
         [DataMember]
         public string Name
         {
@@ -65,7 +65,7 @@ namespace ITRW324
             set { userid = value; }
         }
         [DataMember]
-        public byte filData
+        public byte[] Data
         {
             get { return fdata; }
             set { fdata = value; }
