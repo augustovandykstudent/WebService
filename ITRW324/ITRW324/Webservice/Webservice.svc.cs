@@ -24,7 +24,7 @@ namespace ITRW324
             cmd.Parameters.AddWithValue("@Name", data.Name);
             cmd.Parameters.AddWithValue("@type", data.Type);
             cmd.Parameters.AddWithValue("@hash", data.Hash);
-            cmd.Parameters.AddWithValue("@data", data.Data);
+            cmd.Parameters.AddWithValue("@data", data.filData);
             cmd.Parameters.AddWithValue("@userid", data.Userid);
             int result = cmd.ExecuteNonQuery();
             if (result == 1)

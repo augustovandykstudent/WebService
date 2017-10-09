@@ -227,10 +227,16 @@
     </Content>
     <Content Include="ClassDiagram1.cd" />
     <Content Include="Properties\DataSources\System.Data.DataSet.datasource" />
-    <None Include="Service References\Webservice\WebService.disco" />
-    <None Include="Service References\Webservice\configuration91.svcinfo" />
-    <None Include="Service References\Webservice\configuration.svcinfo" />
-    <None Include="Service References\Webservice\Reference.svcmap">
+    <Content Include="Service References\ServiceReference1\ITRW324.ServiceReference1.DisplayResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ServiceReference1\ITRW324.ServiceReference1.InsertResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\ServiceReference1\WebService.disco" />
+    <None Include="Service References\ServiceReference1\configuration91.svcinfo" />
+    <None Include="Service References\ServiceReference1\configuration.svcinfo" />
+    <None Include="Service References\ServiceReference1\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
@@ -238,17 +244,17 @@
     <Content Include="Webservice\Webservice.svc" />
     <Content Include="PDFHandler.ashx" />
     <Content Include="Content\scripts\jquery-2.1.1.min.map" />
-    <None Include="Service References\Webservice\WebService.wsdl" />
-    <None Include="Service References\Webservice\WebService.xsd">
+    <None Include="Service References\ServiceReference1\WebService.wsdl" />
+    <None Include="Service References\ServiceReference1\WebService.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Webservice\WebService1.xsd">
+    <None Include="Service References\ServiceReference1\WebService1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Webservice\WebService2.xsd">
+    <None Include="Service References\ServiceReference1\WebService2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Webservice\WebService3.xsd">
+    <None Include="Service References\ServiceReference1\WebService3.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Web.Debug.config">
@@ -294,7 +300,7 @@
     <Compile Include="Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Service References\Webservice\Reference.cs">
+    <Compile Include="Service References\ServiceReference1\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -329,7 +335,7 @@
     <Folder Include="Pages\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\Webservice\" />
+    <WCFMetadataStorage Include="Service References\ServiceReference1\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

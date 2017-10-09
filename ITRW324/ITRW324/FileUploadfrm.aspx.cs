@@ -11,7 +11,9 @@ using System.Data;
 using System.Configuration;
 using MySql.Data.MySqlClient;
 using System.Net;
-using ITRW324.Webservice;
+using ITRW324.ServiceReference1;
+
+
 namespace ITRW324
 {
     public partial class FileUploadfrm : System.Web.UI.Page
@@ -20,7 +22,7 @@ namespace ITRW324
         public string file, type ;
         public int length, userid;
         byte[] myData;
-        Webservice.WebServiceClient webservice = new Webservice.WebServiceClient();
+        ServiceReference1.WebServiceClient webservice = new ServiceReference1.WebServiceClient();
 
         protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
         {
@@ -91,11 +93,12 @@ namespace ITRW324
                     {
                         if (type == "application/pdf")
                         {
-                            Webservice.fileData data = new Webservice.fileData();
+                            ServiceReference1.fileData data = new ServiceReference1.fileData();
+
                             data.Name = file;
                             data.Type = type;
                             data.Hash = hash;
-                           data.Data= myData;
+                           data.f
                             data.Userid = userid;
 
 

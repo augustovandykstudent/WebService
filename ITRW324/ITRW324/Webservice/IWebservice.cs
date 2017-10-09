@@ -65,10 +65,11 @@ namespace ITRW324
             set { userid = value; }
         }
         [DataMember]
-        public byte Data
+        public byte filData
         {
             get { return fdata; }
             set { fdata = value; }
         }
+
     }
 }
