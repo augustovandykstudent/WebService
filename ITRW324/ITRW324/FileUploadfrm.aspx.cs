@@ -11,16 +11,16 @@ using System.Data;
 using System.Configuration;
 using MySql.Data.MySqlClient;
 using System.Net;
-
+using ITRW324.Webservice;
 namespace ITRW324
 {
     public partial class FileUploadfrm : System.Web.UI.Page
     {
         public string hash;
-        public string file, type;
-        public int length;
+        public string file, type ;
+        public int length, userid;
         byte[] myData;
-
+        Webservice.WebServiceClient webservice = new Webservice.WebServiceClient();
 
         protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
         {
@@ -43,16 +43,14 @@ namespace ITRW324
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["user"] == null)
-                Response.Redirect("Login.aspx");
+                // Response.Redirect("Login.aspx");
+                Label1.Text = "please login";
             else
             {
-                String userid = Convert.ToString((int)Session["ID"]);
+                userid = Convert.ToInt32(Session["ID"]);
                 String username = Session["User"].ToString();
                 Label1.Text = "ID: " + userid + " Name: " + username;
-                     if (!IsPostBack)
-                {
-                    display();
-                }
+
             }
            
 
@@ -93,7 +91,16 @@ namespace ITRW324
                     {
                         if (type == "application/pdf")
                         {
-                            upload();
+                            Webservice.fileData data = new Webservice.fileData();
+                            data.Name = file;
+                            data.Type = type;
+                            data.Hash = hash;
+                           data.Data= myData;
+                            data.Userid = userid;
+
+
+                          // upload();
+                          webservice.Insert(data);
                         }
                         else
                         {
@@ -108,8 +115,7 @@ namespace ITRW324
                     }
 
 
-
-                    display();
+                    
                     //    Response.Redirect(Request.Url.AbsoluteUri);
 
 
@@ -202,48 +208,16 @@ namespace ITRW324
         }
 
 
-        //Display database content in grid
-        public void display()
-        {
-
-            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-            using (MySqlConnection con = new MySqlConnection(constr))
-            {
-                using (MySqlCommand cmd = new MySqlCommand())
-                {
-                    cmd.CommandText = "select Id, Name From Documents";
-                    cmd.Connection = con;
-                    con.Open();
-                    grid.DataSource = cmd.ExecuteReader();
-                    grid.DataBind();
-                    con.Close();
-
-                }
-
-
-            }
+    
+      
 
         }
 
-        protected void grid_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        //Gridview linkbutton execute
-        protected void View(object sender, EventArgs e)
-        {
-            
-            int id = int.Parse((sender as LinkButton).CommandArgument);
-            string embed = "<object data=\"{0}{1}\" type=\"application/pdf\" width=\"500px\" height=\"600px\">";
-            embed += "If you are unable to view file, you can download from <a href = \"{0}{1}&download=1\">here</a>";
-            embed += " or download <a target = \"_blank\" href = \"http://get.adobe.com/reader/\">Adobe PDF Reader</a> to view the file.";
-            embed += "</object>";
-            Label1.Text = string.Format(embed, ResolveUrl("~/PDFHandler.ashx?Id="), id);  //Call Generic Handler
-        }
+    
+    
 
     }
-}
+
 
 
 

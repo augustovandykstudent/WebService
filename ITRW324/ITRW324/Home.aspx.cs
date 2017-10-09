@@ -11,7 +11,15 @@ namespace ITRW324
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Session["user"] == null)
+                Response.Redirect("Login.aspx");
+            else
+            {
+                String userid = Convert.ToString((int)Session["ID"]);
+                String username = Session["User"].ToString();
+              //  la.Text = "ID: " + userid + " Name: " + username;
+             
+            }
         }
         protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
         {

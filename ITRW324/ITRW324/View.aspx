@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="FileUploadfrm.aspx.cs" Inherits="ITRW324.FileUploadfrm" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="View.aspx.cs" Inherits="ITRW324.View" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-
+    
         <style type="text/css">
     body
     {
@@ -41,13 +41,13 @@
     }
 </style>
 
+
 </head>
 <body>
     <form id="form1" runat="server">
- 
-         <div> 
-      
-            <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="false" />
+    <div>
+
+                 <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="false" />
 <asp:Menu ID="Menu" runat="server" DataSourceID="SiteMapDataSource1" Orientation="Horizontal"
     OnMenuItemDataBound="OnMenuItemDataBound">
  
@@ -56,36 +56,34 @@
         <asp:MenuItemStyle CssClass="level_menu" />
     </LevelMenuItemStyles>
 </asp:Menu>
-            .<asp:SiteMapPath runat="server" ID="SiteMapPath1"></asp:SiteMapPath>
-    
-      
-            <br />
-            <br />
-            <br />
-             </div>
+                 </div>
      <%   if (Session["user"] != null)
          {  %>
         <div>
-        <asp:FileUpload ID="FileUploadVerify" runat="server" enctype="multipart/form-data"/>
-        <br />
-        <br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-        <asp:Button ID="btnsubmit" runat="server" OnClick="btnsubmit_Click" Text="Submit" />
-        <br />
-            <br />
-            <asp:Label ID="Label1" runat="server"></asp:Label>
-    
-    </div>
-         <%  }%>
-      <%   else     { %>
+                 <br />
+                 <asp:Label ID="Label1" runat="server"></asp:Label>
 
+      <asp:GridView ID="grid" runat="server" OnSelectedIndexChanged="grid_SelectedIndexChanged" Height="348px" Width="772px">           
+             <Columns>
+        <asp:BoundField DataField="Name" HeaderText="File Name" />
+        <asp:TemplateField ItemStyle-HorizontalAlign="Center">
+            <ItemTemplate>
+                <asp:LinkButton ID="lnkView" runat="server" Text="View" OnClick="view" CommandArgument='<%# Eval("Id") %>'></asp:LinkButton>
+            </ItemTemplate>
+        </asp:TemplateField>
+    </Columns>
+        </asp:GridView>
+                 <br />
+        
+         <%  }%>
+         <%   else     { %>
         <h2>Please Login by clicking the link below</h2>
         <asp:HyperLink ID="HyperLink1" Text="Login" runat="server" NavigateUrl="~/Login.aspx"></asp:HyperLink>
 
         <% } %>
+         </div>
 
-
+   
     </form>
 </body>
-     
 </html>
