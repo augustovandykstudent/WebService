@@ -41,6 +41,8 @@ namespace ITRW324.ServiceReference1 {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/ITRW324")]
     public partial class fileData : object, System.ComponentModel.INotifyPropertyChanged {
         
+        private byte[] dataField;
+        
         private string dateField;
         
         private string hashField;
@@ -53,12 +55,20 @@ namespace ITRW324.ServiceReference1 {
         
         private bool useridFieldSpecified;
         
-        private byte filDataField;
-        
-        private bool filDataFieldSpecified;
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="base64Binary", IsNullable=true, Order=0)]
+        public byte[] Data {
+            get {
+                return this.dataField;
+            }
+            set {
+                this.dataField = value;
+                this.RaisePropertyChanged("Data");
+            }
+        }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public string Date {
             get {
                 return this.dateField;
@@ -70,7 +80,7 @@ namespace ITRW324.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
         public string Hash {
             get {
                 return this.hashField;
@@ -82,7 +92,7 @@ namespace ITRW324.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=3)]
         public string Name {
             get {
                 return this.nameField;
@@ -94,7 +104,7 @@ namespace ITRW324.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=4)]
         public string Type {
             get {
                 return this.typeField;
@@ -106,7 +116,7 @@ namespace ITRW324.ServiceReference1 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
         public int Userid {
             get {
                 return this.useridField;
@@ -126,30 +136,6 @@ namespace ITRW324.ServiceReference1 {
             set {
                 this.useridFieldSpecified = value;
                 this.RaisePropertyChanged("UseridSpecified");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
-        public byte filData {
-            get {
-                return this.filDataField;
-            }
-            set {
-                this.filDataField = value;
-                this.RaisePropertyChanged("filData");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool filDataSpecified {
-            get {
-                return this.filDataFieldSpecified;
-            }
-            set {
-                this.filDataFieldSpecified = value;
-                this.RaisePropertyChanged("filDataSpecified");
             }
         }
         

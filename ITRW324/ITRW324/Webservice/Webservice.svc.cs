@@ -20,7 +20,7 @@ namespace ITRW324
             string msg = string.Empty;
 
             con.Open();
-            MySqlCommand cmd = new MySqlCommand("insert into documents(Name,Type,Hash,Data,[User_ID]) values(@Name,@type,@hash,@data,@userid)", con);
+            MySqlCommand cmd = new MySqlCommand("insert into documents(Name,Type,Hash,Data,User_ID) values(@Name,@type,@hash,@data,@userid)", con);
             cmd.Parameters.AddWithValue("@Name", data.Name);
             cmd.Parameters.AddWithValue("@type", data.Type);
             cmd.Parameters.AddWithValue("@hash", data.Hash);
@@ -47,7 +47,8 @@ namespace ITRW324
             {
                 con.Open();
             }
-            MySqlCommand cmd = new MySqlCommand("select * from documents where User_ID=@Userid", con);
+            MySqlCommand cmd = new MySqlCommand("select * from documents", con);
+            //MySqlCommand cmd = new MySqlCommand("select * from documents where User_ID=@Userid", con);
             cmd.Parameters.AddWithValue("@Userid", data.Userid);
             MySqlDataAdapter da = new MySqlDataAdapter(cmd);
             DataSet ds = new DataSet();

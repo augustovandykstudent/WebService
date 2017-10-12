@@ -64,6 +64,7 @@ namespace ITRW324
             get { return userid; }
             set { userid = value; }
         }
+      
         [DataMember]
         public byte[] Data
         {

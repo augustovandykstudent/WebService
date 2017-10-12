@@ -23,6 +23,7 @@ namespace ITRW324
         public int length, userid;
         byte[] myData;
         ServiceReference1.WebServiceClient webservice = new ServiceReference1.WebServiceClient();
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
 
         protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
         {
@@ -93,17 +94,17 @@ namespace ITRW324
                     {
                         if (type == "application/pdf")
                         {
-                            ServiceReference1.fileData data = new ServiceReference1.fileData();
+                           /* ServiceReference1.fileData data = new ServiceReference1.fileData();
 
                             data.Name = file;
                             data.Type = type;
                             data.Hash = hash;
                             data.Data = myData;
                             data.Userid = userid;
+                            */
 
-
-                          // upload();
-                          webservice.Insert(data);
+                           upload();
+                        //  webservice.Insert(data);
                         }
                         else
                         {
@@ -144,7 +145,7 @@ namespace ITRW324
         //Check if pdf hash exists in database
         public bool checkifexist()
         {
-            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+           
 
             MySqlConnection conn = new MySqlConnection(constr);
             MySqlCommand cmd = new MySqlCommand("Select * from Documents where Hash = @Hash", conn);
@@ -177,7 +178,7 @@ namespace ITRW324
 
                 
 
-                string insert = "Insert into Documents (Name,Type,Creation_date,Hash, Data) values (@Name,@Type,@Creationdate,@Hash,@Data)";
+                string insert = "Insert into Documents (File_name,Type,Creation_date,Hash, Data) values (@Name,@Type,@Creationdate,@Hash,@Data)";
                 using (MySqlCommand cmd = new MySqlCommand(insert, conn))
                 {
                     cmd.Connection = conn;
