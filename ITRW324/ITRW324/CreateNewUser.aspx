@@ -10,6 +10,11 @@
     {
     background:#ccc;
     align-content:center;
+     
+            background:#ccc;
+    align-content:center;
+        font-family: Arial;
+        font-size: 10pt;
     }
     .formclass
     {
@@ -18,6 +23,32 @@
         background:#fff;
         width:200px;
          
+    }
+    
+    .main_menu
+    {
+        width: 100px;
+        background-color: #8AE0F2;
+        color: #000;
+        text-align: center;
+        height: 30px;
+        line-height: 30px;
+        margin-right: 5px;
+    }
+    .level_menu
+    {
+        width: 110px;
+        background-color: #000;
+        color: #fff;
+        text-align: center;
+        height: 30px;
+        line-height: 30px;
+        margin-top: 5px;
+    }
+    .selected
+    {
+        background-color: #852B91;
+        color: #fff;
     }
 
   
@@ -43,7 +74,6 @@
                <td class="auto-style1">Enter Username</td>
                <td><asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="TextBox1" ErrorMessage="Username Required"></asp:RequiredFieldValidator>
-                   <asp:Label ID="Label1" runat="server"></asp:Label>
                </td>
            </tr>
            <tr>
@@ -76,7 +106,8 @@
 
            <tr>
                <td class="auto-style2">
-                   &nbsp;</td>
+                   <asp:Label ID="Label1" runat="server"></asp:Label>
+               </td>
            </tr>
            
 

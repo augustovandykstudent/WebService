@@ -46,7 +46,7 @@ namespace ITRW324
         {
            
             MySqlConnection conn = new MySqlConnection(constr);
-            MySqlCommand cmd = new MySqlCommand("Select * from users where Username=@user and Password=@pwd", conn);
+            MySqlCommand cmd = new MySqlCommand("Select * from Users where Username=@user and Password=@pwd", conn);
             
                 cmd.Parameters.AddWithValue("@user", TextBox1.Text);
                 cmd.Parameters.AddWithValue("@pwd", TextBox2.Text);
@@ -55,7 +55,7 @@ namespace ITRW324
 
             if(rd.Read())
             {
-                Session["ID"] = rd["ID"];
+                Session["ID"] = rd["UserID"];
                 Session["User"] = rd["Username"];
                 rd.Close();
                 cmd.Dispose();

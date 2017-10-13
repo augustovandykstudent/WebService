@@ -48,29 +48,29 @@ namespace ITRW324
                 string pwd = TextBox2.Text;
                 string email = TextBox4.Text;
 
-               if (checkifexist(name) == false)
-               {
+                if (checkifexist(name) == false)
+                {
                     try
                     {
                         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
 
                         MySqlConnection conn = new MySqlConnection(constr);
-                        string insert = "Insert into USERS (Username,Password,Email) values (@Name,@Pass,@email)";
+                        string insert = "Insert into Users (Username,Password,Email) values (@Name,@Pass,@email)";
                         using (MySqlCommand cmd2 = new MySqlCommand(insert, conn))
                         {
                             using (MySqlDataAdapter adpt = new MySqlDataAdapter())
                             {
                                 adpt.SelectCommand = cmd2;
                                 cmd2.Connection = conn;
-                            cmd2.Parameters.Add("@Name", MySqlDbType.VarChar,50).Value = name;
-                                cmd2.Parameters.Add("@Pass", MySqlDbType.VarChar, 50).Value=pwd;
-                                cmd2.Parameters.Add("@email", MySqlDbType.VarChar, 50).Value=email;
+                                cmd2.Parameters.Add("@Name", MySqlDbType.VarChar, 50).Value = name;
+                                cmd2.Parameters.Add("@Pass", MySqlDbType.VarChar, 50).Value = pwd;
+                                cmd2.Parameters.Add("@email", MySqlDbType.VarChar, 50).Value = email;
 
                                 conn.Open();
                                 cmd2.ExecuteNonQuery();
                                 conn.Close();
-                                      
-                        }
+
+                            }
 
                         }
                         Response.Redirect("Home.aspx");
@@ -81,6 +81,8 @@ namespace ITRW324
                     }
 
                 }
+                else
+                    Label1.Text = "Usersname already in use.";
             }
         }
 
@@ -89,7 +91,7 @@ namespace ITRW324
             string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
 
             MySqlConnection conn = new MySqlConnection(constr);
-            MySqlCommand cmd = new MySqlCommand("Select * from USERS where username = @user", conn);
+            MySqlCommand cmd = new MySqlCommand("Select * from Users where Username = @user", conn);
             cmd.Parameters.AddWithValue("@user", user);
             conn.Open();
             MySqlDataReader dr = cmd.ExecuteReader();
