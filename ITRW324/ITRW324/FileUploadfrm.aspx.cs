@@ -90,19 +90,20 @@ namespace ITRW324
                     sb.AppendFormat("<br/> File hashcode: {0}", hash);
                     //  sb.AppendFormat("<br/> File data: {0}", data);
                     Label1.Text = sb.ToString();
+                    Block tmp = new Block();
+                    tmp.BlockAdd();
                     if (checkifexist()==false)
                     {
                         if (type == "application/pdf")
                         {
-                           /* ServiceReference1.fileData data = new ServiceReference1.fileData();
+                            /* ServiceReference1.fileData data = new ServiceReference1.fileData();
 
-                            data.Name = file;
-                            data.Type = type;
-                            data.Hash = hash;
-                            data.Data = myData;
-                            data.Userid = userid;
-                            */
-
+                             data.Name = file;
+                             data.Type = type;
+                             data.Hash = hash;
+                             data.Data = myData;
+                             data.Userid = userid;
+                             */
                            upload();
                         //  webservice.Insert(data);
                         }
