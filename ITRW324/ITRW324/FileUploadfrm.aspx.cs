@@ -91,7 +91,7 @@ namespace ITRW324
                     //  sb.AppendFormat("<br/> File data: {0}", data);
                     Label1.Text = sb.ToString();
                     Block tmp = new Block();
-                    tmp.BlockAdd();
+                    tmp.BlockAdd(hash);
                     if (checkifexist()==false)
                     {
                         if (type == "application/pdf")
