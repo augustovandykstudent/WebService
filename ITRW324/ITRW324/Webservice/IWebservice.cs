@@ -16,10 +16,13 @@ namespace ITRW324
 
         [OperationContract]
         string Insert(fileData data);
-        [OperationContract]
-        DataSet Display(fileData data);
 
-        
+
+        [OperationContract]
+        List<fileData> GetDocuments(int user);
+
+
+
     }
 
 

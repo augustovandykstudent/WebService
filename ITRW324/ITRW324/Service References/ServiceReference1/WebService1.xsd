@@ -15,29 +15,17 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="Display">
+  <xs:element name="GetDocuments">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ITRW324" minOccurs="0" name="data" nillable="true" type="q2:fileData" />
+        <xs:element minOccurs="0" name="user" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="DisplayResponse">
+  <xs:element name="GetDocumentsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="DisplayResult" nillable="true">
-          <xs:complexType>
-            <xs:annotation>
-              <xs:appinfo>
-                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-              </xs:appinfo>
-            </xs:annotation>
-            <xs:sequence>
-              <xs:element ref="xs:schema" />
-              <xs:any />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ITRW324" minOccurs="0" name="GetDocumentsResult" nillable="true" type="q2:ArrayOffileData" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

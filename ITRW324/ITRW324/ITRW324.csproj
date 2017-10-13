@@ -227,10 +227,7 @@
     </Content>
     <Content Include="ClassDiagram1.cd" />
     <Content Include="Properties\DataSources\System.Data.DataSet.datasource" />
-    <Content Include="Service References\ServiceReference1\ITRW324.ServiceReference1.DisplayResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ServiceReference1\ITRW324.ServiceReference1.InsertResponse.datasource">
+    <Content Include="Service References\ServiceReference1\ITRW324.ServiceReference1.fileData.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Service References\ServiceReference1\WebService.disco" />
@@ -252,9 +249,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ServiceReference1\WebService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ServiceReference1\WebService3.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Web.Debug.config">

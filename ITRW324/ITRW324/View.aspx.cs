@@ -34,7 +34,7 @@ namespace ITRW324
                     ViewState["Userid"] = Udata.Userid;
                     DataSet ds = new DataSet();
                     
-                        ds= webservice.Display(Udata);
+                    
                     DataTable dt = new DataTable();
                     
                     grid.DataSource = ds;

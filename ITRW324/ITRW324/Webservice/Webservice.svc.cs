@@ -39,23 +39,44 @@ namespace ITRW324
             return msg;
         }
 
-    public DataSet Display(fileData data)
-        {
-          
+        /* public DataSet Display(fileData data)
+             {
 
-            if (con.State == ConnectionState.Closed)
+
+                 if (con.State == ConnectionState.Closed)
+                 {
+                     con.Open();
+                 }
+                 MySqlCommand cmd = new MySqlCommand("select * from documents", con);
+                 //MySqlCommand cmd = new MySqlCommand("select * from documents where User_ID=@Userid", con);
+                 cmd.Parameters.AddWithValue("@Userid", data.Userid);
+                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                 DataSet ds = new DataSet();
+                 da.Fill(ds);
+                 cmd.ExecuteNonQuery();
+                 con.Close();
+                 return ds;
+             }*/
+      public List<fileData> GetDocuments(int user)
+        {
+            fileData doc = new fileData();
+            List<fileData> documents = new List<fileData>();
+            MySqlConnection con = new MySqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString);
+            using (MySqlCommand cmd = new MySqlCommand("Select * from Documents where UserID=@user", con))
             {
+                cmd.Parameters.AddWithValue("@user", user);
                 con.Open();
+                MySqlDataReader rd = cmd.ExecuteReader();
+                while (rd.Read())
+                {
+                    doc.Userid = Convert.ToInt32(rd["UserID"]);
+                    doc.Name = Convert.ToString(rd["Filename"]);
+                    doc.Type = Convert.ToString(rd["Type"]);
+                    doc.Hash = Convert.ToString(rd["Hash"]);
+                }
+                 
             }
-            MySqlCommand cmd = new MySqlCommand("select * from documents", con);
-            //MySqlCommand cmd = new MySqlCommand("select * from documents where User_ID=@Userid", con);
-            cmd.Parameters.AddWithValue("@Userid", data.Userid);
-            MySqlDataAdapter da = new MySqlDataAdapter(cmd);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            cmd.ExecuteNonQuery();
-            con.Close();
-            return ds;
+            return documents.ToList();
         }
 
     }
