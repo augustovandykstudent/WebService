@@ -59,20 +59,23 @@ namespace ITRW324
              }*/
       public List<fileData> GetDocuments(int user)
         {
-            fileData doc = new fileData();
+           
             List<fileData> documents = new List<fileData>();
             MySqlConnection con = new MySqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString);
-            using (MySqlCommand cmd = new MySqlCommand("Select * from Documents where UserID=@user", con))
+            using (MySqlCommand cmd = new MySqlCommand("Select * from Documents where User_ID=@user", con))
             {
                 cmd.Parameters.AddWithValue("@user", user);
                 con.Open();
                 MySqlDataReader rd = cmd.ExecuteReader();
                 while (rd.Read())
                 {
-                    doc.Userid = Convert.ToInt32(rd["UserID"]);
-                    doc.Name = Convert.ToString(rd["Filename"]);
+                    fileData doc = new fileData();
+                    
+                    doc.Userid = Convert.ToInt32(rd["User_ID"]);
+                    doc.Name = Convert.ToString(rd["FileName"]);
                     doc.Type = Convert.ToString(rd["Type"]);
                     doc.Hash = Convert.ToString(rd["Hash"]);
+                    documents.Add(doc);
                 }
                  
             }

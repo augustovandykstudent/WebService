@@ -65,10 +65,10 @@
 
       <asp:GridView ID="grid" runat="server" OnSelectedIndexChanged="grid_SelectedIndexChanged" Height="348px" Width="772px">           
              <Columns>
-        <asp:BoundField DataField="Name" HeaderText="File Name" />
+       
         <asp:TemplateField ItemStyle-HorizontalAlign="Center">
             <ItemTemplate>
-                <asp:LinkButton ID="lnkView" runat="server" Text="View" OnClick="view" CommandArgument='<%# Eval("Id") %>'></asp:LinkButton>
+                <asp:LinkButton ID="lnkView" runat="server" Text="View" OnClick="view" CommandArgument='<%# Eval("Hash") %>'></asp:LinkButton>
             </ItemTemplate>
         </asp:TemplateField>
     </Columns>

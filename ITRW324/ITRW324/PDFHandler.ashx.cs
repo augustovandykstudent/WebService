@@ -17,7 +17,7 @@ namespace ITRW324
 
         public void ProcessRequest(HttpContext context)
         {
-            int id = int.Parse(context.Request.QueryString["Id"]);
+            string hash = context.Request.QueryString["hash"];
             byte[] bytes;
             string fileName, contentType;
             string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
@@ -25,8 +25,8 @@ namespace ITRW324
             {
                 using (MySqlCommand cmd = new MySqlCommand())
                 {
-                    cmd.CommandText = "SELECT Name, Type,Data FROM Documents WHERE Id=@Id";
-                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.CommandText = "SELECT FileName, Type,Data FROM Documents WHERE Hash=@hash";
+                    cmd.Parameters.AddWithValue("@hash", hash);
                     cmd.Connection = con;
                     con.Open();
                     using (MySqlDataReader sdr = cmd.ExecuteReader())
@@ -34,7 +34,7 @@ namespace ITRW324
                         sdr.Read();
                         bytes = (byte[])sdr["Data"];
                         contentType = sdr["Type"].ToString();
-                        fileName = sdr["Name"].ToString();
+                        fileName = sdr["FileName"].ToString();
                     }
                     con.Close();
                 }

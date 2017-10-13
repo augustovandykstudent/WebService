@@ -178,7 +178,7 @@ namespace ITRW324
 
                 
 
-                string insert = "Insert into Documents (File_name,Type,Creation_date,Hash, Data) values (@Name,@Type,@Creationdate,@Hash,@Data)";
+                string insert = "Insert into Documents (FileName,Type,Creation_date,Hash, Data, User_ID) values (@Name,@Type,@Creationdate,@Hash,@Data,@userid)";
                 using (MySqlCommand cmd = new MySqlCommand(insert, conn))
                 {
                     cmd.Connection = conn;
@@ -195,6 +195,8 @@ namespace ITRW324
                         cmd.Parameters.AddWithValue("@Hash", hash);
                         // cmd.Parameters.AddWithValue("@Previoushash", test2);
                         cmd.Parameters.AddWithValue("@Data", myData);
+                        cmd.Parameters.AddWithValue("@userid", userid);
+                        
 
 
                         conn.Open();

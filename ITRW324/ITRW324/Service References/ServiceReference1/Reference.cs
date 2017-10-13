@@ -149,10 +149,10 @@ namespace ITRW324.ServiceReference1 {
         System.Threading.Tasks.Task<string> InsertAsync(ITRW324.ServiceReference1.fileData data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetDocuments", ReplyAction="http://tempuri.org/IWebService/GetDocumentsResponse")]
-        ITRW324.ServiceReference1.fileData[] GetDocuments(int user);
+        System.Collections.Generic.List<ITRW324.ServiceReference1.fileData> GetDocuments(int user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetDocuments", ReplyAction="http://tempuri.org/IWebService/GetDocumentsResponse")]
-        System.Threading.Tasks.Task<ITRW324.ServiceReference1.fileData[]> GetDocumentsAsync(int user);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<ITRW324.ServiceReference1.fileData>> GetDocumentsAsync(int user);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -190,11 +190,11 @@ namespace ITRW324.ServiceReference1 {
             return base.Channel.InsertAsync(data);
         }
         
-        public ITRW324.ServiceReference1.fileData[] GetDocuments(int user) {
+        public System.Collections.Generic.List<ITRW324.ServiceReference1.fileData> GetDocuments(int user) {
             return base.Channel.GetDocuments(user);
         }
         
-        public System.Threading.Tasks.Task<ITRW324.ServiceReference1.fileData[]> GetDocumentsAsync(int user) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<ITRW324.ServiceReference1.fileData>> GetDocumentsAsync(int user) {
             return base.Channel.GetDocumentsAsync(user);
         }
     }
