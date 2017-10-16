@@ -47,7 +47,7 @@ namespace ITRW324
                 string name = TextBox1.Text;
                 string pwd = TextBox2.Text;
                 string email = TextBox4.Text;
-
+                 ServiceReference1.fileData data = new ServiceReference1.fileData();
                 if (checkifexist(name) == false)
                 {
                     try

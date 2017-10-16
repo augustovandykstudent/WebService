@@ -61,7 +61,7 @@ namespace ITRW324
 
         protected void btnsubmit_Click(object sender, EventArgs e)
         {
-
+            Label1.Text = "";
             StringBuilder sb = new StringBuilder();
             var Sha = new SHA256Managed();
             if (FileUploadVerify.HasFile)
@@ -96,16 +96,17 @@ namespace ITRW324
                     {
                         if (type == "application/pdf")
                         {
-                            /* ServiceReference1.fileData data = new ServiceReference1.fileData();
+                             ServiceReference1.fileData data = new ServiceReference1.fileData();
 
                              data.Name = file;
                              data.Type = type;
                              data.Hash = hash;
                              data.Data = myData;
                              data.Userid = userid;
-                             */
-                           upload();
-                        //  webservice.Insert(data);
+
+                            // upload();
+                            sb.AppendFormat("<br/> {0}", webservice.Insert(data)); 
+                            
                         }
                         else
                         {
@@ -118,12 +119,6 @@ namespace ITRW324
                         Label1.Text = "Exists";
 
                     }
-
-
-                    
-                    //    Response.Redirect(Request.Url.AbsoluteUri);
-
-
 
                 }
                 catch (Exception ex)
@@ -208,7 +203,7 @@ namespace ITRW324
             }
             catch (Exception ex)
             {
-                Label1.Text = "not entered " + ex;
+                Label1.Text = "Not Entered " + ex;
             }
         }
 

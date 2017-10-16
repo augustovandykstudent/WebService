@@ -20,16 +20,19 @@ namespace ITRW324
             string msg = string.Empty;
 
             con.Open();
-            MySqlCommand cmd = new MySqlCommand("insert into documents(Name,Type,Hash,Data,User_ID) values(@Name,@type,@hash,@data,@userid)", con);
+            MySqlCommand cmd = new MySqlCommand("insert into Documents(Name,Type,Hash,Data,User_ID) values(@Name,@type,@hash,@data,@userid)", con);
+            cmd.CommandTimeout = 0;
             cmd.Parameters.AddWithValue("@Name", data.Name);
             cmd.Parameters.AddWithValue("@type", data.Type);
+           
             cmd.Parameters.AddWithValue("@hash", data.Hash);
             cmd.Parameters.AddWithValue("@data", data.Data);
+  
             cmd.Parameters.AddWithValue("@userid", data.Userid);
             int result = cmd.ExecuteNonQuery();
             if (result == 1)
             {
-                msg = data.Name + " inserted successfully";
+                msg = data.Name + " Inserted successfully";
             }
             else
             {
@@ -39,24 +42,6 @@ namespace ITRW324
             return msg;
         }
 
-        /* public DataSet Display(fileData data)
-             {
-
-
-                 if (con.State == ConnectionState.Closed)
-                 {
-                     con.Open();
-                 }
-                 MySqlCommand cmd = new MySqlCommand("select * from documents", con);
-                 //MySqlCommand cmd = new MySqlCommand("select * from documents where User_ID=@Userid", con);
-                 cmd.Parameters.AddWithValue("@Userid", data.Userid);
-                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
-                 DataSet ds = new DataSet();
-                 da.Fill(ds);
-                 cmd.ExecuteNonQuery();
-                 con.Close();
-                 return ds;
-             }*/
       public List<fileData> GetDocuments(int user)
         {
            
@@ -73,6 +58,7 @@ namespace ITRW324
                     
                     doc.Userid = Convert.ToInt32(rd["User_ID"]);
                     doc.Name = Convert.ToString(rd["FileName"]);
+                    
                     doc.Type = Convert.ToString(rd["Type"]);
                     doc.Hash = Convert.ToString(rd["Hash"]);
                     documents.Add(doc);
@@ -82,5 +68,28 @@ namespace ITRW324
             return documents.ToList();
         }
 
+       public string Createuser(UserData Udata)
+        {
+            string msg = string.Empty;
+            con.Open();
+            MySqlCommand cmd = new MySqlCommand("insert into Users(Username,Password,Email) values(@Name,@pwd,@email)", con);
+            cmd.CommandTimeout = 0;
+            cmd.Parameters.AddWithValue("@Name", Udata.Username );
+            cmd.Parameters.AddWithValue("@pwd", Udata.Password);
+
+            cmd.Parameters.AddWithValue("@email", Udata.Email);
+    
+            int result = cmd.ExecuteNonQuery();
+            if (result == 1)
+            {
+                msg = Udata.Username + " Inserted successfully";
+            }
+            else
+            {
+                msg = "failed to create user";
+            }
+            con.Close();
+            return msg;
+        }
     }
 }

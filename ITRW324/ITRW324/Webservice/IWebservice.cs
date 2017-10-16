@@ -21,7 +21,10 @@ namespace ITRW324
         [OperationContract]
         List<fileData> GetDocuments(int user);
 
+        [OperationContract]
+        string Createuser(UserData Udata);
 
+   
 
     }
 
@@ -75,5 +78,31 @@ namespace ITRW324
             set { fdata = value; }
         }
 
+    }
+    [DataContract]
+    public class UserData
+    {
+        string username = string.Empty;
+        string password = string.Empty;
+        string email = string.Empty;
+
+        [DataMember]
+        public string Username
+        {
+            get { return username; }
+            set { username = value; }
+        }
+        [DataMember]
+        public string Password
+        {
+            get { return password; }
+            set { password = value; }
+        }
+        [DataMember]
+        public string Email
+        {
+            get { return email; }
+            set { email = value; }
+        }
     }
 }

@@ -12,19 +12,30 @@ using ITRW324.ServiceReference1;
 
 namespace ITRW324
 {
-    class returnFileData
-    {
-        public int User_ID;
-        public string FileName;
-        public string Type;
-        public string Hash;
-    }
-
+    
 
     public partial class View : System.Web.UI.Page
     {
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         ServiceReference1.WebServiceClient webservice = new ServiceReference1.WebServiceClient();
+
+        protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
+        {
+            if (SiteMap.CurrentNode != null)
+            {
+                if (e.Item.Text == SiteMap.CurrentNode.Title)
+                {
+                    if (e.Item.Parent != null)
+                    {
+                        e.Item.Parent.Selected = true;
+                    }
+                    else
+                    {
+                        e.Item.Selected = true;
+                    }
+                }
+            }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -71,44 +82,8 @@ namespace ITRW324
 
         }
 
-        protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
-        {
-            if (SiteMap.CurrentNode != null)
-            {
-                if (e.Item.Text == SiteMap.CurrentNode.Title)
-                {
-                    if (e.Item.Parent != null)
-                    {
-                        e.Item.Parent.Selected = true;
-                    }
-                    else
-                    {
-                        e.Item.Selected = true;
-                    }
-                }
-            }
-        }
-        public void display()
-        {
-
-
-            /*   using (MySqlConnection con = new MySqlConnection(constr))
-               {
-                   using (MySqlCommand cmd = new MySqlCommand())
-                   {
-                       cmd.CommandText = "select Id, Name From Documents";
-                       cmd.Connection = con;
-                       con.Open();
-                       grid.DataSource = cmd.ExecuteReader();
-                       grid.DataBind();
-                       con.Close();
-
-                   }
-                   */
-       
-
-
-            }
+   
+     
 
         
         protected void grid_SelectedIndexChanged(object sender, EventArgs e)
