@@ -34,7 +34,7 @@ public class test2{
         }
         oos.close();
         is.close();
-        stringBuilder();
+        //stringBuilder();
     }
     public static void stringBuilder() throws IOException{
         File toHash = new File("C:\\Users\\User-PC\\Desktop\\tmp.txt");
