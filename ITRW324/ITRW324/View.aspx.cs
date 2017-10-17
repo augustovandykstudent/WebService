@@ -17,7 +17,7 @@ namespace ITRW324
     public partial class View : System.Web.UI.Page
     {
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        ServiceReference1.WebServiceClient webservice = new ServiceReference1.WebServiceClient();
+        ServiceReference1.Service1Client webservice = new ServiceReference1.Service1Client();
 
         protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
         {

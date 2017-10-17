@@ -19,7 +19,7 @@
         width: 100px;
         background-color: #8AE0F2;
         color: #000;
-        text-align: center;
+      
         height: 30px;
         line-height: 30px;
         margin-right: 5px;

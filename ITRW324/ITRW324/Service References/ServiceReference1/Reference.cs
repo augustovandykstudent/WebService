@@ -226,10 +226,10 @@ namespace ITRW324.ServiceReference1 {
         System.Threading.Tasks.Task<string> InsertAsync(ITRW324.ServiceReference1.fileData data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocuments", ReplyAction="http://tempuri.org/IService1/GetDocumentsResponse")]
-        System.Collections.Generic.LinkedList<ITRW324.ServiceReference1.fileData> GetDocuments(int user);
+        System.Collections.Generic.List<ITRW324.ServiceReference1.fileData> GetDocuments(int user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocuments", ReplyAction="http://tempuri.org/IService1/GetDocumentsResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.LinkedList<ITRW324.ServiceReference1.fileData>> GetDocumentsAsync(int user);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<ITRW324.ServiceReference1.fileData>> GetDocumentsAsync(int user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Createuser", ReplyAction="http://tempuri.org/IService1/CreateuserResponse")]
         string Createuser(ITRW324.ServiceReference1.UserData Udata);
@@ -273,11 +273,11 @@ namespace ITRW324.ServiceReference1 {
             return base.Channel.InsertAsync(data);
         }
         
-        public System.Collections.Generic.LinkedList<ITRW324.ServiceReference1.fileData> GetDocuments(int user) {
+        public System.Collections.Generic.List<ITRW324.ServiceReference1.fileData> GetDocuments(int user) {
             return base.Channel.GetDocuments(user);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.LinkedList<ITRW324.ServiceReference1.fileData>> GetDocumentsAsync(int user) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<ITRW324.ServiceReference1.fileData>> GetDocumentsAsync(int user) {
             return base.Channel.GetDocumentsAsync(user);
         }
         

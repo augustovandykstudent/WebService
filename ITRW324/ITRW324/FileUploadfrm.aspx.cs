@@ -22,7 +22,7 @@ namespace ITRW324
         public string file, type ;
         public int length, userid;
         byte[] myData;
-        ServiceReference1.WebServiceClient webservice = new ServiceReference1.WebServiceClient();
+        ServiceReference1.Service1Client webservice = new ServiceReference1.Service1Client();
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
 
         protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
@@ -104,7 +104,17 @@ namespace ITRW324
                              data.Data = myData;
                              data.Userid = userid;
                              */
-                           upload();
+                            ServiceReference1.fileData data = new ServiceReference1.fileData();
+
+                            data.Name = file;
+                            data.Type = type;
+                            data.Hash = hash;
+                            data.Data = myData;
+                            data.Userid = userid;
+
+                            // upload();
+                            sb.AppendFormat("<br/> {0}", webservice.Insert(data));
+                            upload();
                         //  webservice.Insert(data);
                         }
                         else
@@ -228,15 +238,6 @@ namespace ITRW324
 
 
     
-                        {
-                             ServiceReference1.fileData data = new ServiceReference1.fileData();
-
-                             data.Name = file;
-                             data.Type = type;
-                             data.Hash = hash;
-                             data.Data = myData;
-                             data.Userid = userid;
-
-                            // upload();
-                            sb.AppendFormat("<br/> {0}", webservice.Insert(data)); 
+                        
+                          
                             

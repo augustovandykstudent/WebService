@@ -12,7 +12,7 @@ namespace ITRW324
 {
     public partial class CreateNewUser : System.Web.UI.Page
     {
-        ServiceReference1.WebServiceClient webservice = new ServiceReference1.WebServiceClient();
+        ServiceReference1.Service1Client webservice = new ServiceReference1.Service1Client();
 
         protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
         {
