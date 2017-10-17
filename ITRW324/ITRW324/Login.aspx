@@ -9,15 +9,18 @@
         <style type="text/css">
     body
     {
-             background:#ccc;
-    align-content:center;
+        background:#fff;
+        font-style : normal;
+        align-content:center;
         font-family: Arial;
-        font-size: 10pt;
+        font-size: 12pt;
     }
     .main_menu
     {
         width: 100px;
-        background-color: #8AE0F2;
+        background-color: #0094ff;
+        font-style : normal;
+        font-weight : bold;
         color: #000;
       
         height: 30px;
@@ -36,7 +39,7 @@
     }
     .selected
     {
-        background-color: #852B91;
+        background-color: #ff0000;
         color: #fff;
     }
 </style>
@@ -47,7 +50,7 @@
     <form id="form1" runat="server">
     <div>
         <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="false" />
-<asp:Menu ID="Menu" runat="server" DataSourceID="SiteMapDataSource1" Orientation="Horizontal"
+<asp:Menu ID="Menu" runat="server" BorderStyle = "Outset" DataSourceID="SiteMapDataSource1" Orientation="Horizontal"
     OnMenuItemDataBound="OnMenuItemDataBound">
  
     <LevelMenuItemStyles>
@@ -56,7 +59,7 @@
     </LevelMenuItemStyles>
 </asp:Menu>
         <br />
-           <asp:SiteMapPath runat="server" ID="SiteMapPath1" ForeColor="#66FFFF"></asp:SiteMapPath>
+           <asp:SiteMapPath runat="server" ID="SiteMapPath1" ForeColor="Black"></asp:SiteMapPath>
         <table style="width:100%;">  
                 <caption class="style1">  
                     <strong>Login Form</strong>  
@@ -105,7 +108,7 @@ ForeColor="Red"></asp:RequiredFieldValidator>
                     <td class="style2">  
  </td>  
                     <td>  
-                        <asp:Button ID="Button1" runat="server" Text="Log In" onclick="Button1_Click" />  
+                        <asp:Button ID="Button1" runat="server" BorderStyle = "Outset" ForeColor ="Green" Width ="100" Text="Log In" onclick="Button1_Click" />  
                     </td>  
                     <td>  
                         <asp:Label ID="Label1" runat="server"></asp:Label>  
@@ -117,3 +120,4 @@ ForeColor="Red"></asp:RequiredFieldValidator>
     </form>
 </body>
 </html>
+
