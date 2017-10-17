@@ -13,7 +13,9 @@ namespace ITRW324
     public partial class CreateNewUser : System.Web.UI.Page
     {
         ServiceReference1.Service1Client webservice = new ServiceReference1.Service1Client();
-
+        string name = string.Empty;
+        string pwd = string.Empty;
+        string email = string.Empty;
         protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
         {
             if (SiteMap.CurrentNode != null)
@@ -46,15 +48,14 @@ namespace ITRW324
         {
             if (Page.IsValid)
             {
-                string name = TextBox1.Text;
-                string pwd = TextBox2.Text;
-                string email = TextBox4.Text;
+                name = TextBox1.Text;
+                 pwd = TextBox2.Text;
+                email = TextBox4.Text;
                  
                 if (checkifexist(name) == false)
                 {
                     try
-                    {
-                        /*      string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+                    {                        /*      string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
 
                                MySqlConnection conn = new MySqlConnection(constr);
                                string insert = "Insert into Users (Username,Password,Email) values (@Name,@Pass,@email)";
@@ -77,8 +78,14 @@ namespace ITRW324
 
                      }
                          Response.Redirect("Home.aspx");
-                         */ 
-                       
+                         */
+                        ServiceReference1.UserData Udata = new ServiceReference1.UserData();
+                        Udata.Username = name;
+                        Udata.Password = pwd;
+                        Udata.Email = email;
+                        Label1.Text= webservice.Createuser(Udata);
+
+                        
 
 
                     }
