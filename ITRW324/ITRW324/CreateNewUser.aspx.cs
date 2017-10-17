@@ -7,11 +7,13 @@ using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
-
+using ITRW324.ServiceReference1;
 namespace ITRW324
 {
     public partial class CreateNewUser : System.Web.UI.Page
     {
+        ServiceReference1.WebServiceClient webservice = new ServiceReference1.WebServiceClient();
+
         protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
         {
             if (SiteMap.CurrentNode != null)
@@ -47,33 +49,38 @@ namespace ITRW324
                 string name = TextBox1.Text;
                 string pwd = TextBox2.Text;
                 string email = TextBox4.Text;
-                 ServiceReference1.fileData data = new ServiceReference1.fileData();
+                 
                 if (checkifexist(name) == false)
                 {
                     try
                     {
-                        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+                        /*      string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
 
-                        MySqlConnection conn = new MySqlConnection(constr);
-                        string insert = "Insert into Users (Username,Password,Email) values (@Name,@Pass,@email)";
-                        using (MySqlCommand cmd2 = new MySqlCommand(insert, conn))
-                        {
-                            using (MySqlDataAdapter adpt = new MySqlDataAdapter())
-                            {
-                                adpt.SelectCommand = cmd2;
-                                cmd2.Connection = conn;
-                                cmd2.Parameters.Add("@Name", MySqlDbType.VarChar, 50).Value = name;
-                                cmd2.Parameters.Add("@Pass", MySqlDbType.VarChar, 50).Value = pwd;
-                                cmd2.Parameters.Add("@email", MySqlDbType.VarChar, 50).Value = email;
+                               MySqlConnection conn = new MySqlConnection(constr);
+                               string insert = "Insert into Users (Username,Password,Email) values (@Name,@Pass,@email)";
+                               using (MySqlCommand cmd2 = new MySqlCommand(insert, conn))
+                               {
+                                   using (MySqlDataAdapter adpt = new MySqlDataAdapter())
+                                   {
+                                       adpt.SelectCommand = cmd2;
+                                       cmd2.Connection = conn;
+                                       cmd2.Parameters.Add("@Name", MySqlDbType.VarChar, 50).Value = name;
+                                       cmd2.Parameters.Add("@Pass", MySqlDbType.VarChar, 50).Value = pwd;
+                                       cmd2.Parameters.Add("@email", MySqlDbType.VarChar, 50).Value = email;
 
-                                conn.Open();
-                                cmd2.ExecuteNonQuery();
-                                conn.Close();
+                                       conn.Open();
+                                       cmd2.ExecuteNonQuery();
+                                       conn.Close();
 
-                            }
 
-                        }
-                        Response.Redirect("Home.aspx");
+                     } 
+
+                     }
+                         Response.Redirect("Home.aspx");
+                         */ 
+                       
+
+
                     }
                     catch (Exception ex)
                     {
