@@ -32,7 +32,7 @@ public class SplashScreen extends AppCompatActivity {
 
     private int resultTF =0;
     private int count = 0;  //used as vaules on progress bar
-    private String url = "www.webaddress.co.za";    //this might be received from MainActivity
+    private String url = "https://stackoverflow.com/";    //url to connect to (stachoverflow is not final url)
     private boolean connected = false;
 
     //private String path = getIntent().getStringExtra("StringName");
@@ -61,12 +61,12 @@ public class SplashScreen extends AppCompatActivity {
                 if(count == 0)
                 {
                     textViewProg.setText("Establishing connection...");    //starting info for user
-                    //connectToServer();
+                    connectToServer();
                 }
                 if(count == 25)
                 {
                     textViewProg.setText("Hashing file...");
-                    hashing();
+                    //hashing();
                 }
                 if(count == 50)
                 {
@@ -91,15 +91,19 @@ public class SplashScreen extends AppCompatActivity {
 
     private void connectToServer()  //establish a connection to the server
     {
-        new JSONTask().execute(url);
+        try{
+            new JSONTask().execute(url);
+        }catch (Exception e)
+        {
+            Toast.makeText(SplashScreen.this, "Connection error", Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
     private void hashing()
     {
-        //Toast.makeText(SplashScreen.this, "Hashing should happen now", Toast.LENGTH_SHORT).show();
         //t2.convertPDF();
-        //Toast.makeText(SplashScreen.this, "" + path, Toast.LENGTH_SHORT).show();
         File f = null;
         try {
             f = new File(path);
@@ -176,7 +180,8 @@ public class JSONTask extends AsyncTask<String, String, String>{
         @Override
         protected void onPostExecute(String result){
             super.onPostExecute(result);
-            textViewData.setText(result);   //textViewData.setText(buf.toString());
+            textViewData.setText("URL: " +url);
+            Toast.makeText(SplashScreen.this, ""+ result, Toast.LENGTH_SHORT).show();   //display return values in a toast
         }
     }
 }
