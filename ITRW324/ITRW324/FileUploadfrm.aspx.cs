@@ -96,17 +96,16 @@ namespace ITRW324
                     {
                         if (type == "application/pdf")
                         {
-                             ServiceReference1.fileData data = new ServiceReference1.fileData();
+                            /* ServiceReference1.fileData data = new ServiceReference1.fileData();
 
                              data.Name = file;
                              data.Type = type;
                              data.Hash = hash;
                              data.Data = myData;
                              data.Userid = userid;
-
-                            // upload();
-                            sb.AppendFormat("<br/> {0}", webservice.Insert(data)); 
-                            
+                             */
+                           upload();
+                        //  webservice.Insert(data);
                         }
                         else
                         {
@@ -229,3 +228,15 @@ namespace ITRW324
 
 
     
+                        {
+                             ServiceReference1.fileData data = new ServiceReference1.fileData();
+
+                             data.Name = file;
+                             data.Type = type;
+                             data.Hash = hash;
+                             data.Data = myData;
+                             data.Userid = userid;
+
+                            // upload();
+                            sb.AppendFormat("<br/> {0}", webservice.Insert(data)); 
+                            
