@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Text;
 using MySql.Data.MySqlClient;
-using System.Data;
-namespace ITRW324
+using System.Configuration;
+
+namespace Webservice
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IWebService" in both code and config file together.
+    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
     [ServiceContract]
-    public interface IWebService
+    public interface IService1
     {
-       
+
 
         [OperationContract]
         string Insert(fileData data);
-
 
         [OperationContract]
         List<fileData> GetDocuments(int user);
@@ -24,7 +25,7 @@ namespace ITRW324
         [OperationContract]
         string Createuser(UserData Udata);
 
-   
+
 
     }
 
@@ -36,7 +37,7 @@ namespace ITRW324
         string type = string.Empty;
         string date = string.Empty;
         string hash = string.Empty;
-       
+
         int userid;
         byte[] fdata;
         [DataMember]
@@ -57,7 +58,7 @@ namespace ITRW324
             get { return hash; }
             set { hash = value; }
         }
-       
+
         [DataMember]
         public string Date
         {
@@ -70,7 +71,7 @@ namespace ITRW324
             get { return userid; }
             set { userid = value; }
         }
-      
+
         [DataMember]
         public byte[] Data
         {
@@ -106,3 +107,5 @@ namespace ITRW324
         }
     }
 }
+
+

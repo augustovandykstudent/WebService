@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Text;
-using System.Data;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 
-namespace ITRW324
+namespace Webservice
 {
-	// NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "WebService" in code, svc and config file together.
-	// NOTE: In order to launch WCF Test Client for testing this service, please select WebService.svc or WebService.svc.cs at the Solution Explorer and start debugging.
-	public class WebService : IWebService
-	{
+    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
+    // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
+    public class Service1 : IService1
+    {
         MySqlConnection con = new MySqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString);
         public string Insert(fileData data)
         {
@@ -24,10 +24,10 @@ namespace ITRW324
             cmd.CommandTimeout = 0;
             cmd.Parameters.AddWithValue("@Name", data.Name);
             cmd.Parameters.AddWithValue("@type", data.Type);
-           
+
             cmd.Parameters.AddWithValue("@hash", data.Hash);
             cmd.Parameters.AddWithValue("@data", data.Data);
-  
+
             cmd.Parameters.AddWithValue("@userid", data.Userid);
             int result = cmd.ExecuteNonQuery();
             if (result == 1)
@@ -42,12 +42,12 @@ namespace ITRW324
             return msg;
         }
 
-      public List<fileData> GetDocuments(int user)
+        public List<fileData> GetDocuments(int user)
         {
-           
+
             List<fileData> documents = new List<fileData>();
             MySqlConnection con = new MySqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString);
-            using (MySqlCommand cmd = new MySqlCommand("Select * from Documents where User_ID=@user", con))
+            using (MySqlCommand cmd = new MySqlCommand("Select User_ID,FileName,Type,Hash from Documents where User_ID=@user", con))
             {
                 cmd.Parameters.AddWithValue("@user", user);
                 con.Open();
@@ -55,30 +55,30 @@ namespace ITRW324
                 while (rd.Read())
                 {
                     fileData doc = new fileData();
-                    
+
                     doc.Userid = Convert.ToInt32(rd["User_ID"]);
                     doc.Name = Convert.ToString(rd["FileName"]);
-                    
+
                     doc.Type = Convert.ToString(rd["Type"]);
                     doc.Hash = Convert.ToString(rd["Hash"]);
                     documents.Add(doc);
                 }
-                 
+
             }
             return documents.ToList();
         }
 
-       public string Createuser(UserData Udata)
+        public string Createuser(UserData Udata)
         {
             string msg = string.Empty;
             con.Open();
             MySqlCommand cmd = new MySqlCommand("insert into Users(Username,Password,Email) values(@Name,@pwd,@email)", con);
             cmd.CommandTimeout = 0;
-            cmd.Parameters.AddWithValue("@Name", Udata.Username );
+            cmd.Parameters.AddWithValue("@Name", Udata.Username);
             cmd.Parameters.AddWithValue("@pwd", Udata.Password);
 
             cmd.Parameters.AddWithValue("@email", Udata.Email);
-    
+
             int result = cmd.ExecuteNonQuery();
             if (result == 1)
             {
@@ -93,3 +93,5 @@ namespace ITRW324
         }
     }
 }
+
+

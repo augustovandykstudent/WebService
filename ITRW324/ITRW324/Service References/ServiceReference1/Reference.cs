@@ -15,7 +15,7 @@ namespace ITRW324.ServiceReference1 {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="fileData", Namespace="http://schemas.datacontract.org/2004/07/ITRW324")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="fileData", Namespace="http://schemas.datacontract.org/2004/07/Webservice")]
     [System.SerializableAttribute()]
     public partial class fileData : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -138,47 +138,130 @@ namespace ITRW324.ServiceReference1 {
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IWebService")]
-    public interface IWebService {
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserData", Namespace="http://schemas.datacontract.org/2004/07/Webservice")]
+    [System.SerializableAttribute()]
+    public partial class UserData : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/Insert", ReplyAction="http://tempuri.org/IWebService/InsertResponse")]
-        string Insert(ITRW324.ServiceReference1.fileData data);
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/Insert", ReplyAction="http://tempuri.org/IWebService/InsertResponse")]
-        System.Threading.Tasks.Task<string> InsertAsync(ITRW324.ServiceReference1.fileData data);
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string EmailField;
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetDocuments", ReplyAction="http://tempuri.org/IWebService/GetDocumentsResponse")]
-        System.Collections.Generic.List<ITRW324.ServiceReference1.fileData> GetDocuments(int user);
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string PasswordField;
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetDocuments", ReplyAction="http://tempuri.org/IWebService/GetDocumentsResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<ITRW324.ServiceReference1.fileData>> GetDocumentsAsync(int user);
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string UsernameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Email {
+            get {
+                return this.EmailField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EmailField, value) != true)) {
+                    this.EmailField = value;
+                    this.RaisePropertyChanged("Email");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Password {
+            get {
+                return this.PasswordField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PasswordField, value) != true)) {
+                    this.PasswordField = value;
+                    this.RaisePropertyChanged("Password");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Username {
+            get {
+                return this.UsernameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UsernameField, value) != true)) {
+                    this.UsernameField = value;
+                    this.RaisePropertyChanged("Username");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IWebServiceChannel : ITRW324.ServiceReference1.IWebService, System.ServiceModel.IClientChannel {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IService1")]
+    public interface IService1 {
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Insert", ReplyAction="http://tempuri.org/IService1/InsertResponse")]
+        string Insert(ITRW324.ServiceReference1.fileData data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Insert", ReplyAction="http://tempuri.org/IService1/InsertResponse")]
+        System.Threading.Tasks.Task<string> InsertAsync(ITRW324.ServiceReference1.fileData data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocuments", ReplyAction="http://tempuri.org/IService1/GetDocumentsResponse")]
+        System.Collections.Generic.LinkedList<ITRW324.ServiceReference1.fileData> GetDocuments(int user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocuments", ReplyAction="http://tempuri.org/IService1/GetDocumentsResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.LinkedList<ITRW324.ServiceReference1.fileData>> GetDocumentsAsync(int user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Createuser", ReplyAction="http://tempuri.org/IService1/CreateuserResponse")]
+        string Createuser(ITRW324.ServiceReference1.UserData Udata);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Createuser", ReplyAction="http://tempuri.org/IService1/CreateuserResponse")]
+        System.Threading.Tasks.Task<string> CreateuserAsync(ITRW324.ServiceReference1.UserData Udata);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IService1Channel : ITRW324.ServiceReference1.IService1, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class WebServiceClient : System.ServiceModel.ClientBase<ITRW324.ServiceReference1.IWebService>, ITRW324.ServiceReference1.IWebService {
+    public partial class Service1Client : System.ServiceModel.ClientBase<ITRW324.ServiceReference1.IService1>, ITRW324.ServiceReference1.IService1 {
         
-        public WebServiceClient() {
+        public Service1Client() {
         }
         
-        public WebServiceClient(string endpointConfigurationName) : 
+        public Service1Client(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public WebServiceClient(string endpointConfigurationName, string remoteAddress) : 
+        public Service1Client(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public WebServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public Service1Client(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public WebServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public Service1Client(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
@@ -190,12 +273,20 @@ namespace ITRW324.ServiceReference1 {
             return base.Channel.InsertAsync(data);
         }
         
-        public System.Collections.Generic.List<ITRW324.ServiceReference1.fileData> GetDocuments(int user) {
+        public System.Collections.Generic.LinkedList<ITRW324.ServiceReference1.fileData> GetDocuments(int user) {
             return base.Channel.GetDocuments(user);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<ITRW324.ServiceReference1.fileData>> GetDocumentsAsync(int user) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.LinkedList<ITRW324.ServiceReference1.fileData>> GetDocumentsAsync(int user) {
             return base.Channel.GetDocumentsAsync(user);
+        }
+        
+        public string Createuser(ITRW324.ServiceReference1.UserData Udata) {
+            return base.Channel.Createuser(Udata);
+        }
+        
+        public System.Threading.Tasks.Task<string> CreateuserAsync(ITRW324.ServiceReference1.UserData Udata) {
+            return base.Channel.CreateuserAsync(Udata);
         }
     }
 }
