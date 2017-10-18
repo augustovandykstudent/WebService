@@ -22,7 +22,7 @@ namespace ITRW324
         public string file, type ;
         public int length, userid;
         byte[] myData;
-        ServiceReference1.Service1Client webservice = new ServiceReference1.Service1Client();
+        ServiceReference1.ServiceSoapClient webservice = new ServiceReference1.ServiceSoapClient();
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
 
         protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
@@ -82,7 +82,7 @@ namespace ITRW324
                     HttpPostedFile myFile = FileUploadVerify.PostedFile;
 
 
-
+                    string date = DateTime.Now.ToString("dd-mm-yy");
                     Stream fs = FileUploadVerify.PostedFile.InputStream;
                     BinaryReader br = new BinaryReader(fs);
                     myData = br.ReadBytes((Int32)fs.Length);
@@ -96,26 +96,7 @@ namespace ITRW324
                     {
                         if (type == "application/pdf")
                         {
-                            /* ServiceReference1.fileData data = new ServiceReference1.fileData();
-
-                             data.Name = file;
-                             data.Type = type;
-                             data.Hash = hash;
-                             data.Data = myData;
-                             data.Userid = userid;
-                             */
-                            ServiceReference1.fileData data = new ServiceReference1.fileData();
-
-                            data.Name = file;
-                            data.Type = type;
-                            data.Hash = hash;
-                            data.Data = myData;
-                            data.Userid = userid;
-
-                            // upload();
-                            sb.AppendFormat("<br/> {0}", webservice.Insert(data));
-                            upload();
-                        //  webservice.Insert(data);
+                            webservice.Insert(file, type, date, hash, myData, userid);
                         }
                         else
                         {
@@ -153,8 +134,7 @@ namespace ITRW324
            
 
             MySqlConnection conn = new MySqlConnection(constr);
-            MySqlCommand cmd = new MySqlCommand("Select * from Documents where Hash = @Hash", conn);
-            cmd.Parameters.AddWithValue("@Hash", hash);
+            MySqlCommand cmd = new MySqlCommand("SELECT * FROM Documents WHERE Hash =" + hash, conn);
             conn.Open();
             MySqlDataReader dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -172,7 +152,7 @@ namespace ITRW324
         }
 
         //Upload pdf to database
-        public void upload()
+        /*public void upload(string sName, string sType, string sCreationDate, string sHash, byte[] bData, int iUserID)
         {
             string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
             try
@@ -183,7 +163,7 @@ namespace ITRW324
 
                 
 
-                string insert = "Insert into Documents (File_name,Type,Creation_date,Hash, Data) values (@Name,@Type,@Creationdate,@Hash,@Data)";
+                string insert = "INSERT INTO Documents (File_name,Type,Creation_date,Hash, Data) VALUES ('" + sName +"','" + sType +"','" + sCreationDate +"','" + sHash +"'," + bData +", " + iUserID + ")";
                 using (MySqlCommand cmd = new MySqlCommand(insert, conn))
                 {
                     cmd.Connection = conn;
@@ -214,7 +194,7 @@ namespace ITRW324
             {
                 Label1.Text = "Not Entered " + ex;
             }
-        }
+        }*/
 
 
     

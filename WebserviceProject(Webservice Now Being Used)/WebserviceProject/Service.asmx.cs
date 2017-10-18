@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Services;
 using System.Configuration;
 using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace WebserviceProject
 {
@@ -18,12 +19,12 @@ namespace WebserviceProject
         MySqlConnection con = new MySqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString);
 
         [WebMethod]
-        public string Insert(string sName, string sType, string sHash, byte[] bData, int iUserID)
+        public string Insert(string sName, string sType, string sCreationDate, string sHash, byte[] bData, int iUserID)
         {
             string msg = string.Empty;
 
             con.Open();
-            MySqlCommand cmd = new MySqlCommand("INSERT INTO Documents(Name,Type,Hash,Data,User_ID) VALUES ('" + sName + "', '" +sType + "', '" + sHash + "'," + bData+ "," + iUserID +")", con);
+            MySqlCommand cmd = new MySqlCommand("INSERT INTO Documents(FileName, Type, Creation__date, Hash, Data, User_ID) VALUES ('" + sName + "', '" + sType + "',TO_DATE('" + sCreationDate + "', 'dd-mm-yy')" + sHash + "'," + bData+ "," + iUserID +")", con);
             cmd.CommandTimeout = 0;
             int result = cmd.ExecuteNonQuery();
             if (result == 1)
@@ -39,22 +40,7 @@ namespace WebserviceProject
         }
 
         [WebMethod]
-        public List<string[]> GetDocuments(int iUserID)
-        {
-            List<string[]> list = new List<string[]>();
-            con.Open();
-            MySqlCommand command = new MySqlCommand("SELECT User_ID, FileName, Type, Hash FROM Documents WHERE UserID = " + iUserID, con);
-            MySqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                string[] sResult = new string[] { (string)reader["User_ID"], (string)reader["FileName"], (string)reader["Type"], (string)reader["Hash"] };
-                list.Add(sResult);
-            }
-            return list;
-        }
-
-        [WebMethod]
-        public string Createuser(string sName, string sPassword, string sEmail)
+        public string CreateUser(string sName, string sPassword, string sEmail)
         {
             string msg = string.Empty;
             con.Open();

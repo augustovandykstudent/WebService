@@ -88,7 +88,7 @@ ForeColor="Red"></asp:RequiredFieldValidator>
                     <td class="style2">  
                         Password:</td>  
                     <td>  
-                        <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>  
+                        <asp:TextBox ID="TextBox2" runat="server" OnTextChanged="TextBox2_TextChanged"></asp:TextBox>  
                     </td>  
                     <td>  
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"   

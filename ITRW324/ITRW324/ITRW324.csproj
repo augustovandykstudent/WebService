@@ -240,7 +240,7 @@
     <Content Include="Service References\ServiceReference1\ITRW324.ServiceReference1.InsertResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Service References\ServiceReference1\service.disco" />
+    <None Include="Service References\ServiceReference1\Service.disco" />
     <None Include="Service References\ServiceReference1\configuration91.svcinfo" />
     <None Include="Service References\ServiceReference1\configuration.svcinfo" />
     <None Include="Service References\ServiceReference1\Reference.svcmap">
@@ -250,7 +250,7 @@
     <Content Include="View.aspx" />
     <Content Include="PDFHandler.ashx" />
     <Content Include="Content\scripts\jquery-2.1.1.min.map" />
-    <None Include="Service References\ServiceReference1\service.wsdl" />
+    <None Include="Service References\ServiceReference1\Service.wsdl" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

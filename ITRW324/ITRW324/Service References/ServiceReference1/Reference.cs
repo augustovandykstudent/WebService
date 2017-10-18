@@ -76,20 +76,24 @@ namespace ITRW324.ServiceReference1 {
         public string sType;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
-        public string sHash;
+        public string sCreationDate;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public string sHash;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
         public byte[] bData;
         
-        [System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+        [System.Runtime.Serialization.DataMemberAttribute(Order=5)]
         public int iUserID;
         
         public InsertRequestBody() {
         }
         
-        public InsertRequestBody(string sName, string sType, string sHash, byte[] bData, int iUserID) {
+        public InsertRequestBody(string sName, string sType, string sCreationDate, string sHash, byte[] bData, int iUserID) {
             this.sName = sName;
             this.sType = sType;
+            this.sCreationDate = sCreationDate;
             this.sHash = sHash;
             this.bData = bData;
             this.iUserID = iUserID;
@@ -188,12 +192,12 @@ namespace ITRW324.ServiceReference1 {
     public partial class GetDocumentsResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public ITRW324.ServiceReference1.ArrayOfString[] GetDocumentsResult;
+        public System.Collections.Generic.List<ITRW324.ServiceReference1.ArrayOfString> GetDocumentsResult;
         
         public GetDocumentsResponseBody() {
         }
         
-        public GetDocumentsResponseBody(ITRW324.ServiceReference1.ArrayOfString[] GetDocumentsResult) {
+        public GetDocumentsResponseBody(System.Collections.Generic.List<ITRW324.ServiceReference1.ArrayOfString> GetDocumentsResult) {
             this.GetDocumentsResult = GetDocumentsResult;
         }
     }
@@ -306,11 +310,12 @@ namespace ITRW324.ServiceReference1 {
             return base.Channel.Insert(request);
         }
         
-        public string Insert(string sName, string sType, string sHash, byte[] bData, int iUserID) {
+        public string Insert(string sName, string sType, string sCreationDate, string sHash, byte[] bData, int iUserID) {
             ITRW324.ServiceReference1.InsertRequest inValue = new ITRW324.ServiceReference1.InsertRequest();
             inValue.Body = new ITRW324.ServiceReference1.InsertRequestBody();
             inValue.Body.sName = sName;
             inValue.Body.sType = sType;
+            inValue.Body.sCreationDate = sCreationDate;
             inValue.Body.sHash = sHash;
             inValue.Body.bData = bData;
             inValue.Body.iUserID = iUserID;
@@ -323,11 +328,12 @@ namespace ITRW324.ServiceReference1 {
             return base.Channel.InsertAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ITRW324.ServiceReference1.InsertResponse> InsertAsync(string sName, string sType, string sHash, byte[] bData, int iUserID) {
+        public System.Threading.Tasks.Task<ITRW324.ServiceReference1.InsertResponse> InsertAsync(string sName, string sType, string sCreationDate, string sHash, byte[] bData, int iUserID) {
             ITRW324.ServiceReference1.InsertRequest inValue = new ITRW324.ServiceReference1.InsertRequest();
             inValue.Body = new ITRW324.ServiceReference1.InsertRequestBody();
             inValue.Body.sName = sName;
             inValue.Body.sType = sType;
+            inValue.Body.sCreationDate = sCreationDate;
             inValue.Body.sHash = sHash;
             inValue.Body.bData = bData;
             inValue.Body.iUserID = iUserID;
@@ -339,7 +345,7 @@ namespace ITRW324.ServiceReference1 {
             return base.Channel.GetDocuments(request);
         }
         
-        public ITRW324.ServiceReference1.ArrayOfString[] GetDocuments(int iUserID) {
+        public System.Collections.Generic.List<ITRW324.ServiceReference1.ArrayOfString> GetDocuments(int iUserID) {
             ITRW324.ServiceReference1.GetDocumentsRequest inValue = new ITRW324.ServiceReference1.GetDocumentsRequest();
             inValue.Body = new ITRW324.ServiceReference1.GetDocumentsRequestBody();
             inValue.Body.iUserID = iUserID;

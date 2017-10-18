@@ -8,7 +8,6 @@ using System.Configuration;
 using MySql.Data.MySqlClient;
 using System.Data;
 
-using ITRW324.ServiceReference1;
 
 namespace ITRW324
 {
@@ -17,7 +16,7 @@ namespace ITRW324
     public partial class View : System.Web.UI.Page
     {
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        ServiceReference1.Service1Client webservice = new ServiceReference1.Service1Client();
+        ServiceReference1.ServiceSoapClient webservice = new ServiceReference1.ServiceSoapClient();
 
         protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
         {
@@ -39,6 +38,7 @@ namespace ITRW324
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            MySqlConnection con = new MySqlConnection(constr);
             if (Session["User"] == null)
                 Response.Redirect("Login.aspx");
             else
@@ -46,46 +46,24 @@ namespace ITRW324
                 int userid = Convert.ToInt32(Session["ID"]);
                 string username = Session["User"].ToString();
                 //   Label1.Text = "ID: " + userid + " Name: " + username;
-                ServiceReference1.fileData Udata = new ServiceReference1.fileData(); 
-               
-                Udata.Userid = userid;
                 if (!IsPostBack)
                 {
+                    DataTable oDataTable = new DataTable();
+                    con.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT ID, FileName, Type, Hash FROM Documents WHERE ID = " + userid, con);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    reader.Close();
+                    MySqlDataAdapter adapter = new MySqlDataAdapter();
+                    adapter.SelectCommand = command;
+                    adapter.Fill(oDataTable);
 
-                    List<ServiceReference1.fileData> files = webservice.GetDocuments(userid);
-
-
-                    ViewState["Userid"] = Udata.Userid;
-                    DataSet ds = new DataSet();
-                    
-                    
-                    DataTable dt = new DataTable();
-                    dt.Columns.Add("User_ID");
-                    dt.Columns.Add("FileName");
-                    dt.Columns.Add("Type");
-                    dt.Columns.Add("Hash");
-
-                    foreach (var item in files)
-                    {
-                        DataRow row = dt.NewRow();
-                        row["User_ID"] = item.Userid;
-                        row["FileName"] = item.Name;
-                        row["Type"] = item.Type;
-                        row["Hash"] = item.Hash;
-                        dt.Rows.Add(row);
-                    }
-                    grid.DataSource = dt;                  
+                    grid.DataSource = oDataTable;
                     grid.DataBind();
-
                 }
             }
 
         }
-
-   
-     
-
-        
+ 
         protected void grid_SelectedIndexChanged(object sender, EventArgs e)
         {
 

@@ -46,10 +46,11 @@ namespace ITRW324
         {
            
             MySqlConnection conn = new MySqlConnection(constr);
-            MySqlCommand cmd = new MySqlCommand("Select * from Users where Username=@user and Password=@pwd", conn);
+
+            string sUser = TextBox1.Text;
+            string sPass = TextBox2.Text;
+            MySqlCommand cmd = new MySqlCommand("SELECT * FROM Users WHERE Username = '"+ sUser + "' AND Password = '" + sPass + "';", conn);
             
-                cmd.Parameters.AddWithValue("@user", TextBox1.Text);
-                cmd.Parameters.AddWithValue("@pwd", TextBox2.Text);
             conn.Open();
             MySqlDataReader rd = cmd.ExecuteReader();
 
@@ -66,10 +67,12 @@ namespace ITRW324
             {
                 Label1.Text = "Username or Password is incorrect";
                 conn.Close();
-            }
-            
-           
-        
+            }    
+        }
+
+        protected void TextBox2_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

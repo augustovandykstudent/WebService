@@ -12,7 +12,7 @@ namespace ITRW324
 {
     public partial class CreateNewUser : System.Web.UI.Page
     {
-        ServiceReference1.Service1Client webservice = new ServiceReference1.Service1Client();
+        ServiceReference1.ServiceSoapClient webservice = new ServiceSoapClient();
         string name = string.Empty;
         string pwd = string.Empty;
         string email = string.Empty;
@@ -56,15 +56,7 @@ namespace ITRW324
                 {
                     try
                     {                     
-                        ServiceReference1.UserData Udata = new ServiceReference1.UserData();
-                        Udata.Username = name;
-                        Udata.Password = pwd;
-                        Udata.Email = email;
-                        Label1.Text= webservice.Createuser(Udata);
-
-                        
-
-
+                        Label1.Text = webservice.Createuser(name, pwd, email);
                     }
                     catch (Exception ex)
                     {
