@@ -39,7 +39,7 @@ namespace ITRW324
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["user"] == null)
+            if (Session["User"] == null)
                 Response.Redirect("Login.aspx");
             else
             {

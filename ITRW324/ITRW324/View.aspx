@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="ITRW324.Login" %>
+﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="View.aspx.cs" Inherits="ITRW324.View" %> 
 
 <!DOCTYPE html>
 
@@ -60,63 +60,33 @@
 </asp:Menu>
         <br />
            <asp:SiteMapPath runat="server" ID="SiteMapPath1" ForeColor="Black"></asp:SiteMapPath>
-        <table style="width:100%;">  
-                <caption class="style1">  
-                    <strong>Login Form</strong>  
-                </caption>  
-                <tr>  
-                    <td class="style2">  
- </td>  
-                    <td>  
- </td>  
-                    <td>  
- </td>  
-                </tr>  
-                <tr>  
-                    <td class="style2">  
-Username:</td>  
-                    <td>  
-                        <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>  
-                    </td>  
-                    <td>  
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server"   
-ControlToValidate="TextBox1" ErrorMessage="Please Enter Your Username"   
-ForeColor="Red"></asp:RequiredFieldValidator>  
-                    </td>  
-                </tr>  
-                <tr>  
-                    <td class="style2">  
-                        Password:</td>  
-                    <td>  
-                        <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>  
-                    </td>  
-                    <td>  
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"   
-ControlToValidate="TextBox2" ErrorMessage="Please Enter Your Password"   
-ForeColor="Red"></asp:RequiredFieldValidator>  
-                    </td>  
-                </tr>  
-                <tr>  
-                    <td class="style2">  
- </td>  
-                    <td>  
- </td>  
-                    <td>  
- </td>  
-                </tr>  
-                <tr>  
-                    <td class="style2">  
- </td>  
-                    <td>  
-                        <asp:Button ID="Button1" runat="server" BorderStyle = "Outset" ForeColor ="Green" Width ="100" Text="Log In" onclick="Button1_Click" />  
-                    </td>  
-                    <td>  
-                        <asp:Label ID="Label1" runat="server"></asp:Label>  
-                    </td>  
-                </tr>  
-            </table>  
-    
-    </div>
+          </div> 
+     <%   if (Session["user"] != null) 
+         {  %> 
+        <div> 
+                 <br /> 
+                 <asp:Label ID="Label1" runat="server"></asp:Label> 
+ 
+      <asp:GridView ID="grid" runat="server" OnSelectedIndexChanged="grid_SelectedIndexChanged" Height="348px" Width="772px">            
+             <Columns> 
+        
+        <asp:TemplateField ItemStyle-HorizontalAlign="Center"> 
+            <ItemTemplate> 
+                <asp:LinkButton ID="lnkView" runat="server" Text="View" OnClick="view" CommandArgument='<%# Eval("Hash") %>'></asp:LinkButton> 
+            </ItemTemplate> 
+        </asp:TemplateField> 
+    </Columns> 
+        </asp:GridView> 
+                 <br /> 
+         
+         <%  }%> 
+         <%   else     { %> 
+        <h2>Please Login by clicking the link below</h2> 
+        <asp:HyperLink ID="HyperLink1" Text="Login" runat="server" NavigateUrl="~/Login.aspx"></asp:HyperLink> 
+ 
+        <% } %> 
+         </div> 
+  
     </form>
 </body>
 </html>

@@ -8,24 +8,31 @@
     <style type="text/css">
     body
     {
-             background:#ccc;
-    align-content:center;
+           background:#fff;
+        font-style : normal;
+        align-content:center;
         font-family: Arial;
-        font-size: 10pt;
+        font-size: 12pt;
     }
     .main_menu
     {
         width: 100px;
-        background-color: #8AE0F2;
+        font-style : normal;
+        font-weight : bold;
+        background-color: #0094ff;
         color: #000;
         text-align: center;
         height: 30px;
         line-height: 30px;
         margin-right: 5px;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
     }
     .level_menu
     {
-        width: 110px;
+          width: 110px;
+        font-weight : bold;
         background-color: #000;
         color: #fff;
         text-align: center;
@@ -35,7 +42,8 @@
     }
     .selected
     {
-        background-color: #852B91;
+          background-color: #ff0000;
+        font-weight : bold;
         color: #fff;
     }
     .label

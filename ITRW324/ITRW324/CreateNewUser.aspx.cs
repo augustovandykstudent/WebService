@@ -55,30 +55,7 @@ namespace ITRW324
                 if (checkifexist(name) == false)
                 {
                     try
-                    {                        /*      string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-
-                               MySqlConnection conn = new MySqlConnection(constr);
-                               string insert = "Insert into Users (Username,Password,Email) values (@Name,@Pass,@email)";
-                               using (MySqlCommand cmd2 = new MySqlCommand(insert, conn))
-                               {
-                                   using (MySqlDataAdapter adpt = new MySqlDataAdapter())
-                                   {
-                                       adpt.SelectCommand = cmd2;
-                                       cmd2.Connection = conn;
-                                       cmd2.Parameters.Add("@Name", MySqlDbType.VarChar, 50).Value = name;
-                                       cmd2.Parameters.Add("@Pass", MySqlDbType.VarChar, 50).Value = pwd;
-                                       cmd2.Parameters.Add("@email", MySqlDbType.VarChar, 50).Value = email;
-
-                                       conn.Open();
-                                       cmd2.ExecuteNonQuery();
-                                       conn.Close();
-
-
-                     } 
-
-                     }
-                         Response.Redirect("Home.aspx");
-                         */
+                    {                     
                         ServiceReference1.UserData Udata = new ServiceReference1.UserData();
                         Udata.Username = name;
                         Udata.Password = pwd;
