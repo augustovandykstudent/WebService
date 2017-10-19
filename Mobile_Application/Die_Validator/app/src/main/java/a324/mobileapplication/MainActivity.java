@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,18 +20,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.security.MessageDigest;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView tSize;
     private TextView tMime;
     private TextView tPath;
-
-    //private String strSubFiles = "submitted_files";   //these are if we have default file names for write/read
-    //private String strTmpTxt = "tmp";
 
     private static final int READ_REQUEST_CODE = 42;    //used to browse for a file
     private Intent intent;
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         btnValidate.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!path.equals(""))
+                if((!path.equals("")) && !(path ==null))
                 {
                     writeSubmittedFiles();
                     Intent splashS = new Intent(MainActivity.this, SplashScreen.class).putExtra("<StringName>", path);
@@ -104,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
     private void writeSubmittedFiles() {    //currently only writes the file paths to a file
         if (uri != null)
         {
-            //String name = "" + uri;
             String fileName = "submitted_files";
 
             FileOutputStream fos;
@@ -149,11 +151,13 @@ public class MainActivity extends AppCompatActivity {
 
         intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.setData(uri);
         //intent.setType("*/*");
         intent.setType("application/pdf");  //Only pdf's can be selected
-        //intent.addFlags(intent.FLAG_GRANT_READ_URI_PERMISSION);
         Toast.makeText(MainActivity.this, "Opening file browser", Toast.LENGTH_SHORT).show();
-        startActivityForResult(intent, READ_REQUEST_CODE);
+        startActivityForResult(Intent.createChooser(intent,"open with..."), READ_REQUEST_CODE);
     }
 
     //Select a file, then show the URI of the file:
@@ -161,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
 
-            //uri = null;
             if (resultData != null) {
                 uri = resultData.getData();
                 textfileName.setText("URI: " + uri);
@@ -170,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
                 Cursor returnCursor = getContentResolver().query(uri, null, null, null, null);
                 int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
                 int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
-                //int pa = returnCursor.getColumnCount();
                 returnCursor.moveToFirst();
                 String mimeType = getContentResolver().getType(uri);
 
@@ -179,19 +181,8 @@ public class MainActivity extends AppCompatActivity {
                 tSize.setText("Size: " + sizeIndex);
                 tMime.setText("Mime type: " + mimeType);
 
-                path = uri.getScheme() + "://" + uri.getAuthority() +"/"+ name; //Get path of file from URI
+                path = uri.getScheme() + "://" +uri.getAuthority() +"/"+ name; //Get path of file from URI
                 tPath.setText(path);
-                //test if File object can be created:
-                /*
-                tPath.setText(path);
-                File f = null;
-                try {
-                    f = new File(path);
-                }catch (Exception e)
-                {
-                    Toast.makeText(MainActivity.this, "File error", Toast.LENGTH_SHORT).show();
-                }
-                */
             }
         }
     }

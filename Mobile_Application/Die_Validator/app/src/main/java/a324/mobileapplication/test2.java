@@ -37,7 +37,7 @@ public class test2{
         //stringBuilder();
     }
     public static void stringBuilder() throws IOException{
-        File toHash = new File("C:\\Users\\User-PC\\Desktop\\tmp.txt");
+        File toHash = new File("C:\\Users\\User-PC\\Desktop\\tmp.txt"); //change address
         BufferedReader reader = new BufferedReader(new FileReader(toHash));
         String line = null;
         StringBuilder  stringBuilder = new StringBuilder();
