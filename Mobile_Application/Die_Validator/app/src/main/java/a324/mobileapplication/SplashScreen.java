@@ -1,6 +1,8 @@
 package a324.mobileapplication;
 //added in manifest file(permission for internet):   <uses-permission android:name="android.permission.INTERNET"/>
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.ParcelFileDescriptor;
@@ -84,7 +86,7 @@ public class SplashScreen extends AppCompatActivity {
                 if(count == 25)
                 {
                     textViewProg.setText("Hashing file...");
-                    hashing();
+                    //hashing();
                 }
                 if(count == 50)
                 {
@@ -149,9 +151,14 @@ public class SplashScreen extends AppCompatActivity {
     //--------------------------------------------------------------------------------< //from test2.java
     public void convertPDF(File pdfIn) throws IOException{
 
+
+
         textViewData.append("\nconvertPDF() started\n");
         OutputStream fos;
         try {
+
+            //SplashScreen.grantUriPermission(SplashScreen.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            //activity.grantUriPermission(activity.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             //InputStream is = new FileInputStream(pdfIn);
             InputStream is = getContentResolver().openInputStream(uri);
