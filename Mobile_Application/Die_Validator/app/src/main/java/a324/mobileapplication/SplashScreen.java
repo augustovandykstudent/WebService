@@ -53,8 +53,9 @@ public class SplashScreen extends AppCompatActivity {
     private boolean connected = false;
     Uri uri = null;
 
-    //private String path = getIntent().getStringExtra("StringName");
-    private String path = "";
+    private String tmpFileName = "tmp.txt";
+    private String hashFileName = "hash.txt";
+    private String selectedFileName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +70,8 @@ public class SplashScreen extends AppCompatActivity {
         imageValid = (ImageView) findViewById(R.id.imageViewValid);
         imageInvalid = (ImageView) findViewById(R.id.imageViewInvalid);
 
-        path = getIntent().getStringExtra("<StringName>");
-        //uri = getIntent().getExtras("<StringName>");
+        selectedFileName = getIntent().getStringExtra("<StringName>");
+        textViewDocName.setText(selectedFileName);
 
         //The button is used to manually go to every part:
         btn25.setOnClickListener(new View.OnClickListener(){
@@ -80,13 +81,14 @@ public class SplashScreen extends AppCompatActivity {
                 pBar.setProgress(count);
                 if(count == 0)
                 {
-                    textViewProg.setText("Establishing connection...");    //starting info for user
-                    //connectToServer();
+                    textViewProg.setText("Hashing file...");
+                    hashing();
+
                 }
                 if(count == 25)
                 {
-                    textViewProg.setText("Hashing file...");
-                    //hashing();
+                    textViewProg.setText("Establishing connection...");    //starting info for user
+                    //connectToServer();
                 }
                 if(count == 50)
                 {
@@ -109,15 +111,21 @@ public class SplashScreen extends AppCompatActivity {
         });
     }
 
+    private void hashing()
+    {
+        try {
+            readTmpFile();
+            stringBuilder();
+            Toast.makeText(SplashScreen.this,"Hashing completed", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(SplashScreen.this, "IO exception SplashScreen: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void connectToServer()  //establish a connection to the server
     {
         new JSONTask().execute(url);
-
-    }
-
-    private void hashing()
-    {
-
     }
 
     private void sendFile()
@@ -131,6 +139,100 @@ public class SplashScreen extends AppCompatActivity {
         if(resultTF == 1)
         imageInvalid.setVisibility(View.VISIBLE);
     }
+//------------Start of file Hashing:
+    private void readTmpFile()   //show list of files validated in a toast
+    {
+        try {
+            String message = "";
+            FileInputStream fis = openFileInput("tmp.txt");
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader bfr = new BufferedReader(isr);
+            StringBuffer strBuffer = new StringBuffer();
+            int count = 0;
+            while ((message = bfr.readLine()) != null && (count < 10))
+            {
+                strBuffer.append(message + "\n");
+                count++;
+            }
+            Toast.makeText(SplashScreen.this, "tmp.txt read(10 lines): " + strBuffer.toString(), Toast.LENGTH_SHORT).show();
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void stringBuilder() throws IOException{
+        FileInputStream fis = openFileInput(tmpFileName);
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader reader = new BufferedReader(isr);
+
+        String LINER = null;//(only for testing)
+
+        String line = null;
+        StringBuilder  stringBuilder = new StringBuilder();
+        String ls = System.getProperty("line.separator");
+        try {
+            int count = 0;
+            while((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+                stringBuilder.append(ls);
+                if(count < 20) {    //the 1st 20 lines are used to test if they differ with different files (testing only)
+                    LINER += line;
+                }
+                count++;
+            }
+        } finally {
+            reader.close();
+            fis.close();
+        }
+        File hashFile = new File(getApplicationContext().getFilesDir(), hashFileName);
+        hashFile.delete();
+        hashFile.createNewFile();   //Does not overwrite old file - only creates new file if it does not exist
+
+        BufferedWriter hashout = new BufferedWriter(new FileWriter(hashFile));
+        hashout.write(getSha256(stringBuilder.toString()));
+        hashout.close();
+
+        readFile(hashFileName);
+    }
+
+    private String getSha256(String tmp){
+        try{
+            MessageDigest mstandard = MessageDigest.getInstance("SHA-256");
+            mstandard.update(tmp.getBytes());
+            return bytesToHex(mstandard.digest());
+        } catch(Exception ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private String bytesToHex(byte[] bytes){
+        StringBuffer result = new StringBuffer();
+        for (byte b : bytes) result.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+        return result.toString();
+    }
+
+    //test:
+    private void readFile(String fileName)   //show some info in a file(for testing)
+    {
+        StringBuilder StrBuild = new StringBuilder();
+        try {
+            File f = new File(getApplicationContext().getFilesDir(), fileName);
+            BufferedReader bufR = new BufferedReader(new FileReader(f));
+            StrBuild.append(bufR.readLine());
+            bufR.close();
+            Toast.makeText(SplashScreen.this, fileName + " read(30chars): "+StrBuild.toString(), Toast.LENGTH_SHORT).show();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    //---------------end file hashing
 
 //Connecting to server and reading server feedback:
 public class JSONTask extends AsyncTask<String, String, String>{
