@@ -31,7 +31,7 @@
     }
     .level_menu
     {
-          width: 110px;
+        width: 110px;
         font-weight : bold;
         background-color: #000;
         color: #fff;
@@ -57,7 +57,7 @@
     <div>
     <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="false" />
 <asp:Menu ID="Menu" runat="server" DataSourceID="SiteMapDataSource1" Orientation="Horizontal"
-    OnMenuItemDataBound="OnMenuItemDataBound">
+    OnMenuItemDataBound="OnMenuItemDataBound" BorderStyle="Outset">
  
     <LevelMenuItemStyles>
         <asp:MenuItemStyle CssClass="main_menu" />
