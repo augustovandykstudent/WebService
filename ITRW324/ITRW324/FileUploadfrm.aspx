@@ -22,10 +22,13 @@
         font-weight : bold;
         font-style : normal;
         color: #000;
-      
+        text-align: center;
         height: 30px;
         line-height: 30px;
         margin-right: 5px;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
     }
     .level_menu
     {
@@ -66,15 +69,16 @@
             <br />
             <br />
              </div>
-     <%   if (Session["user"] != null)
+         <%   if (Session["user"] != null)
          {  %>
         <div>
         <asp:FileUpload ID="FileUploadVerify" runat="server" BorderStyle = "Outset" ForeColor ="Green" enctype="multipart/form-data"/>
             <br />
+            <br />
         <br />
-        <br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-        <asp:Button ID="btnsubmit" runat="server" BorderStyle = "Outset" ForeColor ="Green" Width ="100" OnClick="btnsubmit_Click" Text="Submit" />
+        &nbsp;<asp:Button ID="btnsubmit" runat="server" BorderStyle = "Outset" ForeColor ="Green" Width ="100" OnClick="btnsubmit_Click" Text="Submit" />
+        &nbsp;
+            <asp:Button ID="btnVerify" runat="server" OnClick="btnVerify_Click" Text="Verify" BorderStyle = "Outset" ForeColor ="Green" Width ="100"  />
         <br />
             <br />
             <br />
@@ -83,8 +87,7 @@
             <br />
     
     </div>
-         <%  }%>
-      <%   else     { %>
+         <%  }%>      <%   else     { %>
 
         <br />
     

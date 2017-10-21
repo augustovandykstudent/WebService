@@ -22,10 +22,13 @@
         font-style : normal;
         font-weight : bold;
         color: #000;
-      
+        text-align: center;      
         height: 30px;
         line-height: 30px;
         margin-right: 5px;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
     }
     .level_menu
     {
@@ -81,7 +84,7 @@
          
          <%  }%> 
          <%   else     { %> 
-        <h2>Please Login by clicking the link below</h2> 
+        <p><b>Please Login by clicking the link below</b></p> 
         <asp:HyperLink ID="HyperLink1" Text="Login" runat="server" NavigateUrl="~/Login.aspx"></asp:HyperLink> 
  
         <% } %> 
