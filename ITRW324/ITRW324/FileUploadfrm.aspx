@@ -69,15 +69,16 @@
             <br />
             <br />
              </div>
-     <%   if (Session["user"] != null)
+         <%   if (Session["user"] != null)
          {  %>
         <div>
         <asp:FileUpload ID="FileUploadVerify" runat="server" BorderStyle = "Outset" ForeColor ="Green" enctype="multipart/form-data"/>
             <br />
+            <br />
         <br />
-        <br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-        <asp:Button ID="btnsubmit" runat="server" BorderStyle = "Outset" ForeColor ="Green" Width ="100" OnClick="btnsubmit_Click" Text="Submit" />
+        &nbsp;<asp:Button ID="btnsubmit" runat="server" BorderStyle = "Outset" ForeColor ="Green" Width ="100" OnClick="btnsubmit_Click" Text="Submit" />
+        &nbsp;
+            <asp:Button ID="btnVerify" runat="server" OnClick="btnVerify_Click" Text="Verify" BorderStyle = "Outset" ForeColor ="Green" Width ="100"  />
         <br />
             <br />
             <br />
@@ -86,8 +87,7 @@
             <br />
     
     </div>
-         <%  }%>
-      <%   else     { %>
+         <%  }%>      <%   else     { %>
 
         <br />
     

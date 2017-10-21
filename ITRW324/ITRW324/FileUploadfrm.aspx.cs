@@ -59,6 +59,43 @@ namespace ITRW324
 
         }
 
+        protected void btnVerify_Click(object sender, EventArgs e)
+        {
+            checkifexist();
+            Label1.Text = "";
+            StringBuilder sb = new StringBuilder();
+            var Sha = new SHA256Managed();
+
+            string date = DateTime.Now.ToString("dd-mm-yy");
+            Stream fs = FileUploadVerify.PostedFile.InputStream;
+            BinaryReader br = new BinaryReader(fs);
+            myData = br.ReadBytes((Int32)fs.Length);
+            hash = BitConverter.ToString(Sha.ComputeHash(myData));
+            sb.AppendFormat("<br/> File hashcode: {0}", hash);
+            Label1.Text = sb.ToString();
+            Block tmp = new Block();
+            tmp.BlockAdd(hash, file);
+
+            if (checkifexist() == false)
+            {
+                if (type == "application/pdf")
+                {
+                    webservice.Insert(file, type, date, hash, myData, userid);
+                }
+                else
+                {
+                    Label1.Text = "Only PDF allowed";
+                }
+
+            }
+            else
+            {
+                Label1.Text = "Exists";
+
+            }
+
+        }
+
         protected void btnsubmit_Click(object sender, EventArgs e)
         {
             Label1.Text = "";
@@ -70,7 +107,7 @@ namespace ITRW324
                 try
                 {
 
-                    //  FileUploadVerify.SaveAs(("C:/Users/deWit777/Desktop/upload/") + file);
+                    //FileUploadVerify.SaveAs(("C:/Users/Neand/Desktop/upload/") + file);
                     file = FileUploadVerify.PostedFile.FileName;
                     sb.AppendFormat("<br/> Save As: {0}", file);
                     type = FileUploadVerify.PostedFile.ContentType;
@@ -131,8 +168,6 @@ namespace ITRW324
         //Check if pdf hash exists in database
         public bool checkifexist()
         {
-           
-
             MySqlConnection conn = new MySqlConnection(constr);
             MySqlCommand cmd = new MySqlCommand("SELECT * FROM Documents WHERE Hash =" + hash, conn);
             conn.Open();
@@ -194,18 +229,12 @@ namespace ITRW324
             {
                 Label1.Text = "Not Entered " + ex;
             }
-        }*/
-
-
-    
+        }  */  
       
-
-        }
-
-    
-    
-
     }
+
+    
+}
 
 
 
