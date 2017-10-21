@@ -3,12 +3,73 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Xml.Serialization;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace BlockChainTcpServer
 {
-    class BlockChain
+    [Serializable()]
+
+    public class ObjectToSerialize:ISerializable
+    {
+        private BlockChain blockChain;
+
+        public BlockChain BlockChain
+        {
+            get { return this.blockChain; }
+            set { this.blockChain = value; }
+        }
+
+        public ObjectToSerialize()
+        {
+
+        }
+
+        public ObjectToSerialize(SerializationInfo info, StreamingContext ctxt)
+        {
+            this.blockChain = (BlockChain)info.GetValue("BlockChain", typeof(BlockChain));
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext ctxt)
+        {
+            info.AddValue("BlockChain", this.blockChain);
+        }
+    }
+
+    [Serializable()]
+    public class Serializer
+    {
+        public Serializer()
+        {
+        }
+
+        public void SerializeObject(string fileName, ObjectToSerialize objectToSerialize)
+        {
+            Stream stream = File.Open(fileName, FileMode.Create);
+            BinaryFormatter bFormatter = new BinaryFormatter();
+            bFormatter.Serialize(stream, objectToSerialize);
+            stream.Close();
+        }
+
+        public ObjectToSerialize DeSerializeObject(string fileName)
+        {
+            ObjectToSerialize objectToSerialize;
+            Stream stream = File.Open(fileName, FileMode.Open);
+            BinaryFormatter bFormatter = new BinaryFormatter();
+            objectToSerialize = (ObjectToSerialize)bFormatter.Deserialize(stream);
+            stream.Close();
+            return objectToSerialize;
+        }
+    }
+
+    [Serializable()]
+    public class BlockChain:ISerializable 
     {
         private Block head, tail;
+        private BlockChain chain;
 
         public BlockChain()
         {
@@ -81,5 +142,29 @@ namespace BlockChainTcpServer
                 ptr = ptr._oNext;
             }
         }
-    }
+
+        public bool CheckIfHashExists(string sHash)
+        {
+            Block ptr = head;
+            while (ptr != null)
+            {
+                if (sHash == ptr._sHash)
+                    return true;
+                ptr = ptr._oNext;
+            }
+            return false;
+        }
+
+        private BlockChain(SerializationInfo info, StreamingContext ctxt)
+        {
+            this.head = (Block)info.GetValue("Head", typeof(Block));
+            this.tail = (Block)info.GetValue("Tail", typeof(Block));
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext ctxt)
+        {
+            info.AddValue("Head", this.head);
+            info.AddValue("Tail", this.tail);
+        }
+    }    
 }
