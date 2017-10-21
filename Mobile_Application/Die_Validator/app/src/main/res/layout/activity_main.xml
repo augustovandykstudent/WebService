@@ -69,12 +69,6 @@
             android:text="Name: " />
 
         <TextView
-            android:id="@+id/textViewSize"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Size: " />
-
-        <TextView
             android:id="@+id/textViewMimeType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

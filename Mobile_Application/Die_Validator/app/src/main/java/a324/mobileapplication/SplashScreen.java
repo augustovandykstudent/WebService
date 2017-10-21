@@ -91,7 +91,7 @@ public class SplashScreen extends AppCompatActivity {
                 if(count == 50)
                 {
                     textViewProg.setText("Sending file...");
-                    sendFile();
+                    //sendFile();
                 }
                 if(count == 75)
                 {
@@ -115,119 +115,10 @@ public class SplashScreen extends AppCompatActivity {
 
     }
 
-    String tmpPath ="";
     private void hashing()
     {
-        //Toast.makeText(SplashScreen.this, "Hashing should happen now", Toast.LENGTH_SHORT).show();
-        //t2.convertPDF();
-        //Toast.makeText(SplashScreen.this, "" + path, Toast.LENGTH_SHORT).show();
-        File f = null;
-        try {
-            //textViewDocName.setText("Doc name: " + f.getName());
-            try {
-                //f = new File(path);
-                uri = Uri.parse(path);
 
-                //textViewDocName.setText("Doc name: " + f.getName());
-                //textViewData.setText(f.getAbsolutePath());
-                textViewData.setText(uri.toString());
-                f= new File(uri.toString());
-                //f.canRead();
-                textViewDocName.setText("Doc name: " + f.getName());
-                //File tmpFile = File.createTempFile("tmp",".txt");
-                //tmpPath = tmpFile.getAbsolutePath();
-                //Toast.makeText(SplashScreen.this, "" + tmpFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-                convertPDF(f);
-            }catch (Exception e)
-            {
-                Toast.makeText(SplashScreen.this, "further ERROR", Toast.LENGTH_SHORT).show();
-                textViewMessage.setText(e.getMessage());
-            }
-        }catch (Exception e)
-        {
-            Toast.makeText(SplashScreen.this, "File error", Toast.LENGTH_SHORT).show();
-        }
     }
-    //--------------------------------------------------------------------------------< //from test2.java
-    public void convertPDF(File pdfIn) throws IOException{
-
-
-
-        textViewData.append("\nconvertPDF() started\n");
-        OutputStream fos;
-        try {
-
-            //SplashScreen.grantUriPermission(SplashScreen.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            //activity.grantUriPermission(activity.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-            //InputStream is = new FileInputStream(pdfIn);
-            InputStream is = getContentResolver().openInputStream(uri);
-
-            Toast.makeText(SplashScreen.this, "FileInputStream made", Toast.LENGTH_SHORT).show();
-
-            fos = openFileOutput("tmp", Context.MODE_APPEND);
-            byte[] buf = new byte[8192];
-            int c = 0;
-            while ((c = is.read(buf, 0, buf.length)) > 0) {
-                fos.write(buf, 0, c);
-                fos.flush();
-            }
-            fos.close();
-            is.close();
-            //stringBuilder();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Toast.makeText(SplashScreen.this, "FileNotFoundException", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(SplashScreen.this, "IOException", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void stringBuilder() throws IOException{
-
-        textViewData.append("stringBuilder() started\n");
-        File toHash = new File("tmp.txt");//"C:\\Users\\User-PC\\Desktop\\tmp.txt"); //change address
-        BufferedReader reader = new BufferedReader(new FileReader(toHash));
-        String line = null;
-        StringBuilder  stringBuilder = new StringBuilder();
-        String ls = System.getProperty("line.separator");
-        try {
-            while((line = reader.readLine()) != null) {
-                stringBuilder.append(line);
-                stringBuilder.append(ls);
-            }
-            //System.out.println(stringBuilder.toString());
-        } finally {
-            reader.close();
-        }
-        File hashFile = new File("hash.txt");//"C:\\Users\\User-PC\\Desktop\\hash.txt");
-        BufferedWriter hashout = new BufferedWriter(new FileWriter(hashFile));
-        hashout.write(getSha256(stringBuilder.toString()));
-        hashout.close();
-
-        //System.out.println(getSha256(stringBuilder.toString()));
-    }
-
-    public String getSha256(String tmp){
-
-        textViewData.append("getSha256() started\n");
-        try{
-            MessageDigest mstandard = MessageDigest.getInstance("SHA-256");
-            mstandard.update(tmp.getBytes());
-            return bytesToHex(mstandard.digest());
-        } catch(Exception ex){
-            throw new RuntimeException(ex);
-        }
-    }
-
-    private String bytesToHex(byte[] bytes){
-        StringBuffer result = new StringBuffer();
-        for (byte b : bytes) result.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
-        return result.toString();
-    }
-    //-------------------------------------------------------------------------------->
 
     private void sendFile()
     {

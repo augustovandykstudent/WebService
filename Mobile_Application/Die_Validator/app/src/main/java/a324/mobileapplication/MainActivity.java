@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView textfileName;
 
     private TextView tName;
-    private TextView tSize;
     private TextView tMime;
     private TextView tPath;
     private TextView tProgress;
@@ -55,10 +54,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int READ_REQUEST_CODE = 42;    //used to browse for a file
     private Intent intent;
     private Uri uri = null;
-    private String path = "";
+    private String path = "";   //not currently used to select a file
 
     private String tmpFileName = "tmp.txt";
     private String hashFileName = "hash.txt";
+    private String selectedFileName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         btnShowValidatedFiles = (Button) findViewById(R.id.btnShowValidatedFiles);
 
         tName = (TextView) findViewById(R.id.textViewName);
-        tSize = (TextView) findViewById(R.id.textViewSize);
         tMime = (TextView) findViewById(R.id.textViewMimeType);
         tPath = (TextView) findViewById(R.id.textViewPath);
         tProgress = (TextView) findViewById(R.id.textViewProgress);
@@ -93,10 +92,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if((!path.equals("")) && !(path ==null))
                 {
-                    //writeSubmittedFiles(); //this still works
                     converPdf();
-                    //Intent splashS = new Intent(MainActivity.this, SplashScreen.class).putExtra("<StringName>", path);
-                    //startActivity(splashS);
+                    writeSubmittedFiles();
+                    Intent splashS = new Intent(MainActivity.this, SplashScreen.class).putExtra("<StringName>", path);
+                    startActivity(splashS);
                     path = "";
                 }
             }
@@ -118,15 +117,15 @@ public class MainActivity extends AppCompatActivity {
             FileOutputStream fos;
             try {
                 fos = openFileOutput(fileName, Context.MODE_APPEND);
-                fos.write((path + "\n").getBytes());
+                fos.write((selectedFileName + "\n").getBytes());
                 fos.close();
-                Toast.makeText(MainActivity.this, "Saving uri to file", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Saving file name", Toast.LENGTH_SHORT).show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //path = "";
+            selectedFileName = "";
         }
     }
 
@@ -176,45 +175,34 @@ public class MainActivity extends AppCompatActivity {
                 uri = resultData.getData();
                 textfileName.setText("URI: " + uri);
 
-                /*
-                MainActivity.grantUriPermission(MainActivity.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                final int takeFlags = resultData.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                MainActivity.getContentResolver().takePersistableUriPermission(uri, takeFlags);
-                */
                 //Get the name of the file:
                 Cursor returnCursor = getContentResolver().query(uri, null, null, null, null);
                 int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
                 returnCursor.moveToFirst();
                 String mimeType = getContentResolver().getType(uri);
 
-                String name = returnCursor.getString(nameIndex);
+                selectedFileName = returnCursor.getString(nameIndex);
                 tName.setText("Name: " + returnCursor.getString(nameIndex));
-                tSize.setText("Size: " + sizeIndex);
                 tMime.setText("Mime type: " + mimeType);
 
-                path = uri.getScheme() + "://" +uri.getAuthority() +"/"+ name; //Get path of file from URI
+                path = uri.getScheme() + "://" +uri.getAuthority() +"/"+ selectedFileName; //Get path of file from URI
                 tPath.setText(path);
             }
         }
     }
-
   //==============================
     private void converPdf()
     {
         tProgress.setText("\nhashFle() started\n");
         try {
             InputStream is = getContentResolver().openInputStream(uri);
-            //Toast.makeText(MainActivity.this, "FileInputStream made", Toast.LENGTH_SHORT).show();
             tProgress.append("FileInputStream made\n");
 
-            //Remove the temporary file to ensure only the selected file is used in it, and not any previous files
-            //FileOutputStream fosDel = openFileOutput("tmp",Context.MODE_APPEND);
-            //File f = new File(System.getProperty("user.dir"),"tmp.txt");
-            //fosDel.close();
-            //f.delete();
-            readFile(tmpFileName);    //check contents of tmp file before writing to it
+            //overwrite the existing tmp.txt file with a new one to delete old data
+            File hashFile = new File(getApplicationContext().getFilesDir(), tmpFileName);
+            //hashFile.createNewFile();
+            hashFile.delete();
+
             OutputStream fos = openFileOutput(tmpFileName, Context.MODE_APPEND);  //ope tmp file for editing
             byte[] buf = new byte[8192];
             int c = 0;
@@ -224,13 +212,39 @@ public class MainActivity extends AppCompatActivity {
             }
             fos.close();
             is.close();
+            readTmpFile();
             stringBuilder();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             Toast.makeText(MainActivity.this, "FileNotFoundException", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(MainActivity.this, "IOException", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "IOException: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            tProgress.append(e.getMessage() +"\n");
+        }
+    }
+
+    private void readTmpFile()   //show list of files validated in a toast
+    {
+        try {
+            String message = "";
+            FileInputStream fis = openFileInput("tmp.txt");
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader bfr = new BufferedReader(isr);
+            StringBuffer strBuffer = new StringBuffer();
+            int count = 0;
+            while ((message = bfr.readLine()) != null && (count < 10))
+            {
+                strBuffer.append(message + "\n");
+                count++;
+            }
+            Toast.makeText(MainActivity.this, "tmp.txt read(10 lines): " + strBuffer.toString(), Toast.LENGTH_SHORT).show();
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -242,54 +256,39 @@ public class MainActivity extends AppCompatActivity {
         BufferedReader reader = new BufferedReader(isr);
         tProgress.append("Buffered reader created\n");
 
-        //String LINER = null;//(only for testing)
+        String LINER = null;//(only for testing)
 
         String line = null;
         StringBuilder  stringBuilder = new StringBuilder();
         String ls = System.getProperty("line.separator");
         try {
+            int count = 0;
             while((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
                 stringBuilder.append(ls);
-                //LINER = line;
+                if(count < 20) {    //the 1st 20 lines are used to test if they differ with different files (testing only)
+                    LINER += line;
+                }
+                count++;
             }
-
-            //tProgress.append("last line from reader\n");
-            //Toast.makeText(MainActivity.this, "last line from reader: " + LINER, Toast.LENGTH_SHORT).show();
         } finally {
             reader.close();
             fis.close();
         }
-        OutputStream fos = openFileOutput(hashFileName, Context.MODE_APPEND);
-        fos.close();
+        File hashFile = new File(getApplicationContext().getFilesDir(), hashFileName);
+        hashFile.delete();
+        hashFile.createNewFile();   //Does not overwrite old file - only creates new file if it does not exist
 
-        tProgress.append(hashFileName + " made");
-       // FileInputStream fis2 = openFileInput("hash");
-        //fis2.toString();
-        //Filenotfound e
-        File f = new File(System.getProperty("user.dir"),hashFileName);
-        tProgress.append("\nhash path(abs): " + f.getAbsolutePath());
-        tProgress.append("\nhash path: " + f.getPath());
-        tProgress.append("\nhash read?: " + f.canRead());
-        tProgress.append("\nhash write?: " + f.canWrite());
-        //f.setWritable(true);
-
-        FileOutputStream fos2;
-
-        fos2 = new FileOutputStream("/"+hashFileName, true);
-        FileWriter fWriter = new FileWriter(fos2.getFD());
-
-        //File hashFile = null;//= new File(fis2);
-        BufferedWriter hashout = new BufferedWriter(fWriter);//new FileWriter(hashFileName));  //FILENOTFOUND EXCEPTION
+        tProgress.append(hashFile.getPath() +"\n");
+        tProgress.append("BEFORE BufferedWriter..\n");
+        BufferedWriter hashout = new BufferedWriter(new FileWriter(hashFile));//fWriter);//new FileWriter(hashFileName));  //FILENOTFOUND EXCEPTION
+        tProgress.append("BufferedWriter created\n");
         hashout.write(getSha256(stringBuilder.toString()));
         hashout.close();
         tProgress.append("Buffered writer wrote to hashFile\n");
+        //Toast.makeText(MainActivity.this, getSha256(LINER), Toast.LENGTH_SHORT).show();
 
-
-
-        readFile(tmpFileName);
-        //System.out.println(getSha256(stringBuilder.toString()));
-        //Toast.makeText(MainActivity.this, "Hello (shaw256): " +getSha256("hello"), Toast.LENGTH_SHORT).show();
+        readFile(hashFileName);
     }
 
     private String getSha256(String tmp){
@@ -313,30 +312,18 @@ public class MainActivity extends AppCompatActivity {
     //test:
     private void readFile(String fileName)   //show some info in a file(for testing)
     {
+        StringBuilder StrBuild = new StringBuilder();
         try {
-            String mes = "";
-            String message = "";
-            FileInputStream fis = openFileInput(fileName);
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader bfr = new BufferedReader(isr);
-            StringBuffer strBuffer = new StringBuffer();
-            //while ((message = bfr.readLine()) != null)
-            //{
-            for(int i = 0 ; i < 4 ; i++)
-            {
-                if ((mes =bfr.readLine()) != null)
-                    message +=bfr.readLine();
-            }
-                strBuffer.append(message + "\n");
-            //}
-            Toast.makeText(MainActivity.this, "tmp read: "+strBuffer.toString(), Toast.LENGTH_SHORT).show();
-            //tProgress.append("tmp read: " + strBuffer.toString());
-        }
-        catch (FileNotFoundException e) {
+            File f = new File(getApplicationContext().getFilesDir(), fileName);
+            BufferedReader bufR = new BufferedReader(new FileReader(f));
+            StrBuild.append(bufR.readLine());
+            bufR.close();
+            Toast.makeText(MainActivity.this, fileName + " read(30chars): "+StrBuild.toString(), Toast.LENGTH_SHORT).show();
+
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-}
+}//end MainActivity class
