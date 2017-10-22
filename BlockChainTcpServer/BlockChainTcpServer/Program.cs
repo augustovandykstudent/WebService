@@ -39,41 +39,51 @@ namespace BlockChainTcpServer
             _server.StringEncoder = Encoding.UTF8;
             _server.DataReceived += server_DataReceived;
 
-            Console.WriteLine("\nStart The Server?");
-            char cChoice = Convert.ToChar(Console.ReadLine());
-            if (cChoice == 'y')// start the server
-                StartServer();
-
-            while (_server.IsStarted)
-            {
-
-            }
-
-            Console.ReadLine();
+            //start server
+            StartServer();
+            Console.WriteLine("Server Started\n");
+            Console.WriteLine("Type:\nquit To Close The Server\nprint To Print The Blockchain\nsave To Save Blockchain");
             
+            while(_server.IsStarted)
+            {
+                string input = Console.ReadLine();
+                Console.WriteLine();
+                if (input == "quit")
+                    _server.Stop();
+                if (input == "print")
+                    _chain.ShowBlockChain();
+                if (input == "save")
+                    SaveBlockChain();
+            }
         }
 
         public static void server_DataReceived(object sender, SimpleTCP.Message e)
         {
             string sReceivedMessage = e.MessageString;
-            bool bReturn = false;
-
-            if (_action == "Validate")
+            string[] sData = sReceivedMessage.Split(',');
+            if (sData[0].Contains("AddToBlockChain"))
             {
-                bDataReceived = e.Data;
+                bool bValid = AddToBlockChain(sData[1], sData[2]);
+                _server.BroadcastLine("" + bValid);
             }
-                // determine which method to run from request
-                if (sReceivedMessage.Contains("Validate"))
-                {
-                    _action = "Validate";
-                }
-                else if (sReceivedMessage.Contains("AddToBlockChain"))
-                {
-                    _action = "AddToBlockChain";
-                }
+            if (sData[0].Contains("Validate"))
+            {
+                bool bValid = Validate(sData[1]);
+                _server.BroadcastLine("" + bValid);
+            }
+            if (sData[0].Contains("GetDocumentInfo"))
+            {
+                byte[] bData = GetDocumentInfo(sData[1]);
+                _server.Broadcast(bData);
+            }
+            if (sData[0].Contains("GetBlockChain"))
+            {
+                byte[] bData = GetBlockChain();
+                _server.Broadcast(bData);
+            }
         }
 
-        public bool Validate(string sHash)
+        public static bool Validate(string sHash)
         {
             bool bValid = _chain.CheckIfHashExists(sHash);
 
@@ -81,7 +91,7 @@ namespace BlockChainTcpServer
             return bValid;
         }
 
-        public bool AddToBlockChain(string sHash, string sUserID)
+        public static bool AddToBlockChain(string sHash, string sUserID)
         {
             if (sHash != null & sUserID != null)// validation of information received
             {
@@ -97,10 +107,11 @@ namespace BlockChainTcpServer
             _action = null;// set the action variable to null so the server knows to listen for next request first
 
             return true;
-
+/*
             // broadcast of blockchain to keep it decentralised and updates everyones
             byte[] bChain = ObjectToByteArray(_chain);
-            _server.Broadcast(bChain);
+            _server.BroadcastLine("UpdateChain");
+            _server.Broadcast(bChain);*/
         }
 
         public static void StartServer()
@@ -117,7 +128,7 @@ namespace BlockChainTcpServer
             }
         }
 
-        public byte[] ObjectToByteArray(object obj)// changes blockchain structure to a byte[]
+        public static byte[] ObjectToByteArray(object obj)// changes blockchain structure to a byte[]
         {
             if (obj == null)
                 return null;
@@ -127,6 +138,33 @@ namespace BlockChainTcpServer
                 bf.Serialize(ms, _chain);
                 return ms.ToArray();
             }
+        }
+
+        public static byte[] GetDocumentInfo(string sHash)
+        {
+            byte[] sData = _chain.GetBlockValues(sHash);
+            return sData;
+        }
+
+        public static byte[] GetBlockChain()
+        {
+            byte[] bData = ObjectToByteArray(_chain);
+            return bData;
+        }
+
+        private static bool SaveBlockChain()
+        {
+            try
+            {
+                ObjectToSerialize objectToSerialize = new ObjectToSerialize();
+                objectToSerialize.BlockChain = _chain;
+
+                Serializer serializer = new Serializer();
+                serializer.SerializeObject(@"D:\Data\outputFile.txt", objectToSerialize);               
+            }
+            catch { return false; }
+
+            return true;
         }
     }
 }

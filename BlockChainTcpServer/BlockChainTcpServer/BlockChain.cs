@@ -166,5 +166,25 @@ namespace BlockChainTcpServer
             info.AddValue("Head", this.head);
             info.AddValue("Tail", this.tail);
         }
+
+        public byte[] GetBlockValues(string sHash)
+        {
+            // get block with data
+            string[] sData = null;
+            Block ptr = head;
+            while (ptr != null)
+            {
+                if (sHash == ptr._sHash)
+                {
+                    sData = new string[3];
+                    sData[0] = ptr._sTimeStamp;
+                    sData[1] = ptr._sHash;
+                    sData[2] = ptr._sUserID;
+                }
+                ptr = ptr._oNext;
+            }
+            byte[] bData = Encoding.ASCII.GetBytes(sData[0] + "," + sData[1] + "," + sData[2] + ",");
+            return bData;
+        }
     }    
 }
