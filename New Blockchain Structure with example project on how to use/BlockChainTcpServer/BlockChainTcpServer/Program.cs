@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace BlockChainTcpServer
 {
@@ -27,7 +28,7 @@ namespace BlockChainTcpServer
             chain = null;
 
             //deserialization
-            objectToSerialize = serializer.DeSerializeObject(@"D:\Data\outputFile.txt");
+            byte[] bChain = GetReference().GetBlockChain();
             chain = objectToSerialize.BlockChain;
 
             chain.ShowBlockChain();
@@ -38,6 +39,23 @@ namespace BlockChainTcpServer
         public bool Validate(string sHash)
         {
             return true;
+        }
+
+        private BlockChain Deserialize(byte[] param)
+        {
+            if (param == null)
+                return null;
+            BinaryFormatter bf = new BinaryFormatter();
+            MemoryStream ms = new MemoryStream(param);
+            BlockChain chain = (BlockChain)bf.Deserialize(ms);
+
+            return chain;
+            
+        }
+
+        private static ServiceReference1.ServiceSoapClient GetReference()
+        {
+            return new ServiceReference1.ServiceSoapClient();
         }
     }
 }
