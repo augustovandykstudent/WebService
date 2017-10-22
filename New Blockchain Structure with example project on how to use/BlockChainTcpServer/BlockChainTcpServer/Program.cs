@@ -27,6 +27,8 @@ namespace BlockChainTcpServer
 
             chain = null;
 
+            GetReference().AddToBlockChain("123", "1");
+
             //deserialization
             byte[] bChain = GetReference().GetBlockChain();
             chain = objectToSerialize.BlockChain;

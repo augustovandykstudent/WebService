@@ -60,28 +60,34 @@ namespace BlockChainTcpServer
 
         public static void server_DataReceived(object sender, SimpleTCP.Message e)
         {
+            Console.WriteLine("\nRequest Received");
             string sReceivedMessage = e.MessageString;
             string[] sData = sReceivedMessage.Split(',');
             if (sData[0].Contains("AddToBlockChain"))
             {
                 bool bValid = AddToBlockChain(sData[1], sData[2]);
                 _server.BroadcastLine("" + bValid);
+                Console.WriteLine("\nRequest Replied");
             }
             if (sData[0].Contains("Validate"))
             {
                 bool bValid = Validate(sData[1]);
                 _server.BroadcastLine("" + bValid);
+                Console.WriteLine("\nRequest Replied");
             }
             if (sData[0].Contains("GetDocumentInfo"))
             {
                 byte[] bData = GetDocumentInfo(sData[1]);
                 _server.Broadcast(bData);
+                Console.WriteLine("\nRequest Replied");
             }
             if (sData[0].Contains("GetBlockChain"))
             {
                 byte[] bData = GetBlockChain();
                 _server.Broadcast(bData);
+                Console.WriteLine("\nRequest Replied");
             }
+            
         }
 
         public static bool Validate(string sHash)
@@ -159,13 +165,31 @@ namespace BlockChainTcpServer
             {
                 ObjectToSerialize objectToSerialize = new ObjectToSerialize();
                 objectToSerialize.BlockChain = _chain;
-
                 Serializer serializer = new Serializer();
-                serializer.SerializeObject(@"D:\Data\outputFile.txt", objectToSerialize);               
+                serializer.SerializeObject(@"D:\Data\Data.dat", objectToSerialize);               
             }
             catch { return false; }
 
             return true;
         }
+
+        // Mardus se save
+        /*private static bool SaveBlockChain()
+        {
+            try
+            {
+                ObjectToSerialize objectToSerialize = new ObjectToSerialize();
+                objectToSerialize.BlockChain = _chain;
+                Serializer serializer = new Serializer();
+                string sPath = Application.ExecutablePath;
+                int iIndex = sPath.Length - 17;
+                sPath = sPath.Substring(0, iIndex);
+                sPath += "Sales Total Per Year.accdb";
+                serializer.SerializeObject(sPath, objectToSerialize);
+            }
+            catch { return false; }
+
+            return true;
+        }*/
     }
 }

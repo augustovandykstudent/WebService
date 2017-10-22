@@ -72,7 +72,7 @@ namespace WebserviceProject
             client.StringEncoder = Encoding.UTF8;
             try
             {
-                client.Connect("169.0.90.113", 4410);
+                client.Connect("169.1.69.208", 4410);
                 Message mMessage = client.WriteLineAndGetReply("AddToBlockChain," + sHash + "," + sUserID + ",", TimeSpan.FromSeconds(100));
                 string sMessage = mMessage.MessageString;
                 if (sMessage.Contains("True"))
@@ -94,7 +94,7 @@ namespace WebserviceProject
             client.StringEncoder = Encoding.UTF8;
             try
             {
-                client.Connect("169.0.90.113", 4410);
+                client.Connect("169.1.69.208", 4410);
                 Message mMessage = client.WriteLineAndGetReply("Validate," + sHash + ",", TimeSpan.FromSeconds(100));
                 string sMessage = mMessage.MessageString;
                 if (sMessage.Contains("True"))
@@ -117,7 +117,7 @@ namespace WebserviceProject
             client.StringEncoder = Encoding.UTF8;
             try
             {
-                client.Connect("169.0.90.113", 4410);
+                client.Connect("169.1.69.208", 4410);
                 mMessage = client.WriteLineAndGetReply("GetDocumentInfo," + sHash + ",", TimeSpan.FromSeconds(100));
                 bData = mMessage.Data;
                 client.Disconnect();
@@ -135,7 +135,7 @@ namespace WebserviceProject
             client.StringEncoder = Encoding.UTF8;
             try
             {
-                client.Connect("169.0.90.113", 4410);
+                client.Connect("169.1.69.208", 4410);
                 mMessage = client.WriteLineAndGetReply("GetBlockChain,", TimeSpan.FromSeconds(100));
                 bData = mMessage.Data;
                 client.Disconnect();
