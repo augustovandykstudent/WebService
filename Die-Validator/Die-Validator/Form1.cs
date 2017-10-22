@@ -15,13 +15,17 @@ namespace Die_Validator
     
     public partial class Form1 : Form
     {
-        ServiceReference1.ServiceSoapClient webservice;
+        
+       
         public Form1()
         {
             InitializeComponent();
         }
         OpenFileDialog openPDF = new OpenFileDialog();
+        ServiceReference1.ServiceSoapClient webservice;
+        
         private void btnOpen_Click(object sender, EventArgs e)
+             
         {
             string sSourceData;
             byte[] tmpSource;
@@ -65,7 +69,25 @@ namespace Die_Validator
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //webservice = ServiceReference1.ServiceSoapClient();
+            webservice = ServiceReference1.ServiceSoapClient();
+        }
+
+        private static bool SaveBlockChain()
+        {
+            try
+            {
+                ObjectToSerialize objectToSerialize = new ObjectToSerialize();
+                objectToSerialize.BlockChain = _chain;
+                Serializer serializer = new Serializer();
+                string sPath = Application.ExecutablePath;
+                int iIndex = sPath.Length - 17;
+                sPath = sPath.Substring(0, iIndex);
+                sPath += "Sales Total Per Year.accdb";
+                serializer.SerializeObject(sPath, objectToSerialize);
+            }
+            catch { return false; }
+
+            return true;
         }
     }
 }
