@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Security.Cryptography;
-using System.Text;
 using System.Runtime.Serialization.Formatters.Binary;
 using BlockChainTcpServer;
 
@@ -24,8 +23,9 @@ namespace Die_Validator
             InitializeComponent();
         }
         OpenFileDialog openPDF = new OpenFileDialog();
-        ServiceReference1.ServiceSoapClient webservice;
-        
+        ServiceReference1.ServiceSoapClient webservice = new ServiceReference1.ServiceSoapClient();
+        BlockChain _chain;
+
         private void btnOpen_Click(object sender, EventArgs e)
              
         {
@@ -71,11 +71,12 @@ namespace Die_Validator
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            webservice = ServiceReference1.ServiceSoapClient();
+            
         }
 
         private static bool SaveBlockChain()
         {
+
             try
             {
                 ObjectToSerialize objectToSerialize = new ObjectToSerialize();
