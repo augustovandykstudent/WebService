@@ -69,6 +69,7 @@
             // 
             // txtBxHash
             // 
+            this.txtBxHash.Cursor = System.Windows.Forms.Cursors.No;
             this.txtBxHash.Location = new System.Drawing.Point(192, 539);
             this.txtBxHash.Name = "txtBxHash";
             this.txtBxHash.ReadOnly = true;
@@ -88,12 +89,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(604, 571);
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(809, 584);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtBxHash);
             this.Controls.Add(this.btnUpload);
             this.Controls.Add(this.axAcroPDF1);
             this.Controls.Add(this.btnOpen);
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
