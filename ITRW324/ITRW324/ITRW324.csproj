@@ -326,7 +326,6 @@
     <Compile Include="CreateNewUser.aspx.designer.cs">
       <DependentUpon>CreateNewUser.aspx</DependentUpon>
     </Compile>
-    <Compile Include="DownloadFormDrive.cs" />
     <Compile Include="FileUploadfrm.aspx.cs">
       <DependentUpon>FileUploadfrm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -357,7 +356,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="UpLoadFromDrivecs.cs" />
     <Compile Include="View.aspx.cs">
       <DependentUpon>View.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
