@@ -39,6 +39,8 @@
             // 
             // btnOpen
             // 
+            this.btnOpen.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnOpen.ImageAlign = System.Drawing.ContentAlignment.TopRight;
             this.btnOpen.Location = new System.Drawing.Point(12, 536);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 23);
@@ -59,6 +61,9 @@
             // btnUpload
             // 
             this.btnUpload.Enabled = false;
+            this.btnUpload.FlatAppearance.BorderColor = System.Drawing.Color.Lime;
+            this.btnUpload.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnUpload.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnUpload.Location = new System.Drawing.Point(111, 536);
             this.btnUpload.Name = "btnUpload";
             this.btnUpload.Size = new System.Drawing.Size(75, 23);
@@ -69,6 +74,7 @@
             // 
             // txtBxHash
             // 
+            this.txtBxHash.BackColor = System.Drawing.Color.LightGreen;
             this.txtBxHash.Cursor = System.Windows.Forms.Cursors.No;
             this.txtBxHash.Location = new System.Drawing.Point(192, 539);
             this.txtBxHash.Name = "txtBxHash";
@@ -89,6 +95,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.LightGreen;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(809, 584);
@@ -99,7 +106,8 @@
             this.Controls.Add(this.btnOpen);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Die-Validator";
+            this.TransparencyKey = System.Drawing.Color.Black;
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF1)).EndInit();
             this.ResumeLayout(false);
