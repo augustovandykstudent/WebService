@@ -24,8 +24,9 @@ namespace BlockChainTcpServer
             // initiates an instance of the blockchain which exists on HDD
             try
             {
+                _serializer = new Serializer();
                 _objectToSerialize = _serializer.DeSerializeObject(@"D:\Data\Blockchain.dat");
-                _chain = _objectToSerialize.BlockChain;
+                _chain = (BlockChain)_objectToSerialize.BlockChain;
             }
             catch (Exception eException)
             {
