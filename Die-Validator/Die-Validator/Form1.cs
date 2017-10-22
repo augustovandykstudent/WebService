@@ -74,7 +74,7 @@ namespace Die_Validator
             
         }
 
-        private static bool SaveBlockChain()
+        private bool SaveBlockChain()
         {
 
             try
