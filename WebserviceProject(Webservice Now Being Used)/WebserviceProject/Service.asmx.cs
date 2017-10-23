@@ -23,6 +23,30 @@ namespace WebserviceProject
         MySqlConnection con = new MySqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString);
 
         [WebMethod]
+        public int Login(string sUserName, string sPassword)
+        {
+            int iuserid = 0;
+            MySqlConnection conn = con;
+            MySqlCommand cmd = new MySqlCommand("SELECT * FROM Users WHERE Username = '" + sUserName + "' AND Password = '" + sPassword + "';", conn);
+
+            conn.Open();
+            MySqlDataReader rd = cmd.ExecuteReader();
+
+            if (rd.Read())
+            {
+                iuserid = Convert.ToInt32(rd["UserID"]);
+                rd.Close();
+                cmd.Dispose();
+                conn.Close();
+            }
+            else
+            {
+                conn.Close();
+            }
+            return iuserid;
+        }
+
+        [WebMethod]
         public string Insert(string sName, string sType, string sCreationDate, string sHash, byte[] bData, int iUserID)
         {
             string msg = string.Empty;
