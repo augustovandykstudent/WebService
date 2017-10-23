@@ -16,7 +16,7 @@ namespace ITRW324
     public partial class View : System.Web.UI.Page
     {
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        ServiceReference1.ServiceSoapClient webservice = new ServiceReference1.ServiceSoapClient();
+        ServiceReference2.ServiceSoapClient webservice = new ServiceReference2.ServiceSoapClient();
 
         protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
         {
