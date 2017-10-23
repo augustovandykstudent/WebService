@@ -56,7 +56,7 @@ namespace BlockChainTcpServer
         }
 
         private static ServiceReference1.ServiceSoapClient GetReference()
-        {
+       {
             return new ServiceReference1.ServiceSoapClient();
         }
     }
