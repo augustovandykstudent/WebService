@@ -16,5 +16,12 @@ namespace Die_Validator
         {
             InitializeComponent();
         }
+
+        ServiceReference1.ServiceSoapClient webservice = new ServiceReference1.ServiceSoapClient();
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
