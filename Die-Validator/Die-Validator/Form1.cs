@@ -16,6 +16,7 @@ namespace Die_Validator
     
     public partial class Form1 : Form
     {
+
         
        
         public Form1()
@@ -25,7 +26,8 @@ namespace Die_Validator
         OpenFileDialog openPDF = new OpenFileDialog();
         ServiceReference1.ServiceSoapClient webservice = new ServiceReference1.ServiceSoapClient();
         BlockChain _chain;
-
+        
+        
         private void btnOpen_Click(object sender, EventArgs e)
              
         {
@@ -66,12 +68,18 @@ namespace Die_Validator
 
         private void btnUpload_Click(object sender, EventArgs e)
         {
+            bool doesExist;
+
+           doesExist = webservice.Validate(txtBxHash.Text);
+           MessageBox.Show(Convert.ToString(doesExist));
+            
             
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             
+           
         }
 
         private bool SaveBlockChain()
