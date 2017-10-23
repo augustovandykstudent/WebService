@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private String tmpFileName = "tmp.txt";
     private String hashFileName = "hash.txt";
     private String selectedFileName = "";
+    private String username = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         tMime = (TextView) findViewById(R.id.textViewMimeType);
         tPath = (TextView) findViewById(R.id.textViewPath);
         tProgress = (TextView) findViewById(R.id.textViewProgress);
+
+        username = getIntent().getStringExtra("<StringName>");
 
         enableButtonsClick();
     }
