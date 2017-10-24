@@ -87,7 +87,13 @@ namespace BlockChainTcpServer
                 _server.Broadcast(bData);
                 Console.WriteLine("\nRequest Replied");
             }
-            
+            if (sData[0].Contains("GetUserBlockChainInfo"))
+            {
+                byte[] bData = GetUserBlockChainInfo(sData[1]);
+                _server.Broadcast(bData);
+                Console.WriteLine("\nRequest Replied");
+            }
+
         }
 
         public static bool Validate(string sHash)
@@ -171,6 +177,13 @@ namespace BlockChainTcpServer
             catch { return false; }
 
             return true;
+        }
+
+        public static byte[] GetUserBlockChainInfo(string suserid)
+        {
+            BlockChain userInfo = _chain.GetBlockValuesForUser(suserid);
+            byte[] bdata = ObjectToByteArray(suserid);
+            return bdata;
         }
     }
 }

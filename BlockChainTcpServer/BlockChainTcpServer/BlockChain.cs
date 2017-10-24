@@ -99,6 +99,24 @@ namespace BlockChainTcpServer
             return true;
         }
 
+        public bool Append(Block newBlock)
+        {
+            if (newBlock != null)
+            {
+                if(!IsEmpty())
+                {
+                    tail._oNext = new Block(newBlock._sTimeStamp, newBlock._sHash, newBlock._sUserID);
+                    tail = tail._oNext;
+                }
+                else
+                {
+                    head = tail = new Block(newBlock._sTimeStamp, newBlock._sHash, newBlock._sUserID);
+                }
+                return true;
+            }
+            return false;
+        }
+
         public bool Append(string sTimeStamp, string sHash, string sUserID)
         {
             Block block = new Block(sTimeStamp, sHash, sUserID);
@@ -185,6 +203,23 @@ namespace BlockChainTcpServer
             }
             byte[] bData = Encoding.ASCII.GetBytes(sData[0] + "," + sData[1] + "," + sData[2] + ",");
             return bData;
+        }
+
+        public BlockChain GetBlockValuesForUser(string suserID)
+        {
+            // get all the values of a user
+            BlockChain ouserData = new BlockChain();
+            Block optr = this.head;
+
+            while (optr != null)
+            {
+                if (optr._sUserID == suserID)
+                {
+                    ouserData.Append(optr);
+                }
+                optr = optr._oNext;
+            }
+            return ouserData;
         }
     }    
 }

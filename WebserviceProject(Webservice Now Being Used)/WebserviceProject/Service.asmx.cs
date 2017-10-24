@@ -198,6 +198,7 @@ namespace WebserviceProject
 
         }
 
+        [WebMethod]
         public byte[] GetUserBlockChainInfo(string sUsername)//byte array ontvang en terug stuur
         {
             byte[] bData = null;
