@@ -1,7 +1,5 @@
 package a324.mobileapplication;
 
-import android.content.Intent;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,81 +9,79 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.SoapFault;
+import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
-//import org.ksoap2.serialization.SoapPrimitive;
+import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+import org.xmlpull.v1.XmlPullParserException;
 
-public class LoginActivity extends AppCompatActivity {
+import java.io.IOException;
 
-    private Button btnLogin;
+public class RegisterActivity extends AppCompatActivity {
+
     private Button btnReg;
     private EditText etUsername;
     private EditText etPassword;
+    private EditText etEmail;
     private String username = "";
     private String password = "";
-    private boolean loginSuccess = false;
+    private String email = "";
     private TextView tloading;
+    private boolean regSuccess = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
 
-        btnLogin = (Button) findViewById(R.id.btnLogin);
         btnReg = (Button) findViewById(R.id.btnRegister);
         etUsername = (EditText) findViewById(R.id.editTextName);
         etPassword = (EditText) findViewById(R.id.editTextPass);
+        etEmail = (EditText) findViewById(R.id.editTextEmail);
         tloading = (TextView) findViewById(R.id.textViewLoading);
-
-        btnLogin.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                username = etUsername.getText().toString();
-                password = etPassword.getText().toString();
-                if((!username.equals("")) && (!password.equals("")))
-                {
-                    tloading.setText("Loading...");
-                    boolean login = runLogin();    //try to login
-                    tloading.setText("");
-
-                    if(!login)  //CHANGE BACK TO TRUE<------------------!!!
-                    {
-                        Intent mainAct = new Intent(LoginActivity.this, MainActivity.class).putExtra("<StringName>", username);
-                        startActivity(mainAct);
-                    }
-                    else
-                        Toast.makeText(LoginActivity.this, "Unable to login", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(LoginActivity.this, "Please fill in all the information", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        }));
 
         btnReg.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent regAct = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(regAct);
+                username = etUsername.getText().toString();
+                password = etPassword.getText().toString();
+                email = etEmail.getText().toString();
+
+                if((!username.equals("")) && (!password.equals("")) && (!email.equals("")))
+                {
+                    tloading.setText("Loading...");
+                    boolean reg = false;//runReg();    //try to login
+                    tloading.setText("");
+
+                    if(reg)
+                    {
+                        Toast.makeText(RegisterActivity.this, "You have been registered", Toast.LENGTH_LONG).show();
+                    }
+                    else
+                        Toast.makeText(RegisterActivity.this, "Unable to Register", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(RegisterActivity.this, "Please fill in all the information", Toast.LENGTH_SHORT).show();
+                }
+
             }
         }));
-
     }
 
-    public boolean runLogin() {
+    public boolean runReg() {
 
         Thread LoginThread = new Thread(new Runnable() {
 
             @Override
             public void run() {
 
-                String SOAP_ACTION = "http://tempuri.org/Login";
-                String METHOD_NAME = "Login";
+                String SOAP_ACTION = "http://tempuri.org/CreateUser";
+                String METHOD_NAME = "CreateUser";
                 String NAMESPACE = "http://tempuri.org/";
                 String URL = "http://block2g.somee.com/Service.asmx";
 
@@ -94,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                     SoapObject Request = new SoapObject(NAMESPACE, METHOD_NAME);
                     Request.addProperty("sUserName", username);
                     Request.addProperty("sPassword", password);
+                    Request.addProperty("sEmail", email);
 
                     SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
                     soapEnvelope.dotNet = true;
@@ -113,14 +110,14 @@ public class LoginActivity extends AppCompatActivity {
                         strResponse = response.getProperty("LoginResult").toString();
                     }
 
-                    loginSuccess = false;
+                    regSuccess = false;
 
                     if(strResponse.equals("true"))
                     {
-                        loginSuccess = true;
+                        regSuccess = true;
                     }
                     else{
-                        loginSuccess = false;
+                        regSuccess = false;
                     }
                 } catch (Exception e) {
                 }
@@ -132,6 +129,6 @@ public class LoginActivity extends AppCompatActivity {
             LoginThread.join();
         } catch (Exception e) {;
         }
-        return loginSuccess;
+        return regSuccess;
     }
 }

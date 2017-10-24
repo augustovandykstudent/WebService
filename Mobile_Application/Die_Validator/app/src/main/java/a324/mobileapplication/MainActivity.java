@@ -82,7 +82,8 @@ public class MainActivity extends AppCompatActivity {
                 {
                     converPdf();
                     writeSubmittedFiles();
-                    Intent splashS = new Intent(MainActivity.this, SplashScreen.class).putExtra("<StringName>", selectedFileName);
+                    Intent splashS = new Intent(MainActivity.this, SplashScreen.class).putExtra("<StringFileName>", selectedFileName);
+                    splashS.putExtra("<StringUserName>", username);
                     startActivity(splashS);
                     path = "";
                     selectedFileName = "";

@@ -1,17 +1,8 @@
 package a324.mobileapplication;
-//added in manifest file(permission for internet):   <uses-permission android:name="android.permission.INTERNET"/>
-import android.Manifest;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.ParcelFileDescriptor;
-import android.service.chooser.ChooserTargetService;
-import android.support.v4.content.FileProvider;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebChromeClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -23,17 +14,19 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.security.MessageDigest;
+
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+import org.xmlpull.v1.XmlPullParserException;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -41,21 +34,19 @@ public class SplashScreen extends AppCompatActivity {
     private TextView textViewProg;
     private TextView textViewDocName;
     private TextView textViewData;
-    private TextView textViewMessage;
+   // private TextView textViewMessage;
     private Button btn25;
     private ImageView imageValid;
     private ImageView imageInvalid;
 
-
-    private int resultTF =0;
-    private int count = 0;  //used as vaules on progress bar
-    private String url = "www.webaddress.co.za";    //this might be received from MainActivity
-    private boolean connected = false;
-    Uri uri = null;
-
     private String tmpFileName = "tmp.txt";
     private String hashFileName = "hash.txt";
     private String selectedFileName = "";
+    private String username = "";
+    private StringBuilder buildTemp = null;
+    private boolean ValidateSuccess = false;
+    private boolean resultTF = false;
+    private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +56,28 @@ public class SplashScreen extends AppCompatActivity {
         textViewProg = (TextView) findViewById(R.id.textViewProgressReport);
         textViewDocName = (TextView) findViewById(R.id.textViewDocumentName);
         textViewData = (TextView) findViewById(R.id.textViewData);
-        textViewMessage = (TextView) findViewById(R.id.textViewMessage);
+        //textViewMessage = (TextView) findViewById(R.id.textViewMessage);
         btn25 = (Button) findViewById(R.id.button25);
         imageValid = (ImageView) findViewById(R.id.imageViewValid);
         imageInvalid = (ImageView) findViewById(R.id.imageViewInvalid);
 
-        selectedFileName = getIntent().getStringExtra("<StringName>");
+        selectedFileName = getIntent().getStringExtra("<StringFileName>");
+        username = getIntent().getStringExtra("<StringUserName>");
         textViewDocName.setText(selectedFileName);
+        textViewData.setText("user: " + username);
+/*
+        //hash file:
+        textViewProg.setText("Hashing file...");
+        hashing();
+        pBar.setProgress(30);
+        //send file for validation:
+        textViewProg.setText("Sending file...");
+        boolean send = sendFile();
+        pBar.setProgress(60);
+        //process the result:
+        result();
+        pBar.setProgress(100);
+*/
 
         //The button is used to manually go to every part:
         btn25.setOnClickListener(new View.OnClickListener(){
@@ -83,34 +89,24 @@ public class SplashScreen extends AppCompatActivity {
                 {
                     textViewProg.setText("Hashing file...");
                     hashing();
-
+                    pBar.setProgress(30);
                 }
-                if(count == 25)
-                {
-                    textViewProg.setText("Establishing connection...");    //starting info for user
-                    //connectToServer();
-                }
-                if(count == 50)
+                if(count == 30)
                 {
                     textViewProg.setText("Sending file...");
-                    //sendFile();
+                    //resultTF = sendFile();
+                    pBar.setProgress(60);;
                 }
-                if(count == 75)
+                if(count == 60)
                 {
-                    textViewProg.setText("Waiting for result...");
                     result();
+                    pBar.setProgress(100);
                 }
-                if(count == 100)
-                {
-                    imageInvalid.setVisibility(View.INVISIBLE);
-                    textViewProg.setText("Finished");
-                    imageValid.setVisibility(View.VISIBLE);
-                }
-                count = count + 25; //only used for position on progress bar
             }
         });
-    }
 
+    }
+    //------------Start of file Hashing:
     private void hashing()
     {
         try {
@@ -123,23 +119,6 @@ public class SplashScreen extends AppCompatActivity {
         }
     }
 
-    private void connectToServer()  //establish a connection to the server
-    {
-        new JSONTask().execute(url);
-    }
-
-    private void sendFile()
-    {
-
-    }
-
-    private void result()
-    {
-        resultTF = 1;   //1 if doc is valid - this will be sent back from the server
-        if(resultTF == 1)
-        imageInvalid.setVisibility(View.VISIBLE);
-    }
-//------------Start of file Hashing:
     private void readTmpFile()   //show list of files validated in a toast
     {
         try {
@@ -196,6 +175,7 @@ public class SplashScreen extends AppCompatActivity {
         hashout.write(getSha256(stringBuilder.toString()));
         hashout.close();
 
+        buildTemp = stringBuilder;  //assign to a global variable
         readFile(hashFileName);
     }
 
@@ -231,63 +211,75 @@ public class SplashScreen extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    //---------------end file hashing
+    }//---------------end file hashing
 
-//Connecting to server and reading server feedback:
-public class JSONTask extends AsyncTask<String, String, String>{
-        @Override
-        protected String doInBackground(String... params) {
+    //Send the file:
+    public boolean sendFile() {
 
-            HttpURLConnection connection = null;
-            BufferedReader read = null;
+        Thread LoginThread = new Thread(new Runnable() {
 
-            try {
-                URL urlCon = new URL(params[0]);
-                connection = (HttpURLConnection) urlCon.openConnection();
-                connection.connect();
+            @Override
+            public void run() {
 
-                //connection.setRequestMethod("POST");//----------
-                //connection.setDoInput(true);
-                //connection.setDoOutput(true);//-------
+                String SOAP_ACTION = "http://tempuri.org/Validate";
+                String METHOD_NAME = "Validate";
+                String NAMESPACE = "http://tempuri.org/";
+                String URL = "http://block2g.somee.com/Service.asmx";
 
-                InputStream is = connection.getInputStream();
+                try {
+                    // make GET request to the given URL
+                    SoapObject Request = new SoapObject(NAMESPACE, METHOD_NAME);
+                    Request.addProperty("sHash", buildTemp.toString());
 
-                read = new BufferedReader(new InputStreamReader(is));
+                    SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+                    soapEnvelope.dotNet = true;
+                    soapEnvelope.setOutputSoapObject(Request);
+                    HttpTransportSE transport = new HttpTransportSE(URL);
 
-                StringBuffer buf = new StringBuffer();
+                    //textViewProg.setText("Waiting for result...");
 
-                String line = "";
-                while((line = read.readLine()) != null)
-                {
-                    buf.append(line);
-                }
+                    transport.call(SOAP_ACTION, soapEnvelope);
+                    SoapObject response;
+                    String strResponse;
 
-                return buf.toString();
+                    try{    //WHAT RESPONSE STRING??????
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }finally {
-                if(connection != null)
-                    connection.disconnect();
-                if(read != null)
-                {
-                    try {
-                        read.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        response = (SoapObject) soapEnvelope.getResponse();
+                        strResponse = response.getProperty("LoginResult").toString();
+                    }catch (ClassCastException e) {
+
+                        response = (SoapObject)soapEnvelope.bodyIn;
+                        strResponse = response.getProperty("LoginResult").toString();
                     }
+
+                    ValidateSuccess = false;
+
+                    if(strResponse.equals("1"))
+                    {
+                        ValidateSuccess = true;
+                    }
+                    else{
+                        ValidateSuccess = false;
+                    }
+                } catch (Exception e) {
                 }
             }
-            return null;
-        }
+        });
 
-        @Override
-        protected void onPostExecute(String result){
-            super.onPostExecute(result);
-            textViewData.setText(result);   //textViewData.setText(buf.toString());
+        LoginThread.start();
+        try {
+            LoginThread.join();
+        } catch (Exception e) {;
         }
+        return ValidateSuccess;
+    }
+    //Show the result picture:
+    private void result()
+    {
+
+        if(resultTF == true)
+            imageValid.setVisibility(View.VISIBLE);
+        else
+            imageInvalid.setVisibility(View.VISIBLE);
     }
 }
