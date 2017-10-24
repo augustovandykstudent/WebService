@@ -172,24 +172,5 @@ namespace BlockChainTcpServer
 
             return true;
         }
-
-        // Mardus se save
-        /*private static bool SaveBlockChain()
-        {
-            try
-            {
-                ObjectToSerialize objectToSerialize = new ObjectToSerialize();
-                objectToSerialize.BlockChain = _chain;
-                Serializer serializer = new Serializer();
-                string sPath = Application.ExecutablePath;
-                int iIndex = sPath.Length - 17;
-                sPath = sPath.Substring(0, iIndex);
-                sPath += "Sales Total Per Year.accdb";
-                serializer.SerializeObject(sPath, objectToSerialize);
-            }
-            catch { return false; }
-
-            return true;
-        }*/
     }
 }
