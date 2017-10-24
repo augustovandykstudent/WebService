@@ -19,8 +19,7 @@ namespace Die_Validator
         public Form1()
         {
             InitializeComponent();
-            Login tmp = new Login();
-            label2.Text = "Welcome User" + tmp.getUser();
+            
         }
         OpenFileDialog openPDF = new OpenFileDialog();
         ServiceReference1.ServiceSoapClient webservice = new ServiceReference1.ServiceSoapClient();
@@ -80,8 +79,9 @@ namespace Die_Validator
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
-           
+            Login tmp = new Login();
+            label2.Text = "Welcome User" + tmp.getUser();
+
         }
 
         private bool SaveBlockChain()

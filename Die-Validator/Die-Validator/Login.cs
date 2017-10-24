@@ -12,7 +12,7 @@ namespace Die_Validator
 {
     public partial class Login : Form
     {
-        private int UserID = 0;
+        public static int UserID;
 
         public Login()
         {
@@ -30,8 +30,10 @@ namespace Die_Validator
                 UserID = webservice.Login(userid, pass);
                 Form1 tmp = new Form1();
                 tmp.Visible = true;
+                this.Hide();
                 }
         }
+
         public int getUser()
         {
             return UserID;
