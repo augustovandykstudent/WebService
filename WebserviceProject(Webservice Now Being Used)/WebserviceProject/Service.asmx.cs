@@ -52,7 +52,7 @@ namespace WebserviceProject
             string msg = string.Empty;
 
             con.Open();
-            MySqlCommand cmd = new MySqlCommand("INSERT INTO Documents(FileName, Type, Creation__date, Hash, Data, User_ID) VALUES (@name,@type,@Creation_date,@hash,@data,@User_ID)", con);
+            MySqlCommand cmd = new MySqlCommand("INSERT INTO Documents(FileName, Type, Creation_date, Hash, Data, User_ID) VALUES (@name,@type,@Creation_date,@hash,@data,@User_ID)", con);
             cmd.Parameters.AddWithValue("@name", sName);
             cmd.Parameters.AddWithValue("@type", sType);
             cmd.Parameters.AddWithValue("@Creation_date", sCreationDate);

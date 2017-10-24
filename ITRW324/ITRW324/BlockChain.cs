@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace BlockChainTcpServer
+namespace ITRW324
 {
     [Serializable()]
 

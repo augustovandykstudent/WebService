@@ -1,4 +1,4 @@
-﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="View.aspx.cs" Inherits="ITRW324.View" %> 
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="View.aspx.cs" Inherits="ITRW324.View" %> 
 
 <!DOCTYPE html>
 
@@ -56,7 +56,7 @@
     <div>
         <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="false" />
 <asp:Menu ID="Menu" runat="server" BorderStyle = "Outset" DataSourceID="SiteMapDataSource1" Orientation="Horizontal"
-    OnMenuItemDataBound="OnMenuItemDataBound">
+    OnMenuItemDataBound="OnMenuItemDataBound" OnMenuItemClick="Menu_MenuItemClick">
  
     <LevelMenuItemStyles>
         <asp:MenuItemStyle CssClass="main_menu" />
@@ -86,7 +86,7 @@
          
          <%  }%> 
          <%   else     { %> 
-        <p><b>Please Login by clicking the link below</b></p> 
+        <p><b>Please Login by clicking the link beloww</b></p> 
         <asp:HyperLink ID="HyperLink1" Text="Login" runat="server" NavigateUrl="~/Login.aspx"></asp:HyperLink> 
  
         <% } %> 

@@ -8,10 +8,15 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
 using ITRW324.ServiceReference1;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+
 namespace ITRW324
 {
     public partial class CreateNewUser : System.Web.UI.Page
     {
+
+     
         ServiceReference1.ServiceSoapClient webservice = new ServiceSoapClient();
         string name = string.Empty;
         string pwd = string.Empty;
@@ -89,6 +94,8 @@ namespace ITRW324
             }
             return false;
         }
+    
+
     }
    
 
