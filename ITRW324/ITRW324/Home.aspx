@@ -59,7 +59,7 @@
     <div>
     <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="false" />
 <asp:Menu ID="Menu" runat="server" DataSourceID="SiteMapDataSource1" Orientation="Horizontal"
-    OnMenuItemDataBound="OnMenuItemDataBound" BorderStyle="Outset">
+    OnMenuItemDataBound="OnMenuItemDataBound" BorderStyle="Outset" OnMenuItemClick="Menu_MenuItemClick">
  
     <LevelMenuItemStyles>
         <asp:MenuItemStyle CssClass="main_menu" />

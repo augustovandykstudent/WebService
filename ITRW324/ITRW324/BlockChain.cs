@@ -221,5 +221,25 @@ namespace ITRW324
             }
             return ouserData;
         }
+
+        public List<string> GetBlockValuesList()
+        {
+            // get block with data
+            List<string> ldata = new List<string>();
+            string[] sData = null;
+            Block ptr = head;
+
+            while (ptr != null)
+            {
+                sData = new string[3];
+                sData[0] = ptr._sTimeStamp;
+                sData[1] = ptr._sHash;
+                sData[2] = ptr._sUserID;
+                ldata.Add(sData[0] + "," + sData[1] + "," + sData[2]);
+            
+                ptr = ptr._oNext;
+            }
+            return ldata;
+        }
     }    
 }

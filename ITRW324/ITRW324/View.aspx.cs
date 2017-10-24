@@ -54,20 +54,42 @@ namespace ITRW324
                 {
                     string suserid = Convert.ToString(userid);
                     byte[] binfo = webservice.GetUserBlockChainInfo(suserid);
-                    string str = Encoding.ASCII.GetString(binfo, 0, binfo.Length);
+                    BlockChain ochain = Deserialize(binfo);
+                    List<string> llist = ochain.GetBlockValuesList();
+                    List<string> ltimestamp = new List<string>(), lhash = new List<string>(); 
+                    foreach (string sstring in llist)
+                    {
+                        string[] sdata = sstring.Split(',');
+                        ltimestamp.Add(sdata[0]);
+                        lhash.Add(sdata[1]);
+                    }
 
+                    DataTable dtable = new DataTable();
+                    DataColumn dusers = new DataColumn();
+                    dusers.ColumnName = "User ID";
+                    DataColumn dtimestamp = new DataColumn();
+                    dtimestamp.ColumnName = "Time Stamp";
+                    DataColumn dhash = new DataColumn();
+                    dhash.ColumnName = "Hash";
+                    dtable.Columns.Add(dusers);// add three columns to table
+                    dtable.Columns.Add(dtimestamp);
+                    dtable.Columns.Add(dhash);
 
-                    Label1.Text = str;
-                    DataTable oDataTable = new DataTable();
-                    con.Open();
-                    MySqlCommand command = new MySqlCommand("SELECT ID, FileName, Type, Hash FROM Documents WHERE User_ID = " + userid, con);
-                    MySqlDataReader reader = command.ExecuteReader();
-                    reader.Close();
-                    MySqlDataAdapter adapter = new MySqlDataAdapter();
-                    adapter.SelectCommand = command;
-                    adapter.Fill(oDataTable);
+                    int icounter = 0; // counter to move the row amount
+                    foreach (string slist in ltimestamp)// add new rows for table
+                    {
+                        dtable.Rows[icounter]["User ID"] = suserid;
+                        dtable.Rows[icounter]["Time Stamp"] = slist;
+                        icounter++;
+                    }
+                    icounter = 0;
+                    foreach (string slist in lhash)// add new rows for table
+                    {
+                        dtable.Rows[icounter]["Hash"] = slist;
+                        icounter++;
+                    }
 
-                    grid.DataSource = oDataTable;
+                    grid.DataSource = dtable;
                     grid.DataBind();
                 }
             }
@@ -82,14 +104,12 @@ namespace ITRW324
 
         private BlockChain Deserialize(byte[] param)
         {
-            if (param == null)
-                return null;
-            BinaryFormatter bf = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream(param);
-            BlockChain chain = (BlockChain)bf.Deserialize(ms);
-
-            return chain;
-
+            MemoryStream stream = new MemoryStream(param);
+            BinaryFormatter bformat = new BinaryFormatter();
+            ObjectToSerialize objectSerialize = new ObjectToSerialize();
+            objectSerialize = (ObjectToSerialize)bformat.Deserialize(stream);
+            BlockChain newChain = objectSerialize.BlockChain;
+            return newChain;    
         }
 
         protected void view(object sender, EventArgs e)
