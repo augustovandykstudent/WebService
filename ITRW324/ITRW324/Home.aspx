@@ -11,16 +11,18 @@
            background:#fff;
         font-style : normal;
         align-content:center;
+        background-image: url('/Picture/Nimri new.jpg');
         font-family: Arial;
         font-size: 12pt;
+        color: aquamarine;
     }
     .main_menu
     {
         width: 100px;
         font-style : normal;
         font-weight : bold;
-        background-color: #0094ff;
-        color: #000;
+        background-color: #c9e483;
+        color: black;
         text-align: center;
         height: 30px;
         line-height: 30px;
@@ -42,7 +44,7 @@
     }
     .selected
     {
-          background-color: #ff0000;
+          background-color: #0094ff;
         font-weight : bold;
         color: #fff;
     }
