@@ -18,9 +18,9 @@ namespace Die_Validator
     { 
         public Form1()
         {
-            Login tmp = new Login();
-            label2.Text = "Welcome User" + tmp.getUser(); 
             InitializeComponent();
+            Login tmp = new Login();
+            label2.Text = "Welcome User" + tmp.getUser();
         }
         OpenFileDialog openPDF = new OpenFileDialog();
         ServiceReference1.ServiceSoapClient webservice = new ServiceReference1.ServiceSoapClient();
@@ -65,7 +65,16 @@ namespace Die_Validator
             bool doesExist;
 
            doesExist = webservice.Validate(txtBxHash.Text);
-           MessageBox.Show(Convert.ToString(doesExist));
+            if(doesExist == false)
+            {
+                SaveBlockChain();
+                MessageBox.Show("File doesn't exists and was uploaded");
+            }
+            else
+            {
+                MessageBox.Show("File already Exists");
+            }
+           
           
         }
 
