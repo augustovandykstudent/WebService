@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,55 @@ namespace ITRW324
             if (SiteMap.CurrentNode != null)
             {
                 if (e.Item.Text == SiteMap.CurrentNode.Title)
+=======
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Configuration;
+using MySql.Data.MySqlClient;
+using System.Data;
+
+
+namespace ITRW324
+{  
+    public partial class View : System.Web.UI.Page
+    {
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        ServiceReference2.ServiceSoapClient webservice = new ServiceReference2.ServiceSoapClient();
+
+        protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
+        {
+            if (SiteMap.CurrentNode != null)
+            {
+                if (e.Item.Text == SiteMap.CurrentNode.Title)
+                {
+                    if (e.Item.Parent != null)
+                    {
+                        e.Item.Parent.Selected = true;
+                    }
+                    else
+                    {
+                        e.Item.Selected = true;
+                    }
+                }
+            }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            MySqlConnection con = new MySqlConnection(constr);
+            if (Session["User"] == null)
+                Response.Redirect("Login.aspx");
+            else
+            {
+                int userid = Convert.ToInt32(Session["ID"]);
+                string username = Session["User"].ToString();
+                //   Label1.Text = "ID: " + userid + " Name: " + username;
+                if (!IsPostBack)
+>>>>>>> Stashed changes
                 {
                     if (e.Item.Parent != null)
                     {

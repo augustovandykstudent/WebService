@@ -15,6 +15,13 @@ namespace Die_Validator.ServiceReference1 {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.ServiceSoap")]
     public interface ServiceSoap {
         
+        // CODEGEN: Generating message contract since element name sUserName from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/Login", ReplyAction="*")]
+        Die_Validator.ServiceReference1.LoginResponse Login(Die_Validator.ServiceReference1.LoginRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/Login", ReplyAction="*")]
+        System.Threading.Tasks.Task<Die_Validator.ServiceReference1.LoginResponse> LoginAsync(Die_Validator.ServiceReference1.LoginRequest request);
+        
         // CODEGEN: Generating message contract since element name sName from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/Insert", ReplyAction="*")]
         Die_Validator.ServiceReference1.InsertResponse Insert(Die_Validator.ServiceReference1.InsertRequest request);
@@ -56,6 +63,92 @@ namespace Die_Validator.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetBlockChain", ReplyAction="*")]
         System.Threading.Tasks.Task<Die_Validator.ServiceReference1.GetBlockChainResponse> GetBlockChainAsync(Die_Validator.ServiceReference1.GetBlockChainRequest request);
+        
+        // CODEGEN: Generating message contract since element name shash from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/checkifexistDB", ReplyAction="*")]
+        Die_Validator.ServiceReference1.checkifexistDBResponse checkifexistDB(Die_Validator.ServiceReference1.checkifexistDBRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/checkifexistDB", ReplyAction="*")]
+        System.Threading.Tasks.Task<Die_Validator.ServiceReference1.checkifexistDBResponse> checkifexistDBAsync(Die_Validator.ServiceReference1.checkifexistDBRequest request);
+        
+        // CODEGEN: Generating message contract since element name sUsername from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetUserBlockChainInfo", ReplyAction="*")]
+        Die_Validator.ServiceReference1.GetUserBlockChainInfoResponse GetUserBlockChainInfo(Die_Validator.ServiceReference1.GetUserBlockChainInfoRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetUserBlockChainInfo", ReplyAction="*")]
+        System.Threading.Tasks.Task<Die_Validator.ServiceReference1.GetUserBlockChainInfoResponse> GetUserBlockChainInfoAsync(Die_Validator.ServiceReference1.GetUserBlockChainInfoRequest request);
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class LoginRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="Login", Namespace="http://tempuri.org/", Order=0)]
+        public Die_Validator.ServiceReference1.LoginRequestBody Body;
+        
+        public LoginRequest() {
+        }
+        
+        public LoginRequest(Die_Validator.ServiceReference1.LoginRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class LoginRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string sUserName;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public string sPassword;
+        
+        public LoginRequestBody() {
+        }
+        
+        public LoginRequestBody(string sUserName, string sPassword) {
+            this.sUserName = sUserName;
+            this.sPassword = sPassword;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class LoginResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="LoginResponse", Namespace="http://tempuri.org/", Order=0)]
+        public Die_Validator.ServiceReference1.LoginResponseBody Body;
+        
+        public LoginResponse() {
+        }
+        
+        public LoginResponse(Die_Validator.ServiceReference1.LoginResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class LoginResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int LoginResult;
+        
+        public LoginResponseBody() {
+        }
+        
+        public LoginResponseBody(int LoginResult) {
+            this.LoginResult = LoginResult;
+        }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -491,6 +584,142 @@ namespace Die_Validator.ServiceReference1 {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class checkifexistDBRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="checkifexistDB", Namespace="http://tempuri.org/", Order=0)]
+        public Die_Validator.ServiceReference1.checkifexistDBRequestBody Body;
+        
+        public checkifexistDBRequest() {
+        }
+        
+        public checkifexistDBRequest(Die_Validator.ServiceReference1.checkifexistDBRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class checkifexistDBRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string shash;
+        
+        public checkifexistDBRequestBody() {
+        }
+        
+        public checkifexistDBRequestBody(string shash) {
+            this.shash = shash;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class checkifexistDBResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="checkifexistDBResponse", Namespace="http://tempuri.org/", Order=0)]
+        public Die_Validator.ServiceReference1.checkifexistDBResponseBody Body;
+        
+        public checkifexistDBResponse() {
+        }
+        
+        public checkifexistDBResponse(Die_Validator.ServiceReference1.checkifexistDBResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class checkifexistDBResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public bool checkifexistDBResult;
+        
+        public checkifexistDBResponseBody() {
+        }
+        
+        public checkifexistDBResponseBody(bool checkifexistDBResult) {
+            this.checkifexistDBResult = checkifexistDBResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetUserBlockChainInfoRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetUserBlockChainInfo", Namespace="http://tempuri.org/", Order=0)]
+        public Die_Validator.ServiceReference1.GetUserBlockChainInfoRequestBody Body;
+        
+        public GetUserBlockChainInfoRequest() {
+        }
+        
+        public GetUserBlockChainInfoRequest(Die_Validator.ServiceReference1.GetUserBlockChainInfoRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetUserBlockChainInfoRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string sUsername;
+        
+        public GetUserBlockChainInfoRequestBody() {
+        }
+        
+        public GetUserBlockChainInfoRequestBody(string sUsername) {
+            this.sUsername = sUsername;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetUserBlockChainInfoResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetUserBlockChainInfoResponse", Namespace="http://tempuri.org/", Order=0)]
+        public Die_Validator.ServiceReference1.GetUserBlockChainInfoResponseBody Body;
+        
+        public GetUserBlockChainInfoResponse() {
+        }
+        
+        public GetUserBlockChainInfoResponse(Die_Validator.ServiceReference1.GetUserBlockChainInfoResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetUserBlockChainInfoResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public byte[] GetUserBlockChainInfoResult;
+        
+        public GetUserBlockChainInfoResponseBody() {
+        }
+        
+        public GetUserBlockChainInfoResponseBody(byte[] GetUserBlockChainInfoResult) {
+            this.GetUserBlockChainInfoResult = GetUserBlockChainInfoResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface ServiceSoapChannel : Die_Validator.ServiceReference1.ServiceSoap, System.ServiceModel.IClientChannel {
     }
@@ -516,6 +745,33 @@ namespace Die_Validator.ServiceReference1 {
         
         public ServiceSoapClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Die_Validator.ServiceReference1.LoginResponse Die_Validator.ServiceReference1.ServiceSoap.Login(Die_Validator.ServiceReference1.LoginRequest request) {
+            return base.Channel.Login(request);
+        }
+        
+        public int Login(string sUserName, string sPassword) {
+            Die_Validator.ServiceReference1.LoginRequest inValue = new Die_Validator.ServiceReference1.LoginRequest();
+            inValue.Body = new Die_Validator.ServiceReference1.LoginRequestBody();
+            inValue.Body.sUserName = sUserName;
+            inValue.Body.sPassword = sPassword;
+            Die_Validator.ServiceReference1.LoginResponse retVal = ((Die_Validator.ServiceReference1.ServiceSoap)(this)).Login(inValue);
+            return retVal.Body.LoginResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Die_Validator.ServiceReference1.LoginResponse> Die_Validator.ServiceReference1.ServiceSoap.LoginAsync(Die_Validator.ServiceReference1.LoginRequest request) {
+            return base.Channel.LoginAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Die_Validator.ServiceReference1.LoginResponse> LoginAsync(string sUserName, string sPassword) {
+            Die_Validator.ServiceReference1.LoginRequest inValue = new Die_Validator.ServiceReference1.LoginRequest();
+            inValue.Body = new Die_Validator.ServiceReference1.LoginRequestBody();
+            inValue.Body.sUserName = sUserName;
+            inValue.Body.sPassword = sPassword;
+            return ((Die_Validator.ServiceReference1.ServiceSoap)(this)).LoginAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -680,6 +936,56 @@ namespace Die_Validator.ServiceReference1 {
             Die_Validator.ServiceReference1.GetBlockChainRequest inValue = new Die_Validator.ServiceReference1.GetBlockChainRequest();
             inValue.Body = new Die_Validator.ServiceReference1.GetBlockChainRequestBody();
             return ((Die_Validator.ServiceReference1.ServiceSoap)(this)).GetBlockChainAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Die_Validator.ServiceReference1.checkifexistDBResponse Die_Validator.ServiceReference1.ServiceSoap.checkifexistDB(Die_Validator.ServiceReference1.checkifexistDBRequest request) {
+            return base.Channel.checkifexistDB(request);
+        }
+        
+        public bool checkifexistDB(string shash) {
+            Die_Validator.ServiceReference1.checkifexistDBRequest inValue = new Die_Validator.ServiceReference1.checkifexistDBRequest();
+            inValue.Body = new Die_Validator.ServiceReference1.checkifexistDBRequestBody();
+            inValue.Body.shash = shash;
+            Die_Validator.ServiceReference1.checkifexistDBResponse retVal = ((Die_Validator.ServiceReference1.ServiceSoap)(this)).checkifexistDB(inValue);
+            return retVal.Body.checkifexistDBResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Die_Validator.ServiceReference1.checkifexistDBResponse> Die_Validator.ServiceReference1.ServiceSoap.checkifexistDBAsync(Die_Validator.ServiceReference1.checkifexistDBRequest request) {
+            return base.Channel.checkifexistDBAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Die_Validator.ServiceReference1.checkifexistDBResponse> checkifexistDBAsync(string shash) {
+            Die_Validator.ServiceReference1.checkifexistDBRequest inValue = new Die_Validator.ServiceReference1.checkifexistDBRequest();
+            inValue.Body = new Die_Validator.ServiceReference1.checkifexistDBRequestBody();
+            inValue.Body.shash = shash;
+            return ((Die_Validator.ServiceReference1.ServiceSoap)(this)).checkifexistDBAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Die_Validator.ServiceReference1.GetUserBlockChainInfoResponse Die_Validator.ServiceReference1.ServiceSoap.GetUserBlockChainInfo(Die_Validator.ServiceReference1.GetUserBlockChainInfoRequest request) {
+            return base.Channel.GetUserBlockChainInfo(request);
+        }
+        
+        public byte[] GetUserBlockChainInfo(string sUsername) {
+            Die_Validator.ServiceReference1.GetUserBlockChainInfoRequest inValue = new Die_Validator.ServiceReference1.GetUserBlockChainInfoRequest();
+            inValue.Body = new Die_Validator.ServiceReference1.GetUserBlockChainInfoRequestBody();
+            inValue.Body.sUsername = sUsername;
+            Die_Validator.ServiceReference1.GetUserBlockChainInfoResponse retVal = ((Die_Validator.ServiceReference1.ServiceSoap)(this)).GetUserBlockChainInfo(inValue);
+            return retVal.Body.GetUserBlockChainInfoResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Die_Validator.ServiceReference1.GetUserBlockChainInfoResponse> Die_Validator.ServiceReference1.ServiceSoap.GetUserBlockChainInfoAsync(Die_Validator.ServiceReference1.GetUserBlockChainInfoRequest request) {
+            return base.Channel.GetUserBlockChainInfoAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Die_Validator.ServiceReference1.GetUserBlockChainInfoResponse> GetUserBlockChainInfoAsync(string sUsername) {
+            Die_Validator.ServiceReference1.GetUserBlockChainInfoRequest inValue = new Die_Validator.ServiceReference1.GetUserBlockChainInfoRequest();
+            inValue.Body = new Die_Validator.ServiceReference1.GetUserBlockChainInfoRequestBody();
+            inValue.Body.sUsername = sUsername;
+            return ((Die_Validator.ServiceReference1.ServiceSoap)(this)).GetUserBlockChainInfoAsync(inValue);
         }
     }
 }

@@ -15,13 +15,12 @@ namespace Die_Validator
 {
     
     public partial class Form1 : Form
-    {
-
-        
-       
+    { 
         public Form1()
         {
             InitializeComponent();
+            Login tmp = new Login();
+            label2.Text = "Welcome User" + tmp.getUser();
         }
         OpenFileDialog openPDF = new OpenFileDialog();
         ServiceReference1.ServiceSoapClient webservice = new ServiceReference1.ServiceSoapClient();
@@ -46,13 +45,8 @@ namespace Die_Validator
                 sSourceData = openPDF.FileName;
                 tmpSource = ASCIIEncoding.ASCII.GetBytes(sSourceData);
                 tmpHash = new MD5CryptoServiceProvider().ComputeHash(tmpSource);
-
                 txtBxHash.Clear();
-
-                txtBxHash.AppendText(ByteArrayToString(tmpHash));
-              
-                
-               
+                txtBxHash.AppendText(ByteArrayToString(tmpHash));          
             }
             
 
@@ -71,9 +65,17 @@ namespace Die_Validator
             bool doesExist;
 
            doesExist = webservice.Validate(txtBxHash.Text);
-           MessageBox.Show(Convert.ToString(doesExist));
-            
-            
+            if(doesExist == false)
+            {
+                SaveBlockChain();
+                MessageBox.Show("File doesn't exists and was uploaded");
+            }
+            else
+            {
+                MessageBox.Show("File already Exists");
+            }
+           
+          
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -84,7 +86,6 @@ namespace Die_Validator
 
         private bool SaveBlockChain()
         {
-
             try
             {
                 ObjectToSerialize objectToSerialize = new ObjectToSerialize();
