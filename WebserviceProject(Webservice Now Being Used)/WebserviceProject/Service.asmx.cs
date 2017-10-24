@@ -197,5 +197,23 @@ namespace WebserviceProject
             return false;
 
         }
+
+        public byte[] GetUserBlockChainInfo(string sUsername)//byte array ontvang en terug stuur
+        {
+            byte[] bData = null;
+            Message mMessage = null;
+            SimpleTcpClient client = new SimpleTcpClient();
+            client.StringEncoder = Encoding.UTF8;
+            try
+            {
+                client.Connect("169.1.69.208", 4410);
+                mMessage = client.WriteLineAndGetReply("GetUserBlockChainInfo," + sUsername + ",", TimeSpan.FromSeconds(100));
+                bData = mMessage.Data;
+                client.Disconnect();
+            }
+            catch { }
+            return bData;
+        }
+
     }
 }
