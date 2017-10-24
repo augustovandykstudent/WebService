@@ -52,7 +52,14 @@ namespace WebserviceProject
             string msg = string.Empty;
 
             con.Open();
-            MySqlCommand cmd = new MySqlCommand("INSERT INTO Documents(FileName, Type, Creation__date, Hash, Data, User_ID) VALUES ('" + sName + "', '" + sType + "',TO_DATE('" + sCreationDate + "', 'dd-mm-yy')" + sHash + "'," + bData + "," + iUserID + ")", con);
+            MySqlCommand cmd = new MySqlCommand("INSERT INTO Documents(FileName, Type, Creation__date, Hash, Data, User_ID) VALUES (@name,@type,@Creation_date,@hash,@data,@User_ID)", con);
+            cmd.Parameters.AddWithValue("@name", sName);
+            cmd.Parameters.AddWithValue("@type", sType);
+            cmd.Parameters.AddWithValue("@Creation_date", sCreationDate);
+            cmd.Parameters.AddWithValue("@hash", sHash);
+            cmd.Parameters.AddWithValue("@data", bData);
+            cmd.Parameters.AddWithValue("@User_ID", iUserID);
+
             cmd.CommandTimeout = 0;
             int result = cmd.ExecuteNonQuery();
             if (result == 1)
@@ -166,6 +173,29 @@ namespace WebserviceProject
             }
             catch { }
             return bData;
+        }
+
+        [WebMethod]
+        public bool checkifexistDB(string shash)
+        {
+          
+            MySqlCommand cmd = new MySqlCommand("Select * from Documents Where Hash='" + shash + "'", con);
+
+
+            con.Open();
+            MySqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                if (dr.HasRows == true)
+                {
+                    con.Close();
+                    return true;
+
+                }
+            }
+            con.Close();
+            return false;
+
         }
     }
 }
