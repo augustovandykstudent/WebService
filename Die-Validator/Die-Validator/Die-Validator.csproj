@@ -97,6 +97,9 @@
     <None Include="Service References\ServiceReference1\Die_Validator.ServiceReference1.AddToBlockChainResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\ServiceReference1\Die_Validator.ServiceReference1.checkifexistDBResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\ServiceReference1\Die_Validator.ServiceReference1.CreateUserResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -106,7 +109,13 @@
     <None Include="Service References\ServiceReference1\Die_Validator.ServiceReference1.GetInfoOfDocumentResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\ServiceReference1\Die_Validator.ServiceReference1.GetUserBlockChainInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\ServiceReference1\Die_Validator.ServiceReference1.InsertResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\Die_Validator.ServiceReference1.LoginResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ServiceReference1\Die_Validator.ServiceReference1.ValidateResponse.datasource">

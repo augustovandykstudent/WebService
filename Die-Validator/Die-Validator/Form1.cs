@@ -15,12 +15,11 @@ namespace Die_Validator
 {
     
     public partial class Form1 : Form
-    {
-
-        
-       
+    { 
         public Form1()
         {
+            Login tmp = new Login();
+            label2.Text = "Welcome User" + tmp.getUser(); 
             InitializeComponent();
         }
         OpenFileDialog openPDF = new OpenFileDialog();
@@ -46,13 +45,8 @@ namespace Die_Validator
                 sSourceData = openPDF.FileName;
                 tmpSource = ASCIIEncoding.ASCII.GetBytes(sSourceData);
                 tmpHash = new MD5CryptoServiceProvider().ComputeHash(tmpSource);
-
                 txtBxHash.Clear();
-
-                txtBxHash.AppendText(ByteArrayToString(tmpHash));
-              
-                
-               
+                txtBxHash.AppendText(ByteArrayToString(tmpHash));          
             }
             
 
@@ -72,8 +66,7 @@ namespace Die_Validator
 
            doesExist = webservice.Validate(txtBxHash.Text);
            MessageBox.Show(Convert.ToString(doesExist));
-            
-            
+          
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -84,7 +77,6 @@ namespace Die_Validator
 
         private bool SaveBlockChain()
         {
-
             try
             {
                 ObjectToSerialize objectToSerialize = new ObjectToSerialize();
