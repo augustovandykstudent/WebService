@@ -321,6 +321,7 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="Block.cs" />
+    <Compile Include="BlockChain.cs" />
     <Compile Include="CreateNewUser.aspx.cs">
       <DependentUpon>CreateNewUser.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
