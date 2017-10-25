@@ -42,22 +42,25 @@ namespace Die_Validator
             openPDF.ShowDialog();
             if(openPDF.FileName!= null)
             {
-               /* btnUpload.Enabled = true;
-                axAcroPDF1.LoadFile(openPDF.FileName);
-                sSourceData = openPDF.FileName;
-                tmpSource = ASCIIEncoding.ASCII.GetBytes(sSourceData);
-                tmpHash = new SHA256Managed().ComputeHash(tmpSource);
-                txtBxHash.Clear();
-                txtBxHash.AppendText(ByteArrayToString(tmpHash));*/
+                /* 
+                 
+                 sSourceData = openPDF.FileName;
+                 tmpSource = ASCIIEncoding.ASCII.GetBytes(sSourceData);
+                 tmpHash = new SHA256Managed().ComputeHash(tmpSource);*/
+               
 
+                btnUpload.Enabled = true;
+                axAcroPDF1.LoadFile(openPDF.FileName);
                 var Sha = new SHA256Managed();
                 FileStream _FileStream = new FileStream(openPDF.FileName, System.IO.FileMode.Open, System.IO.FileAccess.Read);
                 BinaryReader br = new BinaryReader(_FileStream);
                 tmpSource = br.ReadBytes((Int32)_FileStream.Length);
                 tmpHash = BitConverter.ToString(Sha.ComputeHash(tmpSource)); 
+                  txtBxHash.Clear();
+                txtBxHash.AppendText(tmpHash);
 
             }
-            
+
 
 
         }
