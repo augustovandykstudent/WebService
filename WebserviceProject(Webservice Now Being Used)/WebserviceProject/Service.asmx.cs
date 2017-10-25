@@ -47,7 +47,7 @@ namespace WebserviceProject
         }
 
         [WebMethod]
-        public string Insert(string sName, string sType, string sCreationDate, string sHash, byte[] bData, int iUserID)
+        public string Insert(string sName, string sType, string sCreationDate, string sHash, byte[] bData, string iUserID)
         {
             string msg = string.Empty;
 
