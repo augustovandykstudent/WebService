@@ -48,7 +48,7 @@ namespace ITRW324
                 if (!IsPostBack)
                 {
                     string suserid = Convert.ToString(userid);
-                    BlockChain ochain;
+                  BlockChain ochain;
                     ObjectToSerialize objectSerialize = new ObjectToSerialize();
                     Serializer serializer = new Serializer();
                     byte[] bData = webservice.GetUserBlockChainInfo(suserid);
@@ -56,7 +56,7 @@ namespace ITRW324
                     objectSerialize = serializer.DeSerializeObject(memstream);
                     ochain = (BlockChain)objectSerialize.BlockChain;
                     memstream.Close();
-                    List<string> llist = ochain.GetBlockValuesList();
+                   List<string> llist = ochain.GetBlockValuesList();
                     List<string> ltimestamp = new List<string>(), lhash = new List<string>(); 
                     foreach (string sstring in llist)
                     {

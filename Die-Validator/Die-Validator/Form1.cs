@@ -32,7 +32,7 @@ namespace Die_Validator
             string sSourceData;
             byte[] tmpSource;
             byte[] tmpHash;
-
+       
 
            
             openPDF.Filter = "pdf files (*.pdf)|*.pdf;";
@@ -43,7 +43,7 @@ namespace Die_Validator
                 axAcroPDF1.LoadFile(openPDF.FileName);
                 sSourceData = openPDF.FileName;
                 tmpSource = ASCIIEncoding.ASCII.GetBytes(sSourceData);
-                tmpHash = new MD5CryptoServiceProvider().ComputeHash(tmpSource);
+                tmpHash = new SHA256Managed().ComputeHash(tmpSource);
                 txtBxHash.Clear();
                 txtBxHash.AppendText(ByteArrayToString(tmpHash));          
             }

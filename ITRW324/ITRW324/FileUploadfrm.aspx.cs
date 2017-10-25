@@ -149,15 +149,24 @@ namespace ITRW324
                     hash = BitConverter.ToString(Sha.ComputeHash(myData));
                     sb.AppendFormat("<br/> File hashcode: {0}", hash);
                     Label1.Text = sb.ToString();
+
                     bool bvalid = webservice2.Validate(hash);
 
+                    string suserid = Convert.ToString(userid);
+
+
                     if (bvalid==false)// if the document has not been added
+
                     {
-                        webservice2.AddToBlockChain(hash, Convert.ToString(userid));
+ webservice2.AddToBlockChain(hash, Convert.ToString(userid));
+
+                      
+                       
+
 
                         if (type == "application/pdf")
                         {
-                            webservice2.Insert(file, type, date, hash, myData, userid);
+                            Insert(file, type, date, hash, myData, userid);
                         }
                         else
                         {
@@ -167,7 +176,7 @@ namespace ITRW324
                     }
                     else
                     {
-                        Label1.Text = "Uploaded";
+                        Label1.Text = "Already in Blockchain";
 
                     }
 
@@ -183,6 +192,34 @@ namespace ITRW324
                 Label1.Text = "Please select file to upload";
             }
 
+        }
+
+        public string Insert(string sName, string sType, string sCreationDate, string sHash, byte[] bData, int iUserID)
+        {
+            string msg = string.Empty;
+
+            MySqlConnection con = new MySqlConnection(constr);
+            con.Open();
+            MySqlCommand cmd = new MySqlCommand("INSERT INTO Documents(FileName, Type, Creation_date, Hash, Data, User_ID) VALUES (@name,@type,@Creation_date,@hash,@data,@User_ID)", con);
+            cmd.Parameters.AddWithValue("@name", sName);
+            cmd.Parameters.AddWithValue("@type", sType);
+            cmd.Parameters.AddWithValue("@Creation_date", sCreationDate);
+            cmd.Parameters.AddWithValue("@hash", sHash);
+            cmd.Parameters.AddWithValue("@data", bData);
+            cmd.Parameters.AddWithValue("@User_ID", iUserID);
+
+            cmd.CommandTimeout = 0;
+            int result = cmd.ExecuteNonQuery();
+            if (result == 1)
+            {
+                msg = sName + " Inserted successfully";
+            }
+            else
+            {
+                msg = "failed to insert file";
+            }
+            con.Close();
+            return msg;
         }
     }
 

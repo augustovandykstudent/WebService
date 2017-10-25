@@ -25,7 +25,7 @@ namespace ITRW324
             {
                 using (MySqlCommand cmd = new MySqlCommand())
                 {
-                    cmd.CommandText = "SELECT FileName, Type,Data FROM Documents WHERE Hash=@hash";
+                    cmd.CommandText = "SELECT Data FROM Documents WHERE Hash=@hash";
                     cmd.Parameters.AddWithValue("@hash", hash);
                     cmd.Connection = con;
                     con.Open();
@@ -33,8 +33,8 @@ namespace ITRW324
                     {
                         sdr.Read();
                         bytes = (byte[])sdr["Data"];
-                        contentType = sdr["Type"].ToString();
-                        fileName = sdr["FileName"].ToString();
+                        contentType = "application/pdf";
+                       
                     }
                     con.Close();
                 }
@@ -44,7 +44,7 @@ namespace ITRW324
             context.Response.Charset = "";
             if (context.Request.QueryString["download"] == "1")
             {
-                context.Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
+                context.Response.AppendHeader("Content-Disposition", "attachment; Hash=" + hash);
             }
             context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
             context.Response.ContentType = "application/pdf";
