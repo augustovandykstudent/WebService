@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Runtime.Serialization.Formatters.Binary;
 using BlockChainTcpServer;
+using System.Data.Sql;
+using System.IO;
 
 namespace Die_Validator
 {
@@ -45,7 +47,14 @@ namespace Die_Validator
                 tmpSource = ASCIIEncoding.ASCII.GetBytes(sSourceData);
                 tmpHash = new SHA256Managed().ComputeHash(tmpSource);
                 txtBxHash.Clear();
-                txtBxHash.AppendText(ByteArrayToString(tmpHash));          
+                txtBxHash.AppendText(ByteArrayToString(tmpHash));
+
+              /*  var Sha = new SHA256Managed();
+                Stream fs = FileUploadVerify.PostedFile.InputStream;
+                BinaryReader br = new BinaryReader(fs);
+                myData = br.ReadBytes((Int32)fs.Length);
+                hash = BitConverter.ToString(Sha.ComputeHash(myData)); */
+
             }
             
 
