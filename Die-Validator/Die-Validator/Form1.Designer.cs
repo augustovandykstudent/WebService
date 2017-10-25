@@ -42,7 +42,7 @@
             // 
             this.btnOpen.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnOpen.ImageAlign = System.Drawing.ContentAlignment.TopRight;
-            this.btnOpen.Location = new System.Drawing.Point(12, 536);
+            this.btnOpen.Location = new System.Drawing.Point(12, 526);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 23);
             this.btnOpen.TabIndex = 0;
@@ -65,7 +65,7 @@
             this.btnUpload.FlatAppearance.BorderColor = System.Drawing.Color.Lime;
             this.btnUpload.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnUpload.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnUpload.Location = new System.Drawing.Point(111, 536);
+            this.btnUpload.Location = new System.Drawing.Point(517, 526);
             this.btnUpload.Name = "btnUpload";
             this.btnUpload.Size = new System.Drawing.Size(75, 23);
             this.btnUpload.TabIndex = 2;
@@ -77,16 +77,16 @@
             // 
             this.txtBxHash.BackColor = System.Drawing.Color.LightGreen;
             this.txtBxHash.Cursor = System.Windows.Forms.Cursors.No;
-            this.txtBxHash.Location = new System.Drawing.Point(192, 539);
+            this.txtBxHash.Location = new System.Drawing.Point(50, 555);
             this.txtBxHash.Name = "txtBxHash";
             this.txtBxHash.ReadOnly = true;
-            this.txtBxHash.Size = new System.Drawing.Size(400, 20);
+            this.txtBxHash.Size = new System.Drawing.Size(542, 20);
             this.txtBxHash.TabIndex = 3;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(189, 523);
+            this.label1.Location = new System.Drawing.Point(12, 558);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 4;
