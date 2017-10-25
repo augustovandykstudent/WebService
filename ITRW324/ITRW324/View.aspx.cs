@@ -65,7 +65,9 @@ namespace ITRW324
                         lhash.Add(sdata[1]);
                     }
 
+                    DataSet dset = new DataSet();
                     DataTable dtable = new DataTable();
+                    dtable.TableName = "Details";
                     DataColumn dusers = new DataColumn();
                     dusers.ColumnName = "User ID";
                     DataColumn dtimestamp = new DataColumn();
@@ -75,12 +77,18 @@ namespace ITRW324
                     dtable.Columns.Add(dusers);// add three columns to table
                     dtable.Columns.Add(dtimestamp);
                     dtable.Columns.Add(dhash);
+                    dset.Tables.Add(dtable);
+                    
+
 
                     int icounter = 0; // counter to move the row amount
                     foreach (string slist in ltimestamp)// add new rows for table
                     {
-                        dtable.Rows[icounter]["User ID"] = suserid;
-                        dtable.Rows[icounter]["Time Stamp"] = slist;
+                        DataRow drow = dset.Tables["Details"].NewRow();
+                        drow["User ID"] = suserid;
+                        drow["Time Stamp"] = slist;
+
+                        dset.Tables["Details"].Rows.Add(drow);
                         icounter++;
                     }
                     icounter = 0;
