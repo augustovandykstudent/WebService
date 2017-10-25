@@ -195,15 +195,12 @@ public class MainActivity extends AppCompatActivity {
             }
             fos.close();
             is.close();
-            //readTmpFile();
-            //stringBuilder();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             Toast.makeText(MainActivity.this, "FileNotFoundException", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(MainActivity.this, "IOException: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            //tProgress.append(e.getMessage() +"\n");
         }
     }
 }//end MainActivity class

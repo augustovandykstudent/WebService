@@ -21,12 +21,10 @@ import java.io.InputStreamReader;
 import java.security.MessageDigest;
 
 import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-import org.xmlpull.v1.XmlPullParserException;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -34,7 +32,6 @@ public class SplashScreen extends AppCompatActivity {
     private TextView textViewProg;
     private TextView textViewDocName;
     private TextView textViewData;
-   // private TextView textViewMessage;
     private Button btn25;
     private ImageView imageValid;
     private ImageView imageInvalid;
@@ -56,7 +53,6 @@ public class SplashScreen extends AppCompatActivity {
         textViewProg = (TextView) findViewById(R.id.textViewProgressReport);
         textViewDocName = (TextView) findViewById(R.id.textViewDocumentName);
         textViewData = (TextView) findViewById(R.id.textViewData);
-        //textViewMessage = (TextView) findViewById(R.id.textViewMessage);
         btn25 = (Button) findViewById(R.id.button25);
         imageValid = (ImageView) findViewById(R.id.imageViewValid);
         imageInvalid = (ImageView) findViewById(R.id.imageViewInvalid);
@@ -77,7 +73,8 @@ public class SplashScreen extends AppCompatActivity {
         //process the result:
         result();
         pBar.setProgress(100);
-*/
+        */
+
 
         //The button is used to manually go to every part:
         btn25.setOnClickListener(new View.OnClickListener(){
@@ -91,17 +88,19 @@ public class SplashScreen extends AppCompatActivity {
                     hashing();
                     pBar.setProgress(30);
                 }
-                if(count == 30)
+                if(count == 1)
                 {
                     textViewProg.setText("Sending file...");
-                    //resultTF = sendFile();
-                    pBar.setProgress(60);;
+                    resultTF = sendFile();
+                    pBar.setProgress(60);
                 }
-                if(count == 60)
+                if(count == 2)
                 {
+                    textViewProg.setText("Result...");
                     result();
                     pBar.setProgress(100);
                 }
+                count++;
             }
         });
 
@@ -112,7 +111,7 @@ public class SplashScreen extends AppCompatActivity {
         try {
             readTmpFile();
             stringBuilder();
-            Toast.makeText(SplashScreen.this,"Hashing completed", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(SplashScreen.this,"Hashing completed", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(SplashScreen.this, "IO exception SplashScreen: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -216,7 +215,7 @@ public class SplashScreen extends AppCompatActivity {
     //Send the file:
     public boolean sendFile() {
 
-        Thread LoginThread = new Thread(new Runnable() {
+        Thread SendThread = new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -245,31 +244,23 @@ public class SplashScreen extends AppCompatActivity {
                     try{    //WHAT RESPONSE STRING??????
 
                         response = (SoapObject) soapEnvelope.getResponse();
-                        strResponse = response.getProperty("LoginResult").toString();
+                        //strResponse = response.getProperty("ValidateResult").toString();
+                        ValidateSuccess = Boolean.parseBoolean(response.getProperty("ValidateResult").toString());
                     }catch (ClassCastException e) {
 
                         response = (SoapObject)soapEnvelope.bodyIn;
-                        strResponse = response.getProperty("LoginResult").toString();
-                    }
-
-                    ValidateSuccess = false;
-
-                    if(strResponse.equals("1"))
-                    {
-                        ValidateSuccess = true;
-                    }
-                    else{
-                        ValidateSuccess = false;
+                        //strResponse = response.getProperty("ValidateResult").toString();
+                        ValidateSuccess = Boolean.parseBoolean(response.getProperty("ValidateResult").toString());
                     }
                 } catch (Exception e) {
                 }
             }
         });
 
-        LoginThread.start();
+        SendThread.start();
         try {
-            LoginThread.join();
-        } catch (Exception e) {;
+            SendThread.join();
+        } catch (Exception e) {
         }
         return ValidateSuccess;
     }

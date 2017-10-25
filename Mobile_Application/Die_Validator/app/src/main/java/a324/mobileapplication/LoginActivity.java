@@ -26,6 +26,8 @@ public class LoginActivity extends AppCompatActivity {
     private String password = "";
     private boolean loginSuccess = false;
     private TextView tloading;
+    //String reply = "";
+    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +51,9 @@ public class LoginActivity extends AppCompatActivity {
                     tloading.setText("Loading...");
                     boolean login = runLogin();    //try to login
                     tloading.setText("");
+                    Toast.makeText(LoginActivity.this, "" + id, Toast.LENGTH_SHORT).show();
 
-                    if(!login)  //CHANGE BACK TO TRUE<------------------!!!
+                    if(login)
                     {
                         Intent mainAct = new Intent(LoginActivity.this, MainActivity.class).putExtra("<StringName>", username);
                         startActivity(mainAct);
@@ -101,21 +104,24 @@ public class LoginActivity extends AppCompatActivity {
                     HttpTransportSE transport = new HttpTransportSE(URL);
                     transport.call(SOAP_ACTION, soapEnvelope);
                     SoapObject response;
-                    String strResponse;
+                    //String strResponse;
 
                     try{
 
                         response = (SoapObject) soapEnvelope.getResponse();
-                        strResponse = response.getProperty("LoginResult").toString();
+                        //strResponse = response.getProperty("LoginResult").toString();
+                        id = Integer.parseInt(response.getProperty("LoginResult").toString());
                     }catch (ClassCastException e) {
 
                         response = (SoapObject)soapEnvelope.bodyIn;
-                        strResponse = response.getProperty("LoginResult").toString();
+                        //strResponse = response.getProperty("LoginResult").toString();
+                        id = Integer.parseInt(response.getProperty("LoginResult").toString());
                     }
 
                     loginSuccess = false;
+                    //reply = strResponse;
 
-                    if(strResponse.equals("true"))
+                    if(id != 0)//strResponse.equals("true") || strResponse.equals("1"))
                     {
                         loginSuccess = true;
                     }
@@ -130,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
         LoginThread.start();
         try {
             LoginThread.join();
-        } catch (Exception e) {;
+        } catch (Exception e) {
         }
         return loginSuccess;
     }

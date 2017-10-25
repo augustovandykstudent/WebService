@@ -9,15 +9,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.ksoap2.SoapEnvelope;
-import org.ksoap2.SoapFault;
-import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
+;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -54,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if((!username.equals("")) && (!password.equals("")) && (!email.equals("")))
                 {
                     tloading.setText("Loading...");
-                    boolean reg = false;//runReg();    //try to login
+                    boolean reg = runReg();    //try to login
                     tloading.setText("");
 
                     if(reg)
@@ -75,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public boolean runReg() {
 
-        Thread LoginThread = new Thread(new Runnable() {
+        Thread RegisterThread = new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -88,7 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
                 try {
                     // make GET request to the given URL
                     SoapObject Request = new SoapObject(NAMESPACE, METHOD_NAME);
-                    Request.addProperty("sUserName", username);
+                    Request.addProperty("sName", username);
                     Request.addProperty("sPassword", password);
                     Request.addProperty("sEmail", email);
 
@@ -103,31 +99,33 @@ public class RegisterActivity extends AppCompatActivity {
                     try{
 
                         response = (SoapObject) soapEnvelope.getResponse();
-                        strResponse = response.getProperty("LoginResult").toString();
+                        strResponse = response.getProperty("CreateUserResult").toString();
                     }catch (ClassCastException e) {
 
                         response = (SoapObject)soapEnvelope.bodyIn;
-                        strResponse = response.getProperty("LoginResult").toString();
+                        strResponse = response.getProperty("CreateUserResult").toString();
                     }
 
                     regSuccess = false;
 
-                    if(strResponse.equals("true"))
+                    if(strResponse.equals(username + " Inserted successfully"))
                     {
                         regSuccess = true;
                     }
                     else{
                         regSuccess = false;
+
+
                     }
                 } catch (Exception e) {
                 }
             }
         });
 
-        LoginThread.start();
+        RegisterThread.start();
         try {
-            LoginThread.join();
-        } catch (Exception e) {;
+            RegisterThread.join();
+        } catch (Exception e) {
         }
         return regSuccess;
     }
