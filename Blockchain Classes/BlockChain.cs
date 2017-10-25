@@ -46,19 +46,20 @@ namespace BlockChainTcpServer
         {
         }
 
-        public void SerializeObject(string fileName, ObjectToSerialize objectToSerialize)
+        public MemoryStream SerializeObject(ObjectToSerialize objectToSerialize)
         {
-            Stream stream = File.Open(fileName, FileMode.Create);
+            MemoryStream stream = new MemoryStream();
             BinaryFormatter bFormatter = new BinaryFormatter();
             bFormatter.Serialize(stream, objectToSerialize);
             stream.Close();
+            return stream;
         }
 
-        public ObjectToSerialize DeSerializeObject(string fileName)
+        public ObjectToSerialize DeSerializeObject(MemoryStream memstream)
         {
             ObjectToSerialize objectToSerialize;
-            Stream stream = File.Open(fileName, FileMode.Open);
             BinaryFormatter bFormatter = new BinaryFormatter();
+            Stream stream = memstream;
             objectToSerialize = (ObjectToSerialize)bFormatter.Deserialize(stream);
             stream.Close();
             return objectToSerialize;
@@ -97,6 +98,24 @@ namespace BlockChainTcpServer
             else
                 head = tail = new Block(sTimeStamp, sHash, sUserID);
             return true;
+        }
+
+        public bool Append(Block newBlock)
+        {
+            if (newBlock != null)
+            {
+                if(!IsEmpty())
+                {
+                    tail._oNext = new Block(newBlock._sTimeStamp, newBlock._sHash, newBlock._sUserID);
+                    tail = tail._oNext;
+                }
+                else
+                {
+                    head = tail = new Block(newBlock._sTimeStamp, newBlock._sHash, newBlock._sUserID);
+                }
+                return true;
+            }
+            return false;
         }
 
         public bool Append(string sTimeStamp, string sHash, string sUserID)
@@ -143,6 +162,18 @@ namespace BlockChainTcpServer
             }
         }
 
+        public bool CheckIfHashExists(string sHash)
+        {
+            Block ptr = head;
+            while (ptr != null)
+            {
+                if (sHash == ptr._sHash)
+                    return true;
+                ptr = ptr._oNext;
+            }
+            return false;
+        }
+
         private BlockChain(SerializationInfo info, StreamingContext ctxt)
         {
             this.head = (Block)info.GetValue("Head", typeof(Block));
@@ -153,6 +184,43 @@ namespace BlockChainTcpServer
         {
             info.AddValue("Head", this.head);
             info.AddValue("Tail", this.tail);
+        }
+
+        public byte[] GetBlockValues(string sHash)
+        {
+            // get block with data
+            string[] sData = null;
+            Block ptr = head;
+            while (ptr != null)
+            {
+                if (sHash == ptr._sHash)
+                {
+                    sData = new string[3];
+                    sData[0] = ptr._sTimeStamp;
+                    sData[1] = ptr._sHash;
+                    sData[2] = ptr._sUserID;
+                }
+                ptr = ptr._oNext;
+            }
+            byte[] bData = Encoding.ASCII.GetBytes(sData[0] + "," + sData[1] + "," + sData[2] + ",");
+            return bData;
+        }
+
+        public BlockChain GetBlockValuesForUser(string suserID)
+        {
+            // get all the values of a user
+            BlockChain ouserData = new BlockChain();
+            Block optr = this.head;
+
+            while (optr != null)
+            {
+                if (optr._sUserID == suserID)
+                {
+                    ouserData.Append(optr);
+                }
+                optr = optr._oNext;
+            }
+            return ouserData;
         }
     }    
 }

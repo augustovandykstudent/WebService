@@ -24,6 +24,7 @@ namespace BlockChainTcpServer
             // initiates an instance of the blockchain which exists on HDD
             try
             {
+                // loads existing blockchain from hard drive and deserializes it
                 _serializer = new Serializer();
                 byte[] bdata = File.ReadAllBytes(@"D:\Data\Data.dat");
                 MemoryStream memstream = new MemoryStream(bdata);
@@ -145,18 +146,6 @@ namespace BlockChainTcpServer
             }
         }
 
-        public static byte[] ObjectToByteArray(object obj)// changes blockchain structure to a byte[]
-        {
-            if (obj == null)
-                return null;
-            BinaryFormatter bf = new BinaryFormatter();
-            using (MemoryStream ms = new MemoryStream())
-            {
-                bf.Serialize(ms, _chain);
-                return ms.ToArray();
-            }
-        }
-
         public static byte[] GetDocumentInfo(string sHash)
         {
             byte[] sData = _chain.GetBlockValues(sHash);
@@ -165,11 +154,19 @@ namespace BlockChainTcpServer
 
         public static byte[] GetBlockChain()
         {
-            byte[] bData = ObjectToByteArray(_chain);
-            return bData;
+            Serializer serializer = new Serializer();
+            MemoryStream stream;
+            BlockChain userInfo = _chain;
+            ObjectToSerialize objectSerialize = new ObjectToSerialize();
+            objectSerialize.BlockChain = _chain;
+            stream = serializer.SerializeObject(objectSerialize);
+            FileStream filestream = File.OpenWrite(@"D:\Data\Data.dat");
+            byte[] bdata = stream.ToArray();
+
+            return bdata;
         }
 
-        private static bool SaveBlockChain()
+        private static bool SaveBlockChain()// serializes the block chain and saves it to the hard drive
         {
             FileStream fileStream;
             MemoryStream stream;
@@ -191,13 +188,14 @@ namespace BlockChainTcpServer
 
         public static byte[] GetUserBlockChainInfo(string suserid)
         {
+            Serializer serializer = new Serializer();
+            MemoryStream stream;
+            BlockChain userInfo = _chain.GetBlockValuesForUser(suserid);
             ObjectToSerialize objectSerialize = new ObjectToSerialize();
             objectSerialize.BlockChain = _chain;
+            stream = serializer.SerializeObject(objectSerialize);
+            byte[] bdata = stream.ToArray();
 
-            Serializer serializer = new Serializer();
-            serializer.SerializeObject(objectSerialize);
-            BlockChain userInfo = _chain.GetBlockValuesForUser(suserid);
-            byte[] bdata = ObjectToByteArray(suserid);
             return bdata;
         }
     }
