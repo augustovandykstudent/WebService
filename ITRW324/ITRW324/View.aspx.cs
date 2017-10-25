@@ -1,46 +1,16 @@
-<<<<<<< Updated upstream
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Configuration;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
+using System.Runtime.Serialization;
+using System.Reflection;
 
 namespace ITRW324
 {
-    
-
-    public partial class View : System.Web.UI.Page
-    {
-        BlockChain chain = new BlockChain();
-        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        ServiceReference2.ServiceSoapClient webservice = new ServiceReference2.ServiceSoapClient();
-
-        protected void OnMenuItemDataBound(object sender, MenuEventArgs e)
-        {
-            if (SiteMap.CurrentNode != null)
-            {
-                if (e.Item.Text == SiteMap.CurrentNode.Title)
-=======
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Configuration;
-using MySql.Data.MySqlClient;
-using System.Data;
-
-
-namespace ITRW324
-{  
     public partial class View : System.Web.UI.Page
     {
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
@@ -63,32 +33,7 @@ namespace ITRW324
                 }
             }
         }
-
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            MySqlConnection con = new MySqlConnection(constr);
-            if (Session["User"] == null)
-                Response.Redirect("Login.aspx");
-            else
-            {
-                int userid = Convert.ToInt32(Session["ID"]);
-                string username = Session["User"].ToString();
-                //   Label1.Text = "ID: " + userid + " Name: " + username;
-                if (!IsPostBack)
->>>>>>> Stashed changes
-                {
-                    if (e.Item.Parent != null)
-                    {
-                        e.Item.Parent.Selected = true;
-                    }
-                    else
-                    {
-                        e.Item.Selected = true;
-                    }
-                }
-            }
-        }
-
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             MySqlConnection con = new MySqlConnection(constr);
@@ -103,8 +48,14 @@ namespace ITRW324
                 if (!IsPostBack)
                 {
                     string suserid = Convert.ToString(userid);
-                    byte[] binfo = webservice.GetUserBlockChainInfo(suserid);
-                    BlockChain ochain = Deserialize(binfo);
+                    BlockChain ochain;
+                    ObjectToSerialize objectSerialize = new ObjectToSerialize();
+                    Serializer serializer = new Serializer();
+                    byte[] bData = webservice.GetUserBlockChainInfo(suserid);
+                    MemoryStream memstream = new MemoryStream(bData);
+                    objectSerialize = serializer.DeSerializeObject(memstream);
+                    ochain = (BlockChain)objectSerialize.BlockChain;
+                    memstream.Close();
                     List<string> llist = ochain.GetBlockValuesList();
                     List<string> ltimestamp = new List<string>(), lhash = new List<string>(); 
                     foreach (string sstring in llist)
@@ -114,7 +65,9 @@ namespace ITRW324
                         lhash.Add(sdata[1]);
                     }
 
+                    DataSet dset = new DataSet();
                     DataTable dtable = new DataTable();
+                    dtable.TableName = "Details";
                     DataColumn dusers = new DataColumn();
                     dusers.ColumnName = "User ID";
                     DataColumn dtimestamp = new DataColumn();
@@ -124,12 +77,18 @@ namespace ITRW324
                     dtable.Columns.Add(dusers);// add three columns to table
                     dtable.Columns.Add(dtimestamp);
                     dtable.Columns.Add(dhash);
+                    dset.Tables.Add(dtable);
+                    
+
 
                     int icounter = 0; // counter to move the row amount
                     foreach (string slist in ltimestamp)// add new rows for table
                     {
-                        dtable.Rows[icounter]["User ID"] = suserid;
-                        dtable.Rows[icounter]["Time Stamp"] = slist;
+                        DataRow drow = dset.Tables["Details"].NewRow();
+                        drow["User ID"] = suserid;
+                        drow["Time Stamp"] = slist;
+
+                        dset.Tables["Details"].Rows.Add(drow);
                         icounter++;
                     }
                     icounter = 0;
@@ -154,12 +113,12 @@ namespace ITRW324
 
         private BlockChain Deserialize(byte[] param)
         {
-            MemoryStream stream = new MemoryStream(param);
-            BinaryFormatter bformat = new BinaryFormatter();
-            ObjectToSerialize objectSerialize = new ObjectToSerialize();
-            objectSerialize = (ObjectToSerialize)bformat.Deserialize(stream);
-            BlockChain newChain = objectSerialize.BlockChain;
-            return newChain;    
+            Serializer serializer = new Serializer();
+            MemoryStream memstream = new MemoryStream(param);
+            ObjectToSerialize objectToSerialize = serializer.DeSerializeObject(memstream);
+            BlockChain chain = (BlockChain)objectToSerialize.BlockChain;
+            memstream.Close();
+            return chain;
         }
 
         protected void view(object sender, EventArgs e)
@@ -175,6 +134,28 @@ namespace ITRW324
         protected void Menu_MenuItemClick(object sender, MenuEventArgs e)
         {
 
+        }
+    }
+
+    public class Binder : SerializationBinder
+    {
+        public override Type BindToType(string assemblyName, string typeName)
+        {
+            Type tyType = null;
+
+            string sShortAssemblyName = assemblyName.Split(',')[0];
+            Assembly[] ayAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            foreach (Assembly ayAssembly in ayAssemblies)
+            {
+                if (sShortAssemblyName == ayAssembly.FullName.Split(',')[0])
+                {
+                    tyType = ayAssembly.GetType(typeName);
+                    break;
+                }
+            }
+
+            return tyType;
         }
     }
 }

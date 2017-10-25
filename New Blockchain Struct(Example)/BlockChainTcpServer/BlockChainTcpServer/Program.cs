@@ -12,26 +12,14 @@ namespace BlockChainTcpServer
     {
         static void Main(string[] args)
         {
-            BlockChain chain = new BlockChain();
-            chain.AddToHead(Convert.ToString(System.DateTime.Now), "BlahBlah", Convert.ToString(1));
-            chain.Append(Convert.ToString(System.DateTime.Now), "Good Good", Convert.ToString(2));
-            chain.Append(Convert.ToString(System.DateTime.Now), "DroopDroop", Convert.ToString(4));
-            chain.ShowBlockChain();
-            Console.WriteLine("Serialization");
-
-            ObjectToSerialize objectToSerialize = new ObjectToSerialize();
-            objectToSerialize.BlockChain = chain;
-
+            BlockChain chain;
+            ObjectToSerialize objectSerialize = new ObjectToSerialize();
             Serializer serializer = new Serializer();
-            serializer.SerializeObject(@"D:\Data\outputFile.txt", objectToSerialize);
-
-            chain = null;
-
-            GetReference().AddToBlockChain("123", "1");
-
-            //deserialization
-            byte[] bChain = GetReference().GetBlockChain();
-            chain = objectToSerialize.BlockChain;
+            byte[] bData = GetReference().GetUserBlockChainInfo("1");
+            MemoryStream memstream = new MemoryStream(bData);
+            objectSerialize = serializer.DeSerializeObject(memstream);
+            chain = (BlockChain)objectSerialize.BlockChain;
+            memstream.Close();
 
             chain.ShowBlockChain();
 
