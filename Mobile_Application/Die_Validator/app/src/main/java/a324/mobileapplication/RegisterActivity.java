@@ -10,10 +10,8 @@ import android.widget.Toast;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -59,12 +57,11 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                     else
                         Toast.makeText(RegisterActivity.this, "Unable to Register", Toast.LENGTH_SHORT).show();
-                }
+                    }
                 else
                 {
                     Toast.makeText(RegisterActivity.this, "Please fill in all the information", Toast.LENGTH_SHORT).show();
                 }
-
             }
         }));
     }
@@ -105,7 +102,6 @@ public class RegisterActivity extends AppCompatActivity {
                         response = (SoapObject)soapEnvelope.bodyIn;
                         strResponse = response.getProperty("CreateUserResult").toString();
                     }
-
                     regSuccess = false;
 
                     if(strResponse.equals(username + " Inserted successfully"))

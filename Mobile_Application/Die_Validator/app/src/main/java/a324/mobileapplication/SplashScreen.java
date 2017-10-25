@@ -1,5 +1,6 @@
 package a324.mobileapplication;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -31,7 +33,8 @@ public class SplashScreen extends AppCompatActivity {
     private ProgressBar pBar;
     private TextView textViewProg;
     private TextView textViewDocName;
-    private TextView textViewData;
+    private TextView textViewUser;
+    private TextView textViewPath;
     private Button btn25;
     private ImageView imageValid;
     private ImageView imageInvalid;
@@ -43,7 +46,8 @@ public class SplashScreen extends AppCompatActivity {
     private StringBuilder buildTemp = null;
     private boolean ValidateSuccess = false;
     private boolean resultTF = false;
-    private int count = 0;
+    private int count = 0;//for manually going through steps
+    private String path = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,30 +56,34 @@ public class SplashScreen extends AppCompatActivity {
         pBar = (ProgressBar) findViewById(R.id.progressBar);
         textViewProg = (TextView) findViewById(R.id.textViewProgressReport);
         textViewDocName = (TextView) findViewById(R.id.textViewDocumentName);
-        textViewData = (TextView) findViewById(R.id.textViewData);
+        textViewUser = (TextView) findViewById(R.id.textViewUser);
         btn25 = (Button) findViewById(R.id.button25);
         imageValid = (ImageView) findViewById(R.id.imageViewValid);
         imageInvalid = (ImageView) findViewById(R.id.imageViewInvalid);
+        textViewPath = (TextView) findViewById(R.id.textViewPath);
 
         selectedFileName = getIntent().getStringExtra("<StringFileName>");
         username = getIntent().getStringExtra("<StringUserName>");
-        textViewDocName.setText(selectedFileName);
-        textViewData.setText("user: " + username);
-/*
+        path = getIntent().getStringExtra("<StringPath>");
+        textViewDocName.append(" " +selectedFileName);
+        textViewUser.append(" " +username);
+        textViewPath.append("\n" +path);
+
         //hash file:
         textViewProg.setText("Hashing file...");
         hashing();
         pBar.setProgress(30);
         //send file for validation:
         textViewProg.setText("Sending file...");
-        boolean send = sendFile();
+        resultTF = sendFile();
         pBar.setProgress(60);
         //process the result:
         result();
         pBar.setProgress(100);
-        */
+        textViewProg.setText("Finished");
+        writeSubmittedFiles();
 
-
+/*
         //The button is used to manually go to every part:
         btn25.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -99,17 +107,17 @@ public class SplashScreen extends AppCompatActivity {
                     textViewProg.setText("Result...");
                     result();
                     pBar.setProgress(100);
+                    btn25.setVisibility(View.INVISIBLE);
                 }
                 count++;
             }
-        });
-
+        });*/
     }
     //------------Start of file Hashing:
     private void hashing()
     {
         try {
-            readTmpFile();
+            //readTmpFile();
             stringBuilder();
             //Toast.makeText(SplashScreen.this,"Hashing completed", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
@@ -147,20 +155,13 @@ public class SplashScreen extends AppCompatActivity {
         InputStreamReader isr = new InputStreamReader(fis);
         BufferedReader reader = new BufferedReader(isr);
 
-        String LINER = null;//(only for testing)
-
         String line = null;
         StringBuilder  stringBuilder = new StringBuilder();
         String ls = System.getProperty("line.separator");
         try {
-            int count = 0;
             while((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
                 stringBuilder.append(ls);
-                if(count < 20) {    //the 1st 20 lines are used to test if they differ with different files (testing only)
-                    LINER += line;
-                }
-                count++;
             }
         } finally {
             reader.close();
@@ -175,7 +176,7 @@ public class SplashScreen extends AppCompatActivity {
         hashout.close();
 
         buildTemp = stringBuilder;  //assign to a global variable
-        readFile(hashFileName);
+        //readFile(hashFileName);
     }
 
     private String getSha256(String tmp){
@@ -203,7 +204,7 @@ public class SplashScreen extends AppCompatActivity {
             BufferedReader bufR = new BufferedReader(new FileReader(f));
             StrBuild.append(bufR.readLine());
             bufR.close();
-            Toast.makeText(SplashScreen.this, fileName + " read(30chars): "+StrBuild.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(SplashScreen.this, fileName + " read 1st line: "+StrBuild.toString(), Toast.LENGTH_SHORT).show();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -235,21 +236,16 @@ public class SplashScreen extends AppCompatActivity {
                     soapEnvelope.setOutputSoapObject(Request);
                     HttpTransportSE transport = new HttpTransportSE(URL);
 
-                    //textViewProg.setText("Waiting for result...");
-
                     transport.call(SOAP_ACTION, soapEnvelope);
                     SoapObject response;
-                    String strResponse;
 
-                    try{    //WHAT RESPONSE STRING??????
+                    try{    //RESPONSE STRING
 
                         response = (SoapObject) soapEnvelope.getResponse();
-                        //strResponse = response.getProperty("ValidateResult").toString();
                         ValidateSuccess = Boolean.parseBoolean(response.getProperty("ValidateResult").toString());
                     }catch (ClassCastException e) {
 
                         response = (SoapObject)soapEnvelope.bodyIn;
-                        //strResponse = response.getProperty("ValidateResult").toString();
                         ValidateSuccess = Boolean.parseBoolean(response.getProperty("ValidateResult").toString());
                     }
                 } catch (Exception e) {
@@ -267,10 +263,27 @@ public class SplashScreen extends AppCompatActivity {
     //Show the result picture:
     private void result()
     {
-
         if(resultTF == true)
             imageValid.setVisibility(View.VISIBLE);
         else
             imageInvalid.setVisibility(View.VISIBLE);
     }
+
+    private void writeSubmittedFiles() {    //writes the selected file's name to a file if the user tries to validate it
+            String fileName = "submitted_files";
+            String res = " - Invalid";
+            if(resultTF == true)
+                res = "Valid";
+
+            FileOutputStream fos;
+            try {
+                fos = openFileOutput(fileName, Context.MODE_APPEND);
+                fos.write((" " + res ).getBytes());
+                fos.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 }

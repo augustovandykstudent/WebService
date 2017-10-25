@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
-//import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
@@ -26,7 +25,6 @@ public class LoginActivity extends AppCompatActivity {
     private String password = "";
     private boolean loginSuccess = false;
     private TextView tloading;
-    //String reply = "";
     int id;
 
     @Override
@@ -51,8 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                     tloading.setText("Loading...");
                     boolean login = runLogin();    //try to login
                     tloading.setText("");
-                    Toast.makeText(LoginActivity.this, "" + id, Toast.LENGTH_SHORT).show();
-
+                    //Toast.makeText(LoginActivity.this, "" + id, Toast.LENGTH_SHORT).show();   //Display the values returned from service. 0 if unsuccessful login, otherwise user id
                     if(login)
                     {
                         Intent mainAct = new Intent(LoginActivity.this, MainActivity.class).putExtra("<StringName>", username);
@@ -60,12 +57,11 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     else
                         Toast.makeText(LoginActivity.this, "Unable to login", Toast.LENGTH_SHORT).show();
-                }
+                    }
                 else
                 {
                     Toast.makeText(LoginActivity.this, "Please fill in all the information", Toast.LENGTH_SHORT).show();
                 }
-
             }
         }));
 
@@ -77,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(regAct);
             }
         }));
-
     }
 
     public boolean runLogin() {
@@ -104,24 +99,17 @@ public class LoginActivity extends AppCompatActivity {
                     HttpTransportSE transport = new HttpTransportSE(URL);
                     transport.call(SOAP_ACTION, soapEnvelope);
                     SoapObject response;
-                    //String strResponse;
 
                     try{
-
                         response = (SoapObject) soapEnvelope.getResponse();
-                        //strResponse = response.getProperty("LoginResult").toString();
                         id = Integer.parseInt(response.getProperty("LoginResult").toString());
                     }catch (ClassCastException e) {
-
                         response = (SoapObject)soapEnvelope.bodyIn;
-                        //strResponse = response.getProperty("LoginResult").toString();
                         id = Integer.parseInt(response.getProperty("LoginResult").toString());
                     }
-
                     loginSuccess = false;
-                    //reply = strResponse;
 
-                    if(id != 0)//strResponse.equals("true") || strResponse.equals("1"))
+                    if(id != 0)//0 means unsuccessful
                     {
                         loginSuccess = true;
                     }

@@ -29,12 +29,11 @@ public class MainActivity extends AppCompatActivity {
     private Button btnFileChoose;
     private Button btnValidate;
     private Button btnShowValidatedFiles;
-    private TextView textfileName;
+    private TextView textfileUri;
 
     private TextView tName;
     private TextView tMime;
     private TextView tPath;
-    private TextView tProgress;
 
     private static final int READ_REQUEST_CODE = 42;    //used to browse for a file
     private Intent intent;
@@ -53,13 +52,12 @@ public class MainActivity extends AppCompatActivity {
         //Assign buttons and views of GUI to objects in this class:
         btnFileChoose = (Button) findViewById(R.id.btnChooseFile);
         btnValidate = (Button) findViewById(R.id.btnValidate);
-        textfileName = (TextView) findViewById(R.id.textViewFileName);
+        textfileUri = (TextView) findViewById(R.id.textViewFileUri);
         btnShowValidatedFiles = (Button) findViewById(R.id.btnShowValidatedFiles);
 
         tName = (TextView) findViewById(R.id.textViewName);
         tMime = (TextView) findViewById(R.id.textViewMimeType);
         tPath = (TextView) findViewById(R.id.textViewPath);
-        tProgress = (TextView) findViewById(R.id.textViewProgress);
 
         username = getIntent().getStringExtra("<StringName>");
 
@@ -84,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     writeSubmittedFiles();
                     Intent splashS = new Intent(MainActivity.this, SplashScreen.class).putExtra("<StringFileName>", selectedFileName);
                     splashS.putExtra("<StringUserName>", username);
+                    splashS.putExtra("<StringPath>", path);
                     startActivity(splashS);
                     path = "";
                     selectedFileName = "";
@@ -107,9 +106,9 @@ public class MainActivity extends AppCompatActivity {
             FileOutputStream fos;
             try {
                 fos = openFileOutput(fileName, Context.MODE_APPEND);
-                fos.write((selectedFileName + "\n").getBytes());
+                fos.write(("\n" +selectedFileName).getBytes());
                 fos.close();
-                Toast.makeText(MainActivity.this, "Saving file name", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Saving file name", Toast.LENGTH_SHORT).show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -156,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (resultData != null) {
                 uri = resultData.getData();
-                textfileName.setText("URI: " + uri);
+                //textfileUri.setText("URI: " + uri);
 
                 //Get the name of the file:
                 Cursor returnCursor = getContentResolver().query(uri, null, null, null, null);
@@ -166,10 +165,10 @@ public class MainActivity extends AppCompatActivity {
 
                 selectedFileName = returnCursor.getString(nameIndex);
                 tName.setText("Name: " + returnCursor.getString(nameIndex));
-                tMime.setText("Mime type: " + mimeType);
+                //tMime.setText("Mime type: " + mimeType);
 
                 path = uri.getScheme() + "://" +uri.getAuthority() +"/"+ selectedFileName; //Get path of file from URI
-                tPath.setText(path);
+                //tPath.setText("Path: " + path);
             }
         }
     }

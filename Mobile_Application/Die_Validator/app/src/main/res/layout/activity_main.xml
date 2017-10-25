@@ -37,14 +37,9 @@
             tools:layout_editor_absoluteY="68dp" />
 
         <TextView
-            android:id="@+id/textViewFileName"
+            android:id="@+id/textViewName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="File URI"
-            app:layout_constraintHorizontal_bias="0.904"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:layout_editor_absoluteY="121dp" />
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btnValidate"
@@ -63,28 +58,23 @@
             android:text="Show validated files" />
 
         <TextView
-            android:id="@+id/textViewName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Name: " />
-
-        <TextView
             android:id="@+id/textViewMimeType"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textViewFileUri"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mime type: " />
+            app:layout_constraintHorizontal_bias="0.904"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_editor_absoluteY="121dp" />
 
         <TextView
             android:id="@+id/textViewPath"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
-        <TextView
-            android:id="@+id/textViewProgress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
