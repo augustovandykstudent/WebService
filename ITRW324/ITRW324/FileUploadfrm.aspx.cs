@@ -90,21 +90,20 @@ namespace ITRW324
                     sb.AppendFormat("<br/> File hashcode: {0}", hash);
                     Label1.Text = sb.ToString();
 
-                    if (webservice2.Validate(hash) == false)
+                    bool bvalid = webservice2.Validate(hash);
+
+
+                    if (bvalid == false)
                     {
-                        if (type == "application/pdf")
-                        {
-                            Label1.Text = "PDF is not original, or is not yet added to our database";
-                        }
-                        else
-                        {
-                            Label1.Text = "Only PDF allowed";
-                        }
+                       
+                        
+                            Label1.Text = "File is not in blockchain yet.";
+                        
 
                     }
                     else
                     {
-                        Label1.Text = "Exists";
+                        Label1.Text = "Already in Blockchain.";
 
                     }
 
