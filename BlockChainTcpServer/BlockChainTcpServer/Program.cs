@@ -195,7 +195,7 @@ namespace BlockChainTcpServer
             MemoryStream stream;
             BlockChain userInfo = _chain.GetBlockValuesForUser(suserid);
             ObjectToSerialize objectSerialize = new ObjectToSerialize();
-            objectSerialize.BlockChain = _chain;
+            objectSerialize.BlockChain = userInfo;
             stream = serializer.SerializeObject(objectSerialize);
             byte[] bdata = stream.ToArray();
 

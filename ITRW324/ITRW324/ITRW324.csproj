@@ -47,7 +47,7 @@
   <ItemGroup>
     <Reference Include="BlockChain, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\BlockChain.dll</HintPath>
+      <HintPath>..\..\BlockChainTcpServer\BlockChainTcpServer\bin\Debug\BlockChain.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>

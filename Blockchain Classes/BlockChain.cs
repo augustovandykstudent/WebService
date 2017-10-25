@@ -214,7 +214,7 @@ namespace BlockChainTcpServer
 
             while (optr != null)
             {
-                if (optr._sUserID == suserID)
+                if (suserID == optr._UserID)
                 {
                     ouserData.Append(optr);
                 }
