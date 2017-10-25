@@ -149,11 +149,11 @@ namespace ITRW324
                     hash = BitConverter.ToString(Sha.ComputeHash(myData));
                     sb.AppendFormat("<br/> File hashcode: {0}", hash);
                     Label1.Text = sb.ToString();
-                    webservice2.AddToBlockChain(hash,file);
+                    bool bvalid = webservice2.Validate(hash);
 
-                    if (webservice2.Validate(hash)==false)
+                    if (bvalid==false)// if the document has not been added
                     {
-                        webservice2.AddToBlockChain(hash, file);
+                        webservice2.AddToBlockChain(hash, Convert.ToString(userid));
 
                         if (type == "application/pdf")
                         {

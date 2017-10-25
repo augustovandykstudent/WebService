@@ -103,6 +103,9 @@ namespace BlockChainTcpServer
 
         public static bool Validate(string sHash)
         {
+            if (_chain == null)
+                return false;
+
             bool bValid = _chain.CheckIfHashExists(sHash);
 
             _action = null;// set the action variable to null so the server knows to listen for next request first
