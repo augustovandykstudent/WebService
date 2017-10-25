@@ -153,6 +153,8 @@ namespace ITRW324
 
                     if (webservice2.Validate(hash)==false)
                     {
+                        webservice2.AddToBlockChain(hash, file);
+
                         if (type == "application/pdf")
                         {
                             webservice2.Insert(file, type, date, hash, myData, userid);
