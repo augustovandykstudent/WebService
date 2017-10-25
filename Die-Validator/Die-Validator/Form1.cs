@@ -33,7 +33,8 @@ namespace Die_Validator
         {
             string sSourceData;
             byte[] tmpSource;
-            byte[] tmpHash;
+            string tmpHash;
+            
        
 
            
@@ -41,19 +42,19 @@ namespace Die_Validator
             openPDF.ShowDialog();
             if(openPDF.FileName!= null)
             {
-                btnUpload.Enabled = true;
+               /* btnUpload.Enabled = true;
                 axAcroPDF1.LoadFile(openPDF.FileName);
                 sSourceData = openPDF.FileName;
                 tmpSource = ASCIIEncoding.ASCII.GetBytes(sSourceData);
                 tmpHash = new SHA256Managed().ComputeHash(tmpSource);
                 txtBxHash.Clear();
-                txtBxHash.AppendText(ByteArrayToString(tmpHash));
+                txtBxHash.AppendText(ByteArrayToString(tmpHash));*/
 
-              /*  var Sha = new SHA256Managed();
-                Stream fs = FileUploadVerify.PostedFile.InputStream;
-                BinaryReader br = new BinaryReader(fs);
-                myData = br.ReadBytes((Int32)fs.Length);
-                hash = BitConverter.ToString(Sha.ComputeHash(myData)); */
+                var Sha = new SHA256Managed();
+                FileStream _FileStream = new FileStream(openPDF.FileName, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+                BinaryReader br = new BinaryReader(_FileStream);
+                tmpSource = br.ReadBytes((Int32)_FileStream.Length);
+                tmpHash = BitConverter.ToString(Sha.ComputeHash(tmpSource)); 
 
             }
             
