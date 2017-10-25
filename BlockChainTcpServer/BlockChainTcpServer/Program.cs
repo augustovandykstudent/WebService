@@ -25,11 +25,15 @@ namespace BlockChainTcpServer
             try
             {
                 _serializer = new Serializer();
-                _objectToSerialize = _serializer.DeSerializeObject(@"D:\Data\Blockchain.dat");
+                byte[] bdata = File.ReadAllBytes(@"D:\Data\Data.dat");
+                MemoryStream memstream = new MemoryStream(bdata);
+                _objectToSerialize = _serializer.DeSerializeObject(memstream);
                 _chain = (BlockChain)_objectToSerialize.BlockChain;
+                memstream.Close();
             }
             catch (Exception eException)
             {
+                Console.WriteLine(eException.ToString());
                 Console.WriteLine("New Block Chain Created");
                 _chain = new BlockChain();
             }
@@ -167,20 +171,31 @@ namespace BlockChainTcpServer
 
         private static bool SaveBlockChain()
         {
+            FileStream fileStream;
+            MemoryStream stream;
             try
             {
                 ObjectToSerialize objectToSerialize = new ObjectToSerialize();
                 objectToSerialize.BlockChain = _chain;
                 Serializer serializer = new Serializer();
-                serializer.SerializeObject(@"D:\Data\Data.dat", objectToSerialize);               
+                stream = serializer.SerializeObject(objectToSerialize);
+                fileStream = File.OpenWrite(@"D:\Data\Data.dat");
+                byte[] bstreamdata = stream.ToArray();
+                fileStream.Write(bstreamdata, 0, bstreamdata.Length);
             }
             catch { return false; }
-
+            stream.Close();
+            fileStream.Close();
             return true;
         }
 
         public static byte[] GetUserBlockChainInfo(string suserid)
         {
+            ObjectToSerialize objectSerialize = new ObjectToSerialize();
+            objectSerialize.BlockChain = _chain;
+
+            Serializer serializer = new Serializer();
+            serializer.SerializeObject(objectSerialize);
             BlockChain userInfo = _chain.GetBlockValuesForUser(suserid);
             byte[] bdata = ObjectToByteArray(suserid);
             return bdata;

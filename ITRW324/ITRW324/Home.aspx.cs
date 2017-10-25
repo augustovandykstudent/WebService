@@ -54,6 +54,11 @@ namespace ITRW324
                 }
             }
         }
+
+        protected void Menu_MenuItemClick(object sender, MenuEventArgs e)
+        {
+
+        }
     }
 
 }

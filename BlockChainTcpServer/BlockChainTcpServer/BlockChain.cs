@@ -46,19 +46,20 @@ namespace BlockChainTcpServer
         {
         }
 
-        public void SerializeObject(string fileName, ObjectToSerialize objectToSerialize)
+        public MemoryStream SerializeObject(ObjectToSerialize objectToSerialize)
         {
-            Stream stream = File.Open(fileName, FileMode.Create);
+            MemoryStream stream = new MemoryStream();
             BinaryFormatter bFormatter = new BinaryFormatter();
             bFormatter.Serialize(stream, objectToSerialize);
             stream.Close();
+            return stream;
         }
 
-        public ObjectToSerialize DeSerializeObject(string fileName)
+        public ObjectToSerialize DeSerializeObject(MemoryStream memstream)
         {
             ObjectToSerialize objectToSerialize;
-            Stream stream = File.Open(fileName, FileMode.Open);
             BinaryFormatter bFormatter = new BinaryFormatter();
+            Stream stream = memstream;
             objectToSerialize = (ObjectToSerialize)bFormatter.Deserialize(stream);
             stream.Close();
             return objectToSerialize;
