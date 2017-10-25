@@ -12,6 +12,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 using BlockChainTcpServer;
 using System.Data.Sql;
 using System.IO;
+using MySql.Data.MySqlClient;
+using System.Configuration;
+using System.Data;
 
 namespace Die_Validator
 {
@@ -26,8 +29,8 @@ namespace Die_Validator
         OpenFileDialog openPDF = new OpenFileDialog();
         ServiceReference1.ServiceSoapClient webservice = new ServiceReference1.ServiceSoapClient();
         BlockChain _chain;
-        
-        
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+
         private void btnOpen_Click(object sender, EventArgs e)
              
         {
@@ -110,6 +113,34 @@ namespace Die_Validator
             catch { return false; }
 
             return true;
+        }
+
+        public string Insert(string sName, string sType, string sCreationDate, string sHash, byte[] bData, int iUserID)
+        {
+            string msg = string.Empty;
+
+            MySqlConnection con = new MySqlConnection(constr);
+            con.Open();
+            MySqlCommand cmd = new MySqlCommand("INSERT INTO Documents(FileName, Type, Creation_date, Hash, Data, User_ID) VALUES (@name,@type,@Creation_date,@hash,@data,@User_ID)", con);
+            cmd.Parameters.AddWithValue("@name", sName);
+            cmd.Parameters.AddWithValue("@type", sType);
+            cmd.Parameters.AddWithValue("@Creation_date", sCreationDate);
+            cmd.Parameters.AddWithValue("@hash", sHash);
+            cmd.Parameters.AddWithValue("@data", bData);
+            cmd.Parameters.AddWithValue("@User_ID", iUserID);
+
+            cmd.CommandTimeout = 0;
+            int result = cmd.ExecuteNonQuery();
+            if (result == 1)
+            {
+                msg = sName + " Inserted successfully";
+            }
+            else
+            {
+                msg = "failed to insert file";
+            }
+            con.Close();
+            return msg;
         }
     }
 }

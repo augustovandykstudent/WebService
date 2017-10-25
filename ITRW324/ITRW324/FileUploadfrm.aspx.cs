@@ -97,7 +97,7 @@ namespace ITRW324
                     {
                        
                         
-                            Label1.Text = "File is not in blockchain yet.";
+                            Label1.Text = "File is not in blockchain yet. With hash: "+hash;
                         
 
                     }
